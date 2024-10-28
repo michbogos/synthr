@@ -1,8 +1,7 @@
 # Synthr a minimal dependency digital synthethis library
 
-For testing requires soundio.
+For testing requires soundio. Clone it from github
 
-When running on Linux, point th linker to the library:
 ``` bash
-export LD_LIBRARY_PATH=/usr/local/lib
+git clone https://github.com/andrewrk/libsoundio.git
 ```
