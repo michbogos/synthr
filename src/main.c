@@ -5,6 +5,8 @@
 #include <string.h>
 #include <math.h>
 
+int global_frame = 0;
+
 static const float PI = 3.1415926535f;
 static float seconds_offset = 0.0f;
 static void write_callback(struct SoundIoOutStream *outstream,
@@ -28,17 +30,15 @@ static void write_callback(struct SoundIoOutStream *outstream,
         if (!frame_count)
             break;
 
-        float pitch = 440.0f;
-        float radians_per_second = pitch * 2.0f * PI;
+        float pitch = 110.0f;
         for (int frame = 0; frame < frame_count; frame += 1) {
-            float sample = sinf((seconds_offset + frame * seconds_per_frame) * radians_per_second);
+            global_frame++;
+            float sample = (int)((float)global_frame*(pitch/float_sample_rate))%2;
             for (int channel = 0; channel < layout->channel_count; channel += 1) {
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
                 *ptr = sample;
             }
         }
-        seconds_offset = fmodf(seconds_offset +
-            seconds_per_frame * frame_count, 1.0f);
 
         if ((err = soundio_outstream_end_write(outstream))) {
             fprintf(stderr, "%s\n", soundio_strerror(err));
