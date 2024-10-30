@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <oscillators.h>
 
 int global_frame = 0;
 
@@ -30,10 +31,12 @@ static void write_callback(struct SoundIoOutStream *outstream,
         if (!frame_count)
             break;
 
-        float pitch = 110.0f;
         for (int frame = 0; frame < frame_count; frame += 1) {
             global_frame++;
-            float sample = (int)((float)global_frame*(pitch/float_sample_rate))%2;
+            float sample = osc_saw(global_frame, float_sample_rate, 440)*0.25+
+            osc_tri(global_frame, float_sample_rate, 660)*0.25+
+            osc_sqr(global_frame, float_sample_rate, 880)*0.25+
+            osc_sin(global_frame, float_sample_rate, 1100)*0.25;
             for (int channel = 0; channel < layout->channel_count; channel += 1) {
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
                 *ptr = sample;
