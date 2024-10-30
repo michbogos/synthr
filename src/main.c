@@ -33,10 +33,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
 
         for (int frame = 0; frame < frame_count; frame += 1) {
             global_frame++;
-            float sample = osc_saw(global_frame, float_sample_rate, 440)*0.25+
-            osc_tri(global_frame, float_sample_rate, 660)*0.25+
-            osc_sqr(global_frame, float_sample_rate, 880)*0.25+
-            osc_sin(global_frame, float_sample_rate, 1100)*0.25;
+            float sample = osc_tri(global_frame, float_sample_rate, 440)*0.5;
             for (int channel = 0; channel < layout->channel_count; channel += 1) {
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
                 *ptr = sample;

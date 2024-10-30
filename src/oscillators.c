@@ -13,12 +13,14 @@ float osc_sin(int n, float sample_rate, float frequency){
 }
 
 float osc_saw(int n, float sample_rate, float frequency){
-    float val = -(float)frequency*n/sample_rate;
+    float val = -(float)(frequency/2)*n/sample_rate;
     return ((val-floorf(val))-0.5)*2;
 }
 
+
+//Triangle wave phase shifts due to float to int rounding
 float osc_tri(int n, float sample_rate, float frequency){
-    float val = (float)frequency*n/sample_rate;
-    int sign = (int)((float)(n*((float)frequency/sample_rate)))%2 ? 1 : -1;
-    return ((sign*(val-floorf(val)))-0.5*sign)*2;
+    int val = (n % (int)((float)sample_rate/frequency)) - ((int)((float)sample_rate/frequency))/2.0f;
+    val = val > 0 ? val : -val;
+    return val/(float)(sample_rate/frequency)-0.5;
 }
