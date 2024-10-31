@@ -2,6 +2,7 @@
 #include<math.h>
 
 #define SAMPLE_RATE 44100
+#define WAVETABLE_SIZE 1024
 #define PI 3.1415926
 
 float osc_sqr(int n, float sample_rate, float frequency){
@@ -23,4 +24,14 @@ float osc_tri(int n, float sample_rate, float frequency){
     int val = (n % (int)((float)sample_rate/frequency)) - ((int)((float)sample_rate/frequency))/2.0f;
     val = val > 0 ? val : -val;
     return val/(float)(sample_rate/frequency)-0.5;
+}
+
+float osc_tbl(int n, float sample_rate, float frequency, float* wavetable){
+    float idx = ((float)n/(float)(sample_rate/frequency));
+    float subidx = (idx-floor(idx))*WAVETABLE_SIZE;
+    float t = subidx-floor(subidx);
+    float s1 = wavetable[(int)floor(subidx)];
+    float s2 = wavetable[(int)ceil(subidx)];
+    // float t = ((float)n/sample_rate)*frequency-floor(((float)n/sample_rate)*frequency);
+    return s1+(s2-s1)*t;
 }
