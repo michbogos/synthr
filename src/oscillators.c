@@ -1,8 +1,7 @@
 #include<oscillators.h>
+#include<wavetable.h>
 #include<math.h>
 
-#define SAMPLE_RATE 44100
-#define WAVETABLE_SIZE 1024
 #define PI 3.1415926
 
 float osc_sqr(int n, float sample_rate, float frequency){
@@ -26,12 +25,15 @@ float osc_tri(int n, float sample_rate, float frequency){
     return val/(float)(sample_rate/frequency)-0.5;
 }
 
-float osc_tbl(int n, float sample_rate, float frequency, float* wavetable){
+float osc_tbl(int n, float sample_rate, float frequency, Wavetable* wavetable){
+    int table_idx = (int)ceil(log2(frequency/wavetable->base)) < wavetable->num_tables ? (int)ceil(log2(frequency/wavetable->base)): wavetable->num_tables-1;
+    table_idx = table_idx < 0 ? 0 : table_idx;
+    float* table = wavetable->tables[table_idx];
     float idx = ((float)n/(float)(sample_rate/frequency));
-    float subidx = (idx-floor(idx))*WAVETABLE_SIZE;
+    float subidx = (idx-floor(idx))*wavetable->len;
     float t = subidx-floor(subidx);
-    float s1 = wavetable[(int)floor(subidx)];
-    float s2 = wavetable[(int)ceil(subidx)];
+    float s1 = table[(int)floor(subidx)];
+    float s2 = table[(int)ceil(subidx)];
     // float t = ((float)n/sample_rate)*frequency-floor(((float)n/sample_rate)*frequency);
     return s1+(s2-s1)*t;
 }

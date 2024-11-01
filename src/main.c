@@ -8,7 +8,7 @@
 #include <wavetable.h>
 
 int global_frame = 0;
-float* sawtable;
+Wavetable sawtable;
 
 static const float PI = 3.1415926535f;
 static float seconds_offset = 0.0f;
@@ -39,7 +39,10 @@ static void write_callback(struct SoundIoOutStream *outstream,
             // for(int k = 1; k <32; k++){
             //     sample -= k%2 ? (1.0/3.1415926)*(1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440) : (1.0/3.1415926)*(-1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440);
             // }
-            float sample = osc_tbl(global_frame, float_sample_rate, exp2(global_frame/float_sample_rate), sawtable)*0.5;
+            float sample = osc_tbl(global_frame, float_sample_rate, exp2(global_frame/float_sample_rate), &sawtable)*0.5;
+            if(global_frame%1000 == 0){
+                printf("%f\n", exp2(global_frame/float_sample_rate));
+            }
             //printf("%f\n", exp2(global_frame/float_sample_rate));
             for (int channel = 0; channel < layout->channel_count; channel += 1) {
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
@@ -58,8 +61,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
 
 int main(int argc, char **argv) {
 
-    sawtable = malloc(1024*sizeof(float));
-    wtbl_saw(sawtable, 44100.0f);
+    sawtable = wtbl_saw(44100, 256, 1);
 
     int err;
     struct SoundIo *soundio = soundio_create();
