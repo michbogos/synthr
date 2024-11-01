@@ -26,7 +26,7 @@ float osc_tri(int n, float sample_rate, float frequency){
 }
 
 float osc_tbl(int n, float sample_rate, float frequency, Wavetable* wavetable){
-    int table_idx = (int)ceil(log2(frequency/wavetable->base)) < wavetable->num_tables ? (int)ceil(log2(frequency/wavetable->base)): wavetable->num_tables-1;
+    int table_idx = (int)floor(log2(frequency/wavetable->base)) < wavetable->num_tables ? (int)floor(log2(frequency/wavetable->base)): wavetable->num_tables-1;
     table_idx = table_idx < 0 ? 0 : table_idx;
     float* table = wavetable->tables[table_idx];
     float idx = ((float)n/(float)(sample_rate/frequency));

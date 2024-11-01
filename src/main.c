@@ -61,7 +61,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
 
 int main(int argc, char **argv) {
 
-    sawtable = wtbl_saw(44100, 256, 1);
+    sawtable = wtbl_saw(44100, 256, 20);
 
     int err;
     struct SoundIo *soundio = soundio_create();
