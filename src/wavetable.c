@@ -18,7 +18,7 @@ Wavetable wtbl_saw(float sample_rate, int table_len, int base){
         table.tables[t] = malloc(table.len*sizeof(float));
         for(int i = 0; i < table.len; i++){
             table.tables[t][i] = 0.5;
-            for(int k = 1; k < floorf((sample_rate/2)/(table.base*(1<<t))); k++){
+            for(int k = 1; k < ceilf((sample_rate/2)/(table.base*(1<<t))); k++){
                 table.tables[t][i] -= k%2 ? (1.0/3.1415926535)*(1.0/k)*sin(2*3.1415926535*k*((float)i/table.len)) : (1.0/3.1415926535)*(-1.0/k)*sin(2*3.1415926535*k*((float)i/table.len));
             }
         }
