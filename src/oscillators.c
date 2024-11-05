@@ -4,6 +4,31 @@
 
 #define PI 3.1415926
 
+double poly_blep(float t, float dt)
+{
+  // 0 <= t < 1
+  if (t < dt)
+  {
+    t /= dt;
+    // 2 * (t - t^2/2 - 0.5)
+    return t+t - t*t - 1.;
+  }
+
+  // -1 < t < 0
+  else if (t > 1. - dt)
+  {
+    t = (t - 1.) / dt;
+    // 2 * (t^2/2 + t + 0.5)
+    return t*t + t+t + 1.;
+  }
+
+  // 0 otherwise
+  else
+  {
+    return 0.;
+  }
+}
+
 float osc_sqr(int n, float sample_rate, float frequency){
     return (((int)((float)n*(float)(frequency/sample_rate))%2)-0.5)*2;
 }
