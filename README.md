@@ -1,7 +1,10 @@
 # Synthr a minimal dependency digital synthethis library
 
-For testing requires soundio. Clone it from github
+For testing requires soundio.
 
 ``` bash
-git clone https://github.com/andrewrk/libsoundio.git
+cmake # generate build files
+make # make all
+make synthr # make the static library
+make program # make test program
 ```
