@@ -7,7 +7,8 @@
 #include <oscillators.h>
 #include <wavetable.h>
 
-int global_frame = 0;
+float frequency = 440.0f;
+float phase = 0.0f;
 Wavetable sawtable;
 
 static const float PI = 3.1415926535f;
@@ -34,15 +35,14 @@ static void write_callback(struct SoundIoOutStream *outstream,
             break;
 
         for (int frame = 0; frame < frame_count; frame += 1) {
-            global_frame++;
             // float sample = 0.5;
             // for(int k = 1; k <32; k++){
             //     sample -= k%2 ? (1.0/3.1415926)*(1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440) : (1.0/3.1415926)*(-1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440);
             // }
-            float sample = osc_tbl(global_frame, float_sample_rate, 440*exp2(global_frame/float_sample_rate), &sawtable)*0.5;
+            float sample = osc_tbl(&frequency, &phase, 1.0f/float_sample_rate, &sawtable)*0.5;
             //float sample = osc_saw(global_frame, float_sample_rate,  exp2(global_frame/float_sample_rate));
-            if(global_frame%1000 == 0){
-                printf("%f\n", exp2(global_frame/float_sample_rate));
+            if((int)frequency%1000 == 0){
+                printf("%f\n", frequency);
             }
             //printf("%f\n", exp2(global_frame/float_sample_rate));
             for (int channel = 0; channel < layout->channel_count; channel += 1) {
