@@ -79,6 +79,7 @@ int main(int argc, char **argv) {
     soundio_flush_events(soundio);
 
     int default_out_device_index = soundio_default_output_device_index(soundio);
+    printf("%d\n", soundio_output_device_count(soundio));
     if (default_out_device_index < 0) {
         fprintf(stderr, "no output device found");
         return 1;
