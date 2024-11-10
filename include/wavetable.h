@@ -1,5 +1,5 @@
-#ifndef WAVETABLE
-#define WAVETABLE
+#ifndef WAVETABLE_H
+#define WAVETABLE_H
 #include<math.h>
 typedef struct {
     int num_tables;

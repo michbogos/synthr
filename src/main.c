@@ -49,7 +49,6 @@ static void write_callback(struct SoundIoOutStream *outstream,
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
                 *ptr = sample;
             }
-            //frequency*=1.00001;
         }
 
         if ((err = soundio_outstream_end_write(outstream))) {
