@@ -7,7 +7,7 @@
 #include <wavetable.h>
 #include <wavefile.h>
 
-float frequency = 10.0f;
+float frequency = 440.0f;
 float phase = 0.0f;
 Wavetable sawtable;
 
@@ -39,7 +39,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
             // for(int k = 1; k <32; k++){
             //     sample -= k%2 ? (1.0/3.1415926)*(1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440) : (1.0/3.1415926)*(-1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440);
             // }
-            float sample = osc_tbl(&frequency, &phase, 1.0f/float_sample_rate, &sawtable)*0.7;
+            float sample = osc_tbl(frequency, &phase, 1.0f/float_sample_rate, &sawtable)*0.7;
             //float sample = osc_saw(global_frame, float_sample_rate,  exp2(global_frame/float_sample_rate));
             if((int)frequency%100 == 0){
                 printf("%f\n", frequency);
@@ -49,7 +49,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
                 *ptr = sample;
             }
-            frequency*=1.00001;
+            //frequency*=1.00001;
         }
 
         if ((err = soundio_outstream_end_write(outstream))) {
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
         samples[i] = 0.5*sin((i*2*3.1415926*440)/44100.0f);
     }
     write_wav(samples, 44100*5, 44100, 1, "test.wav");
-    sawtable = wtbl_saw(44100, 4096, 20);
+    sawtable = wtbl_tri(44100, 4096, 20);
 
     int err;
     struct SoundIo *soundio = soundio_create();

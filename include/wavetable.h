@@ -1,6 +1,5 @@
 #ifndef WAVETABLE
 #define WAVETABLE
-#define WAVETABLE_SIZE 1024
 #include<math.h>
 typedef struct {
     int num_tables;
@@ -10,4 +9,6 @@ typedef struct {
     float** tables;
 } Wavetable;
 Wavetable wtbl_saw(float sample_rate, int table_len, int base);
+Wavetable wtbl_tri(float sample_rate, int table_len, int base);
+Wavetable wtbl_sqr(float sample_rate, int table_len, int base);
 #endif
