@@ -7,6 +7,7 @@
 #include <wavetable.h>
 #include <wavefile.h>
 #include <wavegraph.h>
+#include <filter.h>
 
 float frequency = 440.0f;
 float phase = 0.0f;
@@ -51,6 +52,8 @@ static void write_callback(struct SoundIoOutStream *outstream,
         
         float samples[frame_count];
         getNodeOutput(mul, frame_count, samples, 1.0f/float_sample_rate);
+
+        filter_average(samples, samples, 64, frame_count);
 
         for (int frame = 0; frame < frame_count; frame += 1) {
             // float sample = 0.5;
