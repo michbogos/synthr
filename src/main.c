@@ -6,10 +6,16 @@
 #include <oscillators.h>
 #include <wavetable.h>
 #include <wavefile.h>
+#include <wavegraph.h>
 
 float frequency = 440.0f;
 float phase = 0.0f;
 Wavetable sawtable;
+WaveNode p;
+WaveNode f;
+WaveNode f2;
+WaveNode p2;
+WaveNode osc;
 
 static const float PI = 3.1415926535f;
 static float seconds_offset = 0.0f;
@@ -33,13 +39,16 @@ static void write_callback(struct SoundIoOutStream *outstream,
 
         if (!frame_count)
             break;
+        
+        float samples[frame_count];
+        getNodeOutput(osc, frame_count, samples, 1.0f/float_sample_rate);
 
         for (int frame = 0; frame < frame_count; frame += 1) {
             // float sample = 0.5;
             // for(int k = 1; k <32; k++){
             //     sample -= k%2 ? (1.0/3.1415926)*(1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440) : (1.0/3.1415926)*(-1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440);
             // }
-            float sample = osc_tbl(frequency, &phase, 1.0f/float_sample_rate, &sawtable)*0.7;
+            // float sample = osc_tbl(frequency, &phase, 1.0f/float_sample_rate, &sawtable)*0.7;
             //float sample = osc_saw(global_frame, float_sample_rate,  exp2(global_frame/float_sample_rate));
             if((int)frequency%100 == 0){
                 printf("%f\n", frequency);
@@ -47,7 +56,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
             //printf("%f\n", exp2(global_frame/float_sample_rate));
             for (int channel = 0; channel < layout->channel_count; channel += 1) {
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
-                *ptr = sample;
+                *ptr = samples[frame];
             }
         }
 
@@ -61,12 +70,17 @@ static void write_callback(struct SoundIoOutStream *outstream,
 }
 
 int main(int argc, char **argv) {
-    float samples[44100*5] = {};
-    for(int i = 0; i < 44100*5; i++){
-        samples[i] = 0.5*sin((i*2*3.1415926*440)/44100.0f);
-    }
-    write_wav(samples, 44100*5, 44100, 1, "test.wav");
-    sawtable = wtbl_tri(44100, 4096, 20);
+    // float samples[48000*5] = {};
+    // for(int i = 0; i < 48000*5; i++){
+    //     samples[i] = 0.5*sin((i*2*3.1415926*440)/44100.0f);
+    // }
+    // write_wav(samples, 48000*5, 48000, 1, "test.wav");
+    sawtable = wtbl_tri(48000, 4096, 20);
+    p = nodeNumber(0.0f);
+    p2 = nodeNumber(0.0f);
+    f2 = nodeNumber(1.0f);
+    f = nodeWavetable(f2, p2, &sawtable);
+    osc = nodeWavetable(f, p, &sawtable);
 
     int err;
     struct SoundIo *soundio = soundio_create();
