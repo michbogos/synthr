@@ -34,6 +34,46 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
             return;
             break;
         }
+    case SIN:
+        {
+            float frequency_buffer[n];
+            getNodeOutput(*(node.inputs+0), n, frequency_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i] = osc_sin(frequency_buffer[i], (float*)((node.inputs+1)->value), dt);
+            }
+            return;
+            break;
+        }
+    case TRIANGLE:
+        {
+            float frequency_buffer[n];
+            getNodeOutput(*(node.inputs+0), n, frequency_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i] = osc_tri(frequency_buffer[i], (float*)((node.inputs+1)->value), dt);
+            }
+            return;
+            break;
+        }
+    case SQUARE:
+        {
+            float frequency_buffer[n];
+            getNodeOutput(*(node.inputs+0), n, frequency_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i] = osc_sqr(frequency_buffer[i], (float*)((node.inputs+1)->value), dt);
+            }
+            return;
+            break;
+        }
+    case SAW:
+        {
+            float frequency_buffer[n];
+            getNodeOutput(*(node.inputs+0), n, frequency_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i] = osc_saw(frequency_buffer[i], (float*)((node.inputs+1)->value), dt);
+            }
+            return;
+            break;
+        }
     default:
         return;
     }
@@ -56,6 +96,46 @@ WaveNode nodeWavetable(WaveNode frequency, WaveNode phase, Wavetable* table){
     node.inputs[0] = frequency;
     node.inputs[1] = phase;
     node.value = table;
+    return node;
+}
+
+WaveNode nodeSin(WaveNode frequency, WaveNode phase){
+    WaveNode node;
+    node.type = SIN;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = frequency;
+    node.inputs[1] = phase;
+    node.value = NULL;
+    return node;
+}
+
+WaveNode nodeTri(WaveNode frequency, WaveNode phase){
+    WaveNode node;
+    node.type = TRIANGLE;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = frequency;
+    node.inputs[1] = phase;
+    node.value = NULL;
+    return node;
+}
+
+WaveNode nodeSqr(WaveNode frequency, WaveNode phase){
+    WaveNode node;
+    node.type = SQUARE;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = frequency;
+    node.inputs[1] = phase;
+    node.value = NULL;
+    return node;
+}
+
+WaveNode nodeSaw(WaveNode frequency, WaveNode phase){
+    WaveNode node;
+    node.type = SAW;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = frequency;
+    node.inputs[1] = phase;
+    node.value = NULL;
     return node;
 }
 
