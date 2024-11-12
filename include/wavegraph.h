@@ -2,7 +2,7 @@
 #define WAVEGRAPH_H
 #include<oscillators.h>
 enum NodeType{
-    WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER
+    WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER, DIVIDE
 };
 
 
@@ -74,6 +74,42 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
             return;
             break;
         }
+    case ADD:
+        {
+            getNodeOutput(*(node.inputs), n, buffer, dt);
+            float b_buffer[n];
+            getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i]+=b_buffer[i];
+            }
+        }
+    case SUBTRACT:
+        {
+            getNodeOutput(*(node.inputs), n, buffer, dt);
+            float b_buffer[n];
+            getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i]-=b_buffer[i];
+            }
+        }
+    case MULTIPLY:
+        {
+            getNodeOutput(*(node.inputs), n, buffer, dt);
+            float b_buffer[n];
+            getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i]*=b_buffer[i];
+            }
+        }
+    case DIVIDE:
+        {
+            getNodeOutput(*(node.inputs), n, buffer, dt);
+            float b_buffer[n];
+            getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i]/=b_buffer[i];
+            }
+        }
     default:
         return;
     }
@@ -135,6 +171,46 @@ WaveNode nodeSaw(WaveNode frequency, WaveNode phase){
     node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
     node.inputs[0] = frequency;
     node.inputs[1] = phase;
+    node.value = NULL;
+    return node;
+}
+
+WaveNode nodeAdd(WaveNode a, WaveNode b){
+    WaveNode node;
+    node.type = ADD;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = a;
+    node.inputs[1] = b;
+    node.value = NULL;
+    return node;
+}
+
+WaveNode nodeSub(WaveNode a, WaveNode b){
+    WaveNode node;
+    node.type = SUBTRACT;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = a;
+    node.inputs[1] = b;
+    node.value = NULL;
+    return node;
+}
+
+WaveNode nodeMul(WaveNode a, WaveNode b){
+    WaveNode node;
+    node.type = MULTIPLY;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = a;
+    node.inputs[1] = b;
+    node.value = NULL;
+    return node;
+}
+
+WaveNode nodeDiv(WaveNode a, WaveNode b){
+    WaveNode node;
+    node.type = DIVIDE;
+    node.inputs = (WaveNode*)malloc(2*sizeof(WaveNode));
+    node.inputs[0] = a;
+    node.inputs[1] = b;
     node.value = NULL;
     return node;
 }
