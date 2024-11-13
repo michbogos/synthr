@@ -46,11 +46,11 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
         }
     case TRIANGLE:
         {
-            float frequency_buffer[n];
-            getNodeOutput(*(node.inputs+0), n, frequency_buffer, dt);
-            for(int i = 0; i < n; i++){
-                buffer[i] = osc_tri(frequency_buffer[i], (float*)((node.inputs+1)->value), dt);
-            }
+            // float frequency_buffer[n];
+            // getNodeOutput(*(node.inputs+0), n, frequency_buffer, dt);
+            // for(int i = 0; i < n; i++){
+            //     buffer[i] = osc_tri(frequency_buffer[i], (float*)((node.inputs+1)->value), dt);
+            // }
             return;
             break;
         }
@@ -76,29 +76,32 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
         }
     case ADD:
         {
-            getNodeOutput(*(node.inputs), n, buffer, dt);
+            float a_buffer[n];
+            getNodeOutput(*(node.inputs), n, a_buffer, dt);
             float b_buffer[n];
             getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i]+=b_buffer[i];
+                buffer[i]=a_buffer[i]+b_buffer[i];
             }
         }
     case SUBTRACT:
         {
-            getNodeOutput(*(node.inputs), n, buffer, dt);
+            float a_buffer[n];
+            getNodeOutput(*(node.inputs), n, a_buffer, dt);
             float b_buffer[n];
             getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i]-=b_buffer[i];
+                buffer[i]=a_buffer[i]-b_buffer[i];
             }
         }
     case MULTIPLY:
         {
-            getNodeOutput(*(node.inputs), n, buffer, dt);
+            float a_buffer[n];
+            getNodeOutput(*(node.inputs), n, a_buffer, dt);
             float b_buffer[n];
             getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i]*=b_buffer[i];
+                buffer[i]=a_buffer[i]-b_buffer[i];
             }
         }
     case DIVIDE:
@@ -107,7 +110,7 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
             float b_buffer[n];
             getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i]/=b_buffer[i];
+                buffer[i]=buffer[i]/b_buffer[i];
             }
         }
     default:
