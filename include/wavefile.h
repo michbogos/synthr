@@ -43,7 +43,7 @@ void write_wav(float* buffer, unsigned int length, unsigned int sample_rate, uns
         //Clip to -1.0--1.0
         float sample = buffer[i] > 1.0f ? 1.0f : buffer[i];
         sample = sample < -1.0f ? -1.0f : sample;
-        out_buffer[i] = (short)(buffer[i]*__INT16_MAX__);
+        out_buffer[i] = (short)(sample*__INT16_MAX__);
     }
 
     FILE *fp = fopen(filename, "w");

@@ -83,6 +83,8 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
             for(int i = 0; i < n; i++){
                 buffer[i]=a_buffer[i]+b_buffer[i];
             }
+            return;
+            break;
         }
     case SUBTRACT:
         {
@@ -93,6 +95,8 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
             for(int i = 0; i < n; i++){
                 buffer[i]=a_buffer[i]-b_buffer[i];
             }
+            return;
+            break;
         }
     case MULTIPLY:
         {
@@ -101,8 +105,10 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
             float b_buffer[n];
             getNodeOutput(*(node.inputs+1), n, b_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i]=a_buffer[i]-b_buffer[i];
+                buffer[i]=a_buffer[i]*b_buffer[i];
             }
+            return;
+            break;
         }
     case DIVIDE:
         {
@@ -112,6 +118,8 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
             for(int i = 0; i < n; i++){
                 buffer[i]=buffer[i]/b_buffer[i];
             }
+            return;
+            break;
         }
     default:
         return;
@@ -124,7 +132,7 @@ WaveNode nodeNumber(float number){
     node.inputs = NULL;
     node.value = malloc(sizeof(float));
     float* ptr = (float*)node.value;
-    ptr[0] = number;
+    *ptr = number;
     return node;
 }
 

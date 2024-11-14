@@ -80,12 +80,12 @@ int main(int argc, char **argv) {
     sawtable = wtbl_saw(48000, 4096, 20);
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
-    f2 = nodeNumber(0.1f);
+    f2 = nodeNumber(5.0f);
     f = nodeNumber(440.0f);
     osc1 = nodeWavetable(f, p, &sawtable);
     s = nodeSin(f2, p2);
-    WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(10.0f)), nodeNumber(0.5f));
-    mul = nodeMul(osc1, nodeNumber(0.01));
+    WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
+    mul = nodeMul(osc1, add);
 
     float samples[48000*5] = {};
     getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);
