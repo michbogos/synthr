@@ -22,6 +22,10 @@ WaveNode add;
 WaveNode mul;
 WaveNode s;
 
+void underflow_callback(){
+    printf("Underflowing framesn\n");
+}
+
 static const float PI = 3.1415926535f;
 static float seconds_offset = 0.0f;
 static void write_callback(struct SoundIoOutStream *outstream,
@@ -46,19 +50,15 @@ static void write_callback(struct SoundIoOutStream *outstream,
             break;
         
         float samples[frame_count];
-        //getNodeOutput(s, frame_count, samples, 1.0f/float_sample_rate);
+        getNodeOutput(mul, frame_count, samples, 1.0f/float_sample_rate);
 
         for (int frame = 0; frame < frame_count; frame += 1) {
-            osc_sin(440, &phase, 1/float_sample_rate);
             // float sample = 0.5;
             // for(int k = 1; k <32; k++){
             //     sample -= k%2 ? (1.0/3.1415926)*(1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440) : (1.0/3.1415926)*(-1.0/k)*sin(2*3.1415926*k*((float)global_frame/float_sample_rate)*440);
             // }
             // float sample = osc_tbl(frequency, &phase, 1.0f/float_sample_rate, &sawtable)*0.7;
             //float sample = osc_saw(global_frame, float_sample_rate,  exp2(global_frame/float_sample_rate));
-            if((int)frequency%100 == 0){
-                printf("%f\n", frequency);
-            }
             //printf("%f\n", exp2(global_frame/float_sample_rate));
             for (int channel = 0; channel < layout->channel_count; channel += 1) {
                 float *ptr = (float*)(areas[channel].ptr + areas[channel].step * frame);
@@ -76,21 +76,20 @@ static void write_callback(struct SoundIoOutStream *outstream,
 }
 
 int main(int argc, char **argv) {
-    // float samples[48000*5] = {};
-    // for(int i = 0; i < 48000*5; i++){
-    //     samples[i] = 0.5*sin((i*2*3.1415926*440)/44100.0f);
-    // }
-    // write_wav(samples, 48000*5, 48000, 1, "test.wav");
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_saw(48000, 4096, 20);
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
-    f2 = nodeNumber(440.0f);
+    f2 = nodeNumber(0.1f);
     f = nodeNumber(440.0f);
     osc1 = nodeWavetable(f, p, &sawtable);
     s = nodeSin(f2, p2);
-    WaveNode add = nodeAdd(s, nodeNumber(0.5f));
-    mul = nodeMul(osc1, add);
+    WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(10.0f)), nodeNumber(0.5f));
+    mul = nodeMul(osc1, nodeNumber(0.01));
+
+    float samples[48000*5] = {};
+    getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);
+    write_wav(samples, 48000*5, 48000, 1, "test.wav");
     int err;
     struct SoundIo *soundio = soundio_create();
     if (!soundio) {
@@ -123,6 +122,7 @@ int main(int argc, char **argv) {
     struct SoundIoOutStream *outstream = soundio_outstream_create(device);
     outstream->format = SoundIoFormatFloat32NE;
     outstream->write_callback = write_callback;
+    outstream->underflow_callback = underflow_callback;
 
     if ((err = soundio_outstream_open(outstream))) {
         fprintf(stderr, "unable to open device: %s", soundio_strerror(err));

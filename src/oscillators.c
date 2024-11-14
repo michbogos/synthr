@@ -44,11 +44,11 @@ float osc_sqr(float frequency, float* phase, float dt){
 }
 
 float osc_sin(float frequency, float* phase, float dt){
-    *phase += dt*frequency*3.1415926f*2;
+    *phase += dt*frequency;
     if(*phase > 1.0){
       *phase -= 1.0;
     }
-    return sin((*phase));
+    return sin(2*3.1415926*(*phase));
 }
 
 float osc_saw(float frequency, float* phase, float dt){
