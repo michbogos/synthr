@@ -22,6 +22,8 @@ WaveNode osc2;
 WaveNode add;
 WaveNode mul;
 WaveNode s;
+struct filterData lpfData;
+float time = 0.0f;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
@@ -53,7 +55,9 @@ static void write_callback(struct SoundIoOutStream *outstream,
         float samples[frame_count];
         getNodeOutput(mul, frame_count, samples, 1.0f/float_sample_rate);
 
-        filter_average(samples, samples, 64, frame_count);
+        for(int i = 0; i < frame_count; i++){
+            samples[i] = filter_lowpass(samples[i], &lpfData, 0.05, 0.5);
+        }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
             // float sample = 0.5;
