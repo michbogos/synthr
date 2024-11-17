@@ -1,4 +1,5 @@
 #include<wavegraph.h>
+#include<stdlib.h>
 
 #define NULL ((void*)0)
 
