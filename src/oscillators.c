@@ -1,8 +1,7 @@
 #include<oscillators.h>
 #include<wavetable.h>
 #include<math.h>
-
-#define PI 3.1415926
+#include<defs.h>
 
 double poly_blep(float t, float dt)
 {
@@ -30,9 +29,9 @@ double poly_blep(float t, float dt)
 }
 
 float osc_sqr(float frequency, float* phase, float dt){
-  *phase += dt;
-  if(*phase > 1.0f/(frequency)){
-    *phase -= 1.0f/(frequency);
+  *phase += dt*frequency;
+  if(*phase > 1.0){
+    *phase -= 1.0;
   }
   if(*phase-floorf(*phase) > 0.5/(frequency)){
     return 1;
@@ -40,7 +39,6 @@ float osc_sqr(float frequency, float* phase, float dt){
   else{
     return -1;
   }
-  //return (((int)((float)n*(float)(frequency/sample_rate))%2)-0.5)*2;
 }
 
 float osc_sin(float frequency, float* phase, float dt){
@@ -48,13 +46,13 @@ float osc_sin(float frequency, float* phase, float dt){
     if(*phase > 1.0){
       *phase -= 1.0;
     }
-    return sin(2*3.1415926*(*phase));
+    return sin(2*PI*(*phase));
 }
 
 float osc_saw(float frequency, float* phase, float dt){
-    *phase += dt;
-    if(*phase > 1.0f/(frequency)){
-      *phase -= 1.0f/(frequency);
+    *phase += dt*frequency;
+    if(*phase > 1.0){
+      *phase -= 1.0;
     }
     return ((*phase*(frequency)*-floorf(*phase*(frequency)))-0.5)*2;
 }
