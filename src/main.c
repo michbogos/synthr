@@ -7,6 +7,7 @@
 #include <wavetable.h>
 #include <wavefile.h>
 #include <wavegraph.h>
+#include <defs.h>
 #include <filter.h>
 
 float frequency = 440.0f;
@@ -22,14 +23,13 @@ WaveNode osc2;
 WaveNode add;
 WaveNode mul;
 WaveNode s;
-struct filterData lpfData;
+Biquad lpf;
 float time = 0.0f;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
 }
 
-static const float PI = 3.1415926535f;
 static float seconds_offset = 0.0f;
 static void write_callback(struct SoundIoOutStream *outstream,
         int frame_count_min, int frame_count_max)
@@ -56,7 +56,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         getNodeOutput(mul, frame_count, samples, 1.0f/float_sample_rate);
 
         for(int i = 0; i < frame_count; i++){
-            samples[i] = filter_lowpass(samples[i], &lpfData, 0.05, 0.5);
+            samples[i] = filter(samples[i], float_sample_rate, &lpf, 400, 4);
         }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
@@ -93,6 +93,7 @@ int main(int argc, char **argv) {
     s = nodeSin(f2, p2);
     WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     mul = nodeMul(osc1, add);
+    lpf = biquad(NOTCH);
 
     float samples[48000*5] = {};
     getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);
