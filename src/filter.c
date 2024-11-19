@@ -31,12 +31,13 @@ Filter filter_coeffs(float* a, float* b, int numa, int numb){
     return f;
 };
 
-float filter(float input, float fs, Biquad* filter, float fc, float Q)
+float filter(float input, float fs, Biquad* filter, float fc, float Q, float dBgain)
 {
   float w0 = 2*PI*fc/fs;
   float cosw0 = cosf(w0);
   float sinw0 = sinf(w0);
   float alpha = sinw0/(2*Q);
+  float A = powf(10,(dBgain/40));
   float a0 = 0.0;
   float a1 = 0.0;
   float a2 = 0.0;
@@ -46,19 +47,19 @@ float filter(float input, float fs, Biquad* filter, float fc, float Q)
 
   switch (filter->type){
     case LOWPASS:
-      b0 =  (1.0f - cos(w0))/2.0f;
-      b1 =   1.0f - cos(w0);
-      b2 =  (1.0f - cos(w0))/2.0f;
+      b0 =  (1.0f - cosw0)/2.0f;
+      b1 =   1.0f - cosw0;
+      b2 =  (1.0f - cosw0)/2.0f;
       a0 =   1.0f + alpha;
-      a1 =  -2.0f * cos(w0);
+      a1 =  -2.0f * cosw0;
       a2 =   1.0f - alpha;
       break;
     case HIGHPASS:
-      b0 =  (1 + cos(w0))/2;
-      b1 = -(1 + cos(w0));
-      b2 =  (1 + cos(w0))/2;
+      b0 =  (1 + cosw0)/2;
+      b1 = -(1 + cosw0);
+      b2 =  (1 + cosw0)/2;
       a0 =   1 + alpha;
-      a1 =  -2*cos(w0);
+      a1 =  -2*cosw0;
       a2 =   1 - alpha;
       break;
     case BANDPASSQ:
@@ -66,7 +67,7 @@ float filter(float input, float fs, Biquad* filter, float fc, float Q)
       b1 =   0;
       b2 =   -Q*alpha;
       a0 =   1 + alpha;
-      a1 =  -2*cos(w0);
+      a1 =  -2*cosw0;
       a2 =   1 - alpha;
       break;
     case BANDPASS0:
@@ -74,35 +75,47 @@ float filter(float input, float fs, Biquad* filter, float fc, float Q)
       b1 =   0;
       b2 =  -alpha;
       a0 =   1 + alpha;
-      a1 =  -2*cos(w0);
+      a1 =  -2*cosw0;
       a2 =   1 - alpha;
       break;
     case NOTCH:
       b0 =   1;
-      b1 =  -2*cos(w0);
+      b1 =  -2*cosw0;
       b2 =   1;
       a0 =   1 + alpha;
-      a1 =  -2*cos(w0);
+      a1 =  -2*cosw0;
       a2 =   1 - alpha;
       break;
     case APF:
       b0 =   1 - alpha;
-      b1 =  -2*cos(w0);
+      b1 =  -2*cosw0;
       b2 =   1 + alpha;
       a0 =   1 + alpha;
-      a1 =  -2*cos(w0);
+      a1 =  -2*cosw0;
       a2 =   1 - alpha;
     case PEAKEQ:
+      b0 =   1 + alpha*A;
+      b1 =  -2*cosw0;
+      b2 =   1 - alpha*A;
+      a0 =   1 + alpha/A;
+      a1 =  -2*cosw0;
+      a2 =   1 - alpha/A;
       break;
-      // b0 =   1 + alpha*A;
-      // b1 =  -2*cos(w0);
-      // b2 =   1 - alpha*A;
-      // a0 =   1 + alpha/A;
-      // a1 =  -2*cos(w0);
-      // a2 =   1 - alpha/A;
     case HIGHSHELF:
+      b0 = A*((A+1)-(A-1)*cosw0 + 2*sqrtf(A)*alpha);
+      b1 = 2*A*((A-1)-(A+1)*cosw0);
+      b2 = A*((A+1)-(A-1)*cosw0 - 2*sqrtf(A)*alpha);
+      a0 = (A+1)+(A-1)*cosw0 + 2*sqrtf(A)*alpha;
+      a1 = -2*((A-1)+(A+1)*cosw0);
+      a2 = (A+1) + (A-1)*cosw0 - 2*sqrtf(A)*alpha;
       break;
     case LOWSHELF:
+      b0 = A*((A+1) + (A-1)*cosw0 + 2*sqrtf(A)*alpha);
+      b1 = -2*A*((A-1) + (A+1)*cosw0);
+      b2 = A*((A+1) + (A-1)*cosw0 - 2*sqrtf(A)*alpha);
+      a0 = (A+1) - (A-1)*cosw0 + 2*sqrtf(A)*alpha;
+      a1 = 2*((A-1) - (A+1)*cosw0);
+      a2 = (A+1) - (A-1)*cosw0 - 2*sqrt(A)*alpha;
       break;
   }
 

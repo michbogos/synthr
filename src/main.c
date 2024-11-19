@@ -24,6 +24,7 @@ WaveNode add;
 WaveNode mul;
 WaveNode s;
 Biquad lpf;
+Biquad hpf;
 float time = 0.0f;
 
 void underflow_callback(){
@@ -56,7 +57,8 @@ static void write_callback(struct SoundIoOutStream *outstream,
         getNodeOutput(mul, frame_count, samples, 1.0f/float_sample_rate);
 
         for(int i = 0; i < frame_count; i++){
-            samples[i] = filter(samples[i], float_sample_rate, &lpf, 400, 4);
+            samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
+            samples[i] = filter(samples[i], float_sample_rate, &hpf, 800, 20, 5);
         }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
@@ -93,7 +95,9 @@ int main(int argc, char **argv) {
     s = nodeSin(f2, p2);
     WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     mul = nodeMul(osc1, add);
-    lpf = biquad(NOTCH);
+    lpf = biquad(LOWSHELF);
+    hpf = biquad(HIGHSHELF);
+
 
     float samples[48000*5] = {};
     getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);

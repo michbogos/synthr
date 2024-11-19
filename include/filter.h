@@ -45,6 +45,6 @@ Biquad biquad(enum BiquadType type);
 
 Filter filter_coeffs(float* a, float* b, int numa, int numb);
 
-float filter(float input, float fs, Biquad* filter, float fc, float Q);
+float filter(float input, float fs, Biquad* filter, float fc, float Q, float dBgain);
 
 #endif
