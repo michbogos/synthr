@@ -9,8 +9,9 @@
 #include <wavegraph.h>
 #include <defs.h>
 #include <filter.h>
+#include <formant.h>
 
-float frequency = 440.0f;
+float frequency = 200.0f;
 float phase = 0.0f;
 Wavetable sawtable;
 Wavetable tritable;
@@ -25,6 +26,7 @@ WaveNode mul;
 WaveNode s;
 Biquad lpf;
 Biquad hpf;
+Formant form;
 float time = 0.0f;
 
 void underflow_callback(){
@@ -57,8 +59,9 @@ static void write_callback(struct SoundIoOutStream *outstream,
         getNodeOutput(mul, frame_count, samples, 1.0f/float_sample_rate);
 
         for(int i = 0; i < frame_count; i++){
-            samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
-            samples[i] = filter(samples[i], float_sample_rate, &hpf, 800, 20, 5);
+            // samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
+            // samples[i] = filter(samples[i], float_sample_rate, &hpf, 800, 20, 5);
+            samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
@@ -86,17 +89,18 @@ static void write_callback(struct SoundIoOutStream *outstream,
 
 int main(int argc, char **argv) {
     tritable = wtbl_sqr(48000, 4096, 20);
-    sawtable = wtbl_saw(48000, 4096, 20);
+    sawtable = wtbl_sqr(48000, 4096, 20);
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
-    f2 = nodeNumber(5.0f);
-    f = nodeNumber(440.0f);
+    f2 = nodeNumber(0.3f);
+    f = nodeNumber(400.0f);
     osc1 = nodeWavetable(f, p, &sawtable);
     s = nodeSin(f2, p2);
     WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     mul = nodeMul(osc1, add);
     lpf = biquad(LOWSHELF);
     hpf = biquad(HIGHSHELF);
+    form = make_formant(FORMANT_TABLE[0]);
 
 
     float samples[48000*5] = {};
