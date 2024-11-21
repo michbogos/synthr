@@ -61,7 +61,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         for(int i = 0; i < frame_count; i++){
             // samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
             // samples[i] = filter(samples[i], float_sample_rate, &hpf, 800, 20, 5);
-            samples[i] = formantize(float_sample_rate, samples[i], form);
+            // samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
@@ -88,11 +88,11 @@ static void write_callback(struct SoundIoOutStream *outstream,
 }
 
 int main(int argc, char **argv) {
-    tritable = wtbl_sqr(48000, 4096, 20);
-    sawtable = wtbl_sqr(48000, 4096, 20);
+    tritable = wtbl_saw(48000, 4096, 20);
+    sawtable = wtbl_saw(48000, 4096, 20);
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
-    f2 = nodeNumber(0.3f);
+    f2 = nodeNumber(0.03f);
     f = nodeNumber(400.0f);
     osc1 = nodeWavetable(f, p, &sawtable);
     s = nodeSin(f2, p2);

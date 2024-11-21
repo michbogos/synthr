@@ -42,9 +42,9 @@ typedef struct frm Formant;
 
 float FORMANT_TABLE[20][3][5] = {
     {                               // SOPRANO_A
-        {450,800,2830,2650,2800},  // Freq
-        {10.0, -1.0, -12.0, -28.0, -55.0},  // Amp
-        {70.0,80.0, 100.0, 130.0, 135.0},  // Bw
+        {800, 1100, 2900,3900,4950},  // Freq
+        {24.0, 18.0, 24.0, 24.0, 0.0},  // Amp
+        {80.0,90.0, 120.0, 130.0, 140.0},  // Bw
     },
     {                               // SOPRANO_E
         {0.0, 0.0, 0.0, 0.0, 0.0},
@@ -164,7 +164,7 @@ Formant make_formant(float data[3][5]){
 float formantize(float sample_rate, float input, Formant f){
     for(int i = 0; i < 5; i++){
         float w0 = 2*PI*f.freq[i]/sample_rate;
-        float Q = 2*sinh(log(2)/2*f.bw[i]*w0/sin(w0));
+        double Q = 1.0f/(2*sinh(log(2)/2*f.bw[i]*w0/sin(w0)));
         input = filter(input, sample_rate, f.filters+i, f.freq[i], Q, f.amp[i]);
     }
     return input;
