@@ -61,7 +61,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         for(int i = 0; i < frame_count; i++){
             // samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
             // samples[i] = filter(samples[i], float_sample_rate, &hpf, 800, 20, 5);
-            // samples[i] = formantize(float_sample_rate, samples[i], form);
+            samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
     f2 = nodeNumber(0.03f);
-    f = nodeNumber(400.0f);
+    f = nodeNumber(200.0f);
     osc1 = nodeWavetable(f, p, &sawtable);
     s = nodeSin(f2, p2);
     WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));

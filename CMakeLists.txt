@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 
 project(synthr)
 set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c89 -g")
+set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c89 -O3 -Wall -Wextra")
 
 include(ExternalProject)
 include(FetchContent)
