@@ -88,12 +88,12 @@ static void write_callback(struct SoundIoOutStream *outstream,
 }
 
 int main(int argc, char **argv) {
-    tritable = wtbl_saw(48000, 4096, 20);
-    sawtable = wtbl_saw(48000, 4096, 20);
+    tritable = wtbl_sqr(48000, 4096, 20);
+    sawtable = wtbl_sqr(48000, 4096, 20);
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
     f2 = nodeNumber(0.03f);
-    f = nodeNumber(200.0f);
+    f = nodeNumber(440.0f);
     osc1 = nodeWavetable(f, p, &sawtable);
     s = nodeSin(f2, p2);
     WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
