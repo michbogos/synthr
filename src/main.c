@@ -28,6 +28,7 @@ Biquad lpf;
 Biquad hpf;
 Formant form;
 float time = 0.0f;
+WaveNode noise;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
@@ -56,12 +57,12 @@ static void write_callback(struct SoundIoOutStream *outstream,
             break;
         
         float samples[frame_count];
-        getNodeOutput(mul, frame_count, samples, 1.0f/float_sample_rate);
+        getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
         for(int i = 0; i < frame_count; i++){
             // samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
             // samples[i] = filter(samples[i], float_sample_rate, &hpf, 800, 20, 5);
-            samples[i] = formantize(float_sample_rate, samples[i], form);
+            // samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
@@ -101,6 +102,7 @@ int main(int argc, char **argv) {
     lpf = biquad(LOWSHELF);
     hpf = biquad(HIGHSHELF);
     form = make_formant(FORMANT_TABLE[0]);
+    noise = nodeWhiteNoise();
 
 
     float samples[48000*5] = {};

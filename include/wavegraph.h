@@ -1,8 +1,9 @@
 #ifndef WAVEGRAPH_H
 #define WAVEGRAPH_H
 #include<oscillators.h>
+#include<rng.h>
 enum NodeType{
-    WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER, DIVIDE
+    WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER, DIVIDE, WHITE_NOISE
 };
 
 
@@ -27,5 +28,7 @@ WaveNode nodeAdd(WaveNode a, WaveNode b);
 WaveNode nodeSub(WaveNode a, WaveNode b);
 WaveNode nodeMul(WaveNode a, WaveNode b);
 WaveNode nodeDiv(WaveNode a, WaveNode b);
+
+WaveNode nodeWhiteNoise();
 
 #endif

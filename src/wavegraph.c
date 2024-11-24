@@ -1,10 +1,17 @@
 #include<wavegraph.h>
 #include<stdlib.h>
+#include<rng.h>
 
 #define NULL ((void*)0)
 
 void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     switch (node.type){
+    case WHITE_NOISE:
+        for(int i = 0; i < n; i++){
+            buffer[i] = rand_float((pcg32_random_t*)node.value);
+        }
+        return;
+        break;
     case NUMBER:
         for(int i = 0; i < n; i++){
             buffer[i] = *(float*)(node.value);
@@ -112,6 +119,17 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     default:
         return;
     }
+}
+
+//Nodes don't copy values just the pointers
+
+WaveNode nodeWhiteNoise(){
+    WaveNode node;
+    node.type = WHITE_NOISE;
+    node.inputs = NULL;
+    node.value = malloc(1*sizeof(pcg32_random_t));
+    *((pcg32_random_t*)node.value) = make_rng(42, 63);
+    return node;
 }
 
 WaveNode nodeNumber(float number){
