@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
     lpf = biquad(LOWSHELF);
     hpf = biquad(HIGHSHELF);
     form = make_formant(FORMANT_TABLE[0]);
-    noise = nodeWhiteNoise();
+    noise = nodePinkNoise();
 
 
     float samples[48000*5] = {};

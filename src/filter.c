@@ -1,6 +1,5 @@
 #include<filter.h>
 #include<defs.h>
-#include<stdlib.h>
 #include<math.h>
 
 Biquad biquad(enum BiquadType type){

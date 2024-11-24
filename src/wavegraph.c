@@ -8,7 +8,17 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     switch (node.type){
     case WHITE_NOISE:
         for(int i = 0; i < n; i++){
-            buffer[i] = rand_float((pcg32_random_t*)node.value);
+            buffer[i] = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
+        }
+        return;
+        break;
+    case PINK_NOISE:
+        for(int i = 0; i < n; i++){
+            buffer[i] = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
+            float b0 = 0.99765 * b0 + buffer[i] * 0.0990460;
+            float b1 = 0.96300 * b1 + buffer[i] * 0.2965164;
+            float b2 = 0.57000 * b2 + buffer[i] * 1.0526913;
+            buffer[i] = (b0 + b1 + b2 + buffer[i] * 0.1848)*0.2;
         }
         return;
         break;
@@ -126,6 +136,15 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
 WaveNode nodeWhiteNoise(){
     WaveNode node;
     node.type = WHITE_NOISE;
+    node.inputs = NULL;
+    node.value = malloc(1*sizeof(pcg32_random_t));
+    *((pcg32_random_t*)node.value) = make_rng(42, 63);
+    return node;
+}
+
+WaveNode nodePinkNoise(){
+    WaveNode node;
+    node.type = PINK_NOISE;
     node.inputs = NULL;
     node.value = malloc(1*sizeof(pcg32_random_t));
     *((pcg32_random_t*)node.value) = make_rng(42, 63);
