@@ -22,6 +22,14 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
         }
         return;
         break;
+    case BROWN_NOISE:
+        for(int i = 0; i < n; i++){
+            float a = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
+            float b = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
+            buffer[i] = (a+b)*0.5;
+        }
+        return;
+        break;
     case NUMBER:
         for(int i = 0; i < n; i++){
             buffer[i] = *(float*)(node.value);
@@ -145,6 +153,15 @@ WaveNode nodeWhiteNoise(){
 WaveNode nodePinkNoise(){
     WaveNode node;
     node.type = PINK_NOISE;
+    node.inputs = NULL;
+    node.value = malloc(1*sizeof(pcg32_random_t));
+    *((pcg32_random_t*)node.value) = make_rng(42, 63);
+    return node;
+}
+
+WaveNode nodeBrownNoise(){
+    WaveNode node;
+    node.type = BROWN_NOISE;
     node.inputs = NULL;
     node.value = malloc(1*sizeof(pcg32_random_t));
     *((pcg32_random_t*)node.value) = make_rng(42, 63);
