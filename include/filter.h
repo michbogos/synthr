@@ -29,6 +29,12 @@ struct bq{
 
 typedef struct bq Biquad;
 
+typedef struct {
+    float* data;
+    int n;
+    float alpha;
+} CombFilter;
+
 
 // Filter filter_lowpass(){
 //     Filter f;
@@ -42,8 +48,10 @@ typedef struct bq Biquad;
 // };
 
 Biquad biquad(enum BiquadType type);
+CombFilter comb(int n, float alpha);
 
 Filter filter_coeffs(float* a, float* b, int numa, int numb);
+float filter_comb(CombFilter* filter, float sample);
 
 float filter(float input, float fs, Biquad* filter, float fc, float Q, float dBgain);
 

@@ -29,6 +29,8 @@ Biquad hpf;
 Formant form;
 float time = 0.0f;
 WaveNode noise;
+CombFilter cmb;
+CombFilter cmb2;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
@@ -57,11 +59,15 @@ static void write_callback(struct SoundIoOutStream *outstream,
             break;
         
         float samples[frame_count];
-        getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
+        // getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
         for(int i = 0; i < frame_count; i++){
-            // samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
-            // samples[i] = filter(samples[i], float_sample_rate, &hpf, 800, 20, 5);
+            samples[i] = osc_tbl(440.0f, &phase, 1/float_sample_rate, &sawtable);
+            //samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
+            samples[i] = filter(samples[i], float_sample_rate, &lpf, 3200, 1, 0);
+            samples[i] = filter_comb(&cmb, samples[i]);
+            samples[i] = filter_comb(&cmb2, samples[i]);
+            samples[i] = filter(samples[i], float_sample_rate, &hpf, 3200, 1, 0);
             // samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
@@ -79,12 +85,16 @@ static void write_callback(struct SoundIoOutStream *outstream,
             }
         }
 
+        cmb.alpha = 2*sinf(time);
+        cmb2.alpha = 1.5*sinf(-2*time+1.0);
+
         if ((err = soundio_outstream_end_write(outstream))) {
             fprintf(stderr, "%s\n", soundio_strerror(err));
             exit(1);
         }
 
         frames_left -= frame_count;
+        time += 0.01;
     }
 }
 
@@ -99,10 +109,12 @@ int main(int argc, char **argv) {
     s = nodeSin(f2, p2);
     WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     mul = nodeMul(osc1, add);
-    lpf = biquad(LOWSHELF);
-    hpf = biquad(HIGHSHELF);
+    lpf = biquad(LOWPASS);
+    hpf = biquad(LOWPASS);
     form = make_formant(FORMANT_TABLE[0]);
     noise = nodeBrownNoise();
+    cmb = comb(16, 1.0f);
+    cmb2 = comb(8, 1.0f);
 
 
     float samples[48000*5] = {};

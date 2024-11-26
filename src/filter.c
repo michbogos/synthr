@@ -1,6 +1,7 @@
 #include<filter.h>
 #include<defs.h>
 #include<math.h>
+#include<stdlib.h>
 
 Biquad biquad(enum BiquadType type){
     Biquad b;
@@ -12,6 +13,24 @@ Biquad biquad(enum BiquadType type){
     b.out3 = 0;
     b.type = type;
     return b;
+}
+
+CombFilter comb(int n, float alpha){
+  CombFilter cf;
+  cf.data = malloc(n*sizeof(n));
+  cf.alpha = alpha;
+  cf.n = n;
+  return cf;
+}
+
+// Reimplement later with ring buffer
+float filter_comb(CombFilter* filter, float sample){
+  float res = sample+filter->alpha*filter->data[0];
+  for(int i = 0; i < filter->n-1; i++){
+    filter->data[i] = filter->data[i+1];
+  }
+  filter->data[filter->n-1]=sample;
+  return res;
 }
 
 Filter filter_coeffs(float* a, float* b, int numa, int numb){

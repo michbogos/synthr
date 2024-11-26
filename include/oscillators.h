@@ -6,5 +6,6 @@ float osc_sin(float frequency, float* phase, float dt);
 float osc_saw(float frequency, float* phase, float dt);
 float osc_tri(float frequency, float* phase, float dt);
 float osc_tbl(float frequency, float* phase, float dt, Wavetable* wavetable);
+float osc_tbl_chorus(float frequency, float cents, int n, float* phase, float dt, Wavetable* wavetable);
 double poly_blep(float t, float dt);
 #endif

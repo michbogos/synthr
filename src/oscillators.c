@@ -81,3 +81,25 @@ float osc_tbl(float frequency, float* phase, float dt, Wavetable* wavetable){
     // float t = ((float)n/sample_rate)frequency-floor(((float)n/sample_rate)frequency);
     return s1+(s2-s1)*t;
 }
+
+float osc_tbl_chorus(float frequency, float cents, int n, float* phase, float dt, Wavetable* wavetable){
+    *phase += dt*(frequency);
+    if(*phase > 1.0f){
+      *phase -= 1.0f;
+    }
+    float res = 0.0f;
+    for(int wave = 0; wave < n; wave++){
+      float detune = cents*n;
+      int table_idx = (int)ceil(log2((frequency*(powf(2, detune/1200.0f)))/wavetable->base)) < wavetable->num_tables ? (int)ceil(log2(frequency*(powf(2, detune/1200.0f))/wavetable->base)): wavetable->num_tables-1;
+      table_idx = table_idx < 0 ? 0 : table_idx;
+      float* table = wavetable->tables[table_idx];
+      //float idx = *phase*(frequency) - floor(*phase*(frequency));
+      float subidx = (*(phase)/(powf(2, detune/1200.0f)))*wavetable->len;
+      float t = subidx-floor(subidx);
+      float s1 = table[(int)floor(subidx)];
+      float s2 = table[(int)ceil(subidx)];
+      res += s1+(s2-s1)*t;
+    }
+    // float t = ((float)n/sample_rate)frequency-floor(((float)n/sample_rate)frequency);
+    return res;
+}
