@@ -1,4 +1,5 @@
 #include<wavegraph.h>
+#include<filter.h>
 #include<stdlib.h>
 #include<rng.h>
 
@@ -6,6 +7,19 @@
 
 void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     switch (node.type){
+    case COMB_FILTER:
+        {
+            float alpha[n];
+            float samples[n];
+            getNodeOutput(node, n, alpha, dt);
+            getNodeOutput(node, n, samples, dt);
+            for(int i = 0; i < n; i++){
+                ((CombFilter*)node.value)->alpha = alpha[i];
+                buffer[i] = filter_comb((CombFilter*)node.value, samples[i]);
+            }
+            return;
+            break;
+        }
     case WHITE_NOISE:
         for(int i = 0; i < n; i++){
             buffer[i] = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
@@ -139,6 +153,18 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     }
 }
 
+WaveNode nodeComb(WaveNode samples, WaveNode alpha, int delay){
+    WaveNode node;
+    node.type = COMB_FILTER;
+    node.inputs = malloc(2*sizeof(WaveNode));
+    node.inputs[0] = samples;
+    node.inputs[1] = alpha;
+    node.value = malloc(sizeof(CombFilter));
+    CombFilter f = comb(delay, 1.0f);
+    *((CombFilter*)node.value) = f;
+    return node;
+}
+
 //Nodes don't copy values just the pointers
 
 WaveNode nodeWhiteNoise(){
@@ -159,6 +185,7 @@ WaveNode nodePinkNoise(){
     return node;
 }
 
+// Brown noise improper filter
 WaveNode nodeBrownNoise(){
     WaveNode node;
     node.type = BROWN_NOISE;
