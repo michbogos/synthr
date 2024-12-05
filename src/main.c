@@ -10,6 +10,7 @@
 #include <defs.h>
 #include <filter.h>
 #include <formant.h>
+#include <envelope.h>
 
 float frequency = 200.0f;
 float phase = 0.0f;
@@ -31,6 +32,7 @@ float time = 0.0f;
 WaveNode noise;
 CombFilter cmb;
 CombFilter cmb2;
+ADSREnvelope adsr;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
@@ -59,6 +61,14 @@ static void write_callback(struct SoundIoOutStream *outstream,
             break;
         
         float samples[frame_count];
+
+        time += frame_count/float_sample_rate;
+        if(((int)(time/0.1f))%2 == adsr.key_pressed){
+            //printf("%f\n", time);
+            adsr.key_pressed = 1-adsr.key_pressed;
+        }
+        float adsr_vals[frame_count];
+        gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
         // getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
         for(int i = 0; i < frame_count; i++){
@@ -68,7 +78,12 @@ static void write_callback(struct SoundIoOutStream *outstream,
             samples[i] = filter_comb(&cmb, samples[i]);
             samples[i] = filter_comb(&cmb2, samples[i]);
             samples[i] = filter(samples[i], float_sample_rate, &hpf, 3200, 1, 0);
-            // samples[i] = formantize(float_sample_rate, samples[i], form);
+            //samples[i] = formantize(float_sample_rate, samples[i], form);
+        }
+
+        for(int i = 0; i < frame_count; i++){
+            samples[i] = samples[i]*adsr_vals[i];
+            //samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
@@ -94,13 +109,17 @@ static void write_callback(struct SoundIoOutStream *outstream,
         }
 
         frames_left -= frame_count;
-        time += 0.01;
     }
 }
 
 int main(int argc, char **argv) {
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_sqr(48000, 4096, 20);
+    adsr.attack = 0.01f;
+    adsr.delay = 0.2f;
+    adsr.sustain = 0.2f;
+    adsr.release = 0.2f;
+    adsr.key_pressed = 1;
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
     f2 = nodeNumber(0.03f);
@@ -119,7 +138,7 @@ int main(int argc, char **argv) {
 
     float samples[48000*5] = {};
     getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);
-    write_wav(samples, 48000*5, 48000, 1, "test.wav");
+    // write_wav(samples, 48000*5, 48000, 1, "test.wav");
     int err;
     struct SoundIo *soundio = soundio_create();
     if (!soundio) {
