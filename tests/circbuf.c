@@ -1,4 +1,5 @@
-#include<circbuf.h>
+#include "circbuf.h"
+#include <stdio.h>
 
 circular_buffer init_circular_buffer(unsigned int item_size, unsigned int num_items){
     circular_buffer buf;
@@ -33,4 +34,22 @@ void read_circularbuffer(circular_buffer* buffer, void* ptr, unsigned int num_it
         buffer->read_ptr = (char*)buffer->read_ptr+1;
     }
     return;
+}
+
+int main(){
+    circular_buffer buffer = init_circular_buffer(sizeof(float), 8);
+    float data[8] = {1, 2, 3, 4, 5, 6, 7, 8};
+    float res[8];
+    write_circular_buffer(&buffer, data, 8);
+    read_circularbuffer(&buffer, res, 8);
+    for(int i =0 ; i < 8; i++){
+        printf("%f\n", res[i]);
+    }
+
+    write_circular_buffer(&buffer, data, 8);
+    read_circularbuffer(&buffer, res, 8);
+    for(int i =0 ; i < 8; i++){
+        printf("%f\n", res[i]);
+    }
+    return 0;
 }

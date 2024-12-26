@@ -1,6 +1,8 @@
+#pragma once
 #ifndef FILTER_H
 #define FILTER_H
 #include<defs.h>
+#include<circbuf.h>
 
 enum BiquadType{
     LOWPASS, HIGHPASS, BANDPASSQ, BANDPASS0, NOTCH, APF, PEAKEQ, LOWSHELF, HIGHSHELF
@@ -30,7 +32,7 @@ struct bq{
 typedef struct bq Biquad;
 
 typedef struct {
-    float* data;
+    circular_buffer buffer;
     int n;
     float alpha;
 } CombFilter;

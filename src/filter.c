@@ -1,7 +1,7 @@
-#include<filter.h>
 #include<defs.h>
 #include<math.h>
 #include<stdlib.h>
+#include<filter.h>
 
 Biquad biquad(enum BiquadType type){
     Biquad b;
@@ -17,7 +17,11 @@ Biquad biquad(enum BiquadType type){
 
 CombFilter comb(int n, float alpha){
   CombFilter cf;
-  cf.data = malloc(n*sizeof(n));
+  cf.buffer = init_circular_buffer(sizeof(float), n);
+  float zero = 0;
+  for(int i = 0; i < n; i++){
+    write_circular_buffer(&cf.buffer, &zero, 1);
+  }
   cf.alpha = alpha;
   cf.n = n;
   return cf;
@@ -25,11 +29,10 @@ CombFilter comb(int n, float alpha){
 
 // Reimplement later with ring buffer
 float filter_comb(CombFilter* filter, float sample){
-  float res = sample+filter->alpha*filter->data[0];
-  for(int i = 0; i < filter->n-1; i++){
-    filter->data[i] = filter->data[i+1];
-  }
-  filter->data[filter->n-1]=sample;
+  float filter_val = 0;
+  read_circularbuffer(&filter->buffer, &filter_val, 1);
+  float res = sample+filter->alpha*filter_val;
+  write_circular_buffer(&filter->buffer, &sample, 1);
   return res;
 }
 

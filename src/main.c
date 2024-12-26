@@ -8,7 +8,6 @@
 #include <wavefile.h>
 #include <wavegraph.h>
 #include <defs.h>
-#include <filter.h>
 #include <formant.h>
 #include <envelope.h>
 
@@ -68,7 +67,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
             adsr.key_pressed = 1-adsr.key_pressed;
         }
         float adsr_vals[frame_count];
-        gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
+        // gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
         // getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
         for(int i = 0; i < frame_count; i++){
@@ -81,10 +80,10 @@ static void write_callback(struct SoundIoOutStream *outstream,
             //samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
-        for(int i = 0; i < frame_count; i++){
-            samples[i] = samples[i]*adsr_vals[i];
-            //samples[i] = formantize(float_sample_rate, samples[i], form);
-        }
+        // for(int i = 0; i < frame_count; i++){
+        //     samples[i] = samples[i]*adsr_vals[i];
+        //     //samples[i] = formantize(float_sample_rate, samples[i], form);
+        // }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
             // float sample = 0.5;
