@@ -33,7 +33,7 @@ void gen_adsr_envelope(ADSREnvelope* adsr, float* output, int n, float sample_ra
         if(adsr->key_pressed && adsr->at-adsr->attack > -1.0f/sample_rate && adsr->dt-adsr->delay < -1.0f/sample_rate){
             adsr->dt += 1.0f/sample_rate;
             adsr->rt = 0.0;
-            output[i] = 1.0f-((exp(adsr->dt/adsr->delay)/10.0f)*(1.0f-adsr->sustain));
+            output[i] = 1.0f-((exp2f(adsr->dt/adsr->delay)/2.0f)*(1.0f-adsr->sustain));
         }
 
         if(adsr->key_pressed && adsr->at-adsr->attack > -1.0f/sample_rate && adsr->dt-adsr->delay > -1.0f/sample_rate){
@@ -53,7 +53,7 @@ void gen_adsr_envelope(ADSREnvelope* adsr, float* output, int n, float sample_ra
             adsr->dt = 0.0f;
             adsr->at = 0.0f;
             adsr->rt += 1.0f/sample_rate;
-            output[i] = (exp(-2*adsr->rt/adsr->release))*adsr->release_value;
+            output[i] = (exp2(-2*adsr->rt/adsr->release))*adsr->release_value;
         }
 
         if(!(adsr->key_pressed) && adsr->rt > adsr->release){

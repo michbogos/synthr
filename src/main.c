@@ -10,9 +10,11 @@
 #include <defs.h>
 #include <formant.h>
 #include <envelope.h>
+#include <delay.h>
 
 float frequency = 200.0f;
 float phase = 0.0f;
+Delay d;
 Wavetable sawtable;
 Wavetable tritable;
 WaveNode p;
@@ -32,6 +34,7 @@ WaveNode noise;
 CombFilter cmb;
 CombFilter cmb2;
 ADSREnvelope adsr;
+circular_buffer cbuf;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
@@ -62,28 +65,44 @@ static void write_callback(struct SoundIoOutStream *outstream,
         float samples[frame_count];
 
         time += frame_count/float_sample_rate;
-        if(((int)(time/0.1f))%2 == adsr.key_pressed){
+        if(((int)(time/0.5f))%2 == adsr.key_pressed){
             //printf("%f\n", time);
             adsr.key_pressed = 1-adsr.key_pressed;
         }
         float adsr_vals[frame_count];
-        // gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
-        // getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
+        gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
+        getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
+
+            for(int i = 0; i < frame_count; i++){
+                samples[i] = osc_tbl(440.0f, &phase, 1/float_sample_rate, &sawtable);
+                samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
+                samples[i] = filter(samples[i], float_sample_rate, &lpf, 3200, 1, 0);
+                samples[i] = filter_comb(&cmb, samples[i]);
+                samples[i] = filter_comb(&cmb2, samples[i]);
+                samples[i] = filter(samples[i], float_sample_rate, &hpf, 3200, 1, 0);
+                // samples[i] = formantize(float_sample_rate, samples[i], form);
+            }
+
+        // write_circular_buffer(&cbuf, samples, frame_count);
+
+        // float output[frame_count];
+
+        // read_circularbuffer(&cbuf, output, frame_count);
+
+        float output[frame_count];
 
         for(int i = 0; i < frame_count; i++){
-            samples[i] = osc_tbl(440.0f, &phase, 1/float_sample_rate, &sawtable);
-            //samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
-            samples[i] = filter(samples[i], float_sample_rate, &lpf, 3200, 1, 0);
-            samples[i] = filter_comb(&cmb, samples[i]);
-            samples[i] = filter_comb(&cmb2, samples[i]);
-            samples[i] = filter(samples[i], float_sample_rate, &hpf, 3200, 1, 0);
+            samples[i] = samples[i]*adsr_vals[i];
             //samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
-        // for(int i = 0; i < frame_count; i++){
-        //     samples[i] = samples[i]*adsr_vals[i];
-        //     //samples[i] = formantize(float_sample_rate, samples[i], form);
-        // }
+        float del[frame_count];
+
+        delay(samples, del, &d, frame_count);
+
+        for(int i =0; i < frame_count; i++){
+            samples[i] += del[i];
+        }
 
         for (int frame = 0; frame < frame_count; frame += 1) {
             // float sample = 0.5;
@@ -112,6 +131,11 @@ static void write_callback(struct SoundIoOutStream *outstream,
 }
 
 int main(int argc, char **argv) {
+    float val = -1.0f;
+    d = init_delay(24000, 0.5);
+    // for(int i = 0; i < 24000; i++){
+    //     write_circular_buffer(&cbuf, &val, 1);
+    // }
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_sqr(48000, 4096, 20);
     adsr.attack = 0.01f;
