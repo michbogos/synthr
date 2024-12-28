@@ -28,7 +28,7 @@ void write_circular_buffer(circular_buffer* buffer, void* ptr, unsigned int num_
     return;
 }
 
-void read_circularbuffer(circular_buffer* buffer, void* ptr, unsigned int num_items){
+void read_circular_buffer(circular_buffer* buffer, void* ptr, unsigned int num_items){
     for(int i = 0; i < num_items*buffer->item_size; i++){
         if(buffer->read_ptr == buffer->end){
             buffer->read_ptr = buffer->start;

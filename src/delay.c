@@ -17,5 +17,5 @@ void delay(float* input, float* output, Delay * delay, int num_items){
         float val = *(input+i)*delay->decay;
         write_circular_buffer(&delay->buffer, &val, 1);
     }
-    read_circularbuffer(&delay->buffer, output, num_items);
+    read_circular_buffer(&delay->buffer, output, num_items);
 }

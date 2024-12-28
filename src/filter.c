@@ -30,7 +30,7 @@ CombFilter comb(int n, float alpha){
 // Reimplement later with ring buffer
 float filter_comb(CombFilter* filter, float sample){
   float filter_val = 0;
-  read_circularbuffer(&filter->buffer, &filter_val, 1);
+  read_circular_buffer(&filter->buffer, &filter_val, 1);
   float res = sample+filter->alpha*filter_val;
   write_circular_buffer(&filter->buffer, &sample, 1);
   return res;
