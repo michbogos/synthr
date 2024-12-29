@@ -3,7 +3,7 @@
 #include<oscillators.h>
 #include<rng.h>
 enum NodeType{
-    WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER, COMB_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE
+    WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER, COMB_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY
 };
 
 
@@ -35,5 +35,5 @@ WaveNode nodeWhiteNoise();
 WaveNode nodePinkNoise();
 WaveNode nodeBrownNoise();
 
-
+WaveNode nodeDelay(int delay_size, float decay);
 #endif

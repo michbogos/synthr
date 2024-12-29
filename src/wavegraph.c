@@ -2,11 +2,16 @@
 #include<filter.h>
 #include<stdlib.h>
 #include<rng.h>
+#include<delay.h>
 
 #define NULL ((void*)0)
 
 void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     switch (node.type){
+    case DELAY:
+        delay(buffer, buffer, (Delay*)node.value, n);
+        return;
+        break;
     case COMB_FILTER:
         {
             float alpha[n];
@@ -292,5 +297,15 @@ WaveNode nodeDiv(WaveNode a, WaveNode b){
     node.inputs[0] = a;
     node.inputs[1] = b;
     node.value = NULL;
+    return node;
+}
+
+WaveNode nodeDelay(int delay_size, float decay){
+    WaveNode node;
+    node.type = DELAY;
+    node.inputs = NULL;
+    Delay d = init_delay(delay_size, decay);
+    node.value = malloc(sizeof(Delay));
+    *(Delay*)node.value = d;
     return node;
 }
