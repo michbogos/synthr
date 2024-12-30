@@ -38,6 +38,12 @@ typedef struct {
 } CombFilter;
 
 
+typedef struct {
+    circular_buffer buffer;
+    int n;
+    float feedback;
+} AllpassFilter;
+
 // Filter filter_lowpass(){
 //     Filter f;
 //     f.a = NULL;
@@ -51,9 +57,11 @@ typedef struct {
 
 Biquad biquad(enum BiquadType type);
 CombFilter comb(int n, float alpha);
+AllpassFilter init_all_pass(int n, float alpha);
 
 Filter filter_coeffs(float* a, float* b, int numa, int numb);
 float filter_comb(CombFilter* filter, float sample);
+float filter_allpass(AllpassFilter* filter, float sample);
 
 float filter(float input, float fs, Biquad* filter, float fc, float Q, float dBgain);
 

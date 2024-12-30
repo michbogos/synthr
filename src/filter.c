@@ -27,12 +27,32 @@ CombFilter comb(int n, float alpha){
   return cf;
 }
 
-// Reimplement later with ring buffer
+AllpassFilter init_all_pass(int n, float feedback){
+  AllpassFilter apf;
+  apf.buffer = init_circular_buffer(sizeof(float), n);
+  float zero = 0;
+  for(int i = 0; i < n; i++){
+    write_circular_buffer(&apf.buffer, &zero, 1);
+  }
+  apf.feedback = feedback;
+  apf.n = n;
+  return apf;
+}
+
 float filter_comb(CombFilter* filter, float sample){
   float filter_val = 0;
   read_circular_buffer(&filter->buffer, &filter_val, 1);
   float res = sample+filter->alpha*filter_val;
   write_circular_buffer(&filter->buffer, &sample, 1);
+  return res;
+}
+
+float filter_allpass(AllpassFilter* filter, float sample){
+  float filter_val = 0;
+  read_circular_buffer(&filter->buffer, &filter_val, 1);
+  float res = filter_val-sample;
+  float delay = sample*filter->feedback;
+  write_circular_buffer(&filter->buffer, &delay, 1);
   return res;
 }
 

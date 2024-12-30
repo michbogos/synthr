@@ -6,12 +6,26 @@
 
 #define NULL ((void*)0)
 
+// Currently won't work correctly if muliple outputs depend on one input. Do a toposort and a list of computed nodes
 void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     switch (node.type){
     case DELAY:
         delay(buffer, buffer, (Delay*)node.value, n);
         return;
         break;
+    case ALLPASS_FILTER:
+        {
+            float alpha[n];
+            float samples[n];
+            getNodeOutput(node, n, alpha, dt);
+            getNodeOutput(node, n, samples, dt);
+            for(int i = 0; i < n; i++){
+                ((AllpassFilter*)node.value)->feedback = alpha[i];
+                buffer[i] = filter_allpass((AllpassFilter*)node.value, samples[i]);
+            }
+            return;
+            break;
+        }
     case COMB_FILTER:
         {
             float alpha[n];
@@ -170,8 +184,20 @@ WaveNode nodeComb(WaveNode samples, WaveNode alpha, int delay){
     return node;
 }
 
-//Nodes don't copy values just the pointers
+WaveNode nodeAllpass(WaveNode samples, WaveNode feedback, int delay){
+    WaveNode node;
+    node.type = ALLPASS_FILTER;
+    node.inputs = malloc(2*sizeof(WaveNode));
+    node.inputs[0] = samples;
+    node.inputs[1] = feedback;
+    node.value = malloc(sizeof(AllpassFilter));
+    AllpassFilter f = init_all_pass(delay, 1.0f);
+    *((AllpassFilter*)node.value) = f;
+    return node;
+}
 
+//Nodes don't copy values just the pointers
+//Find a good way to seed random value
 WaveNode nodeWhiteNoise(){
     WaveNode node;
     node.type = WHITE_NOISE;
