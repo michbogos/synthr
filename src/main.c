@@ -11,6 +11,7 @@
 #include <formant.h>
 #include <envelope.h>
 #include <delay.h>
+#include <reverb.h>
 
 float frequency = 200.0f;
 float phase = 0.0f;
@@ -35,6 +36,7 @@ CombFilter cmb;
 CombFilter cmb2;
 ADSREnvelope adsr;
 circular_buffer cbuf;
+Reverb verb;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
@@ -65,7 +67,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         float samples[frame_count];
 
         time += frame_count/float_sample_rate;
-        if(((int)(time/0.5f))%2 == adsr.key_pressed){
+        if(((int)(time/1.0f))%2 == adsr.key_pressed){
             //printf("%f\n", time);
             adsr.key_pressed = 1-adsr.key_pressed;
         }
@@ -104,6 +106,8 @@ static void write_callback(struct SoundIoOutStream *outstream,
             samples[i] += del[i];
         }
 
+        reverb(&verb, samples, samples, frame_count, 0);
+
         for (int frame = 0; frame < frame_count; frame += 1) {
             // float sample = 0.5;
             // for(int k = 1; k <32; k++){
@@ -132,7 +136,8 @@ static void write_callback(struct SoundIoOutStream *outstream,
 
 int main(int argc, char **argv) {
     float val = -1.0f;
-    d = init_delay(24000, 0.5);
+    d = init_delay(24000, 0.3);
+    verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 44100);
     // for(int i = 0; i < 24000; i++){
     //     write_circular_buffer(&cbuf, &val, 1);
     // }
