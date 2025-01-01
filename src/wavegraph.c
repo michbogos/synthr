@@ -172,14 +172,14 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     }
 }
 
-WaveNode nodeComb(WaveNode samples, WaveNode alpha, int delay){
+WaveNode nodeComb(WaveNode samples, WaveNode alpha, WaveNode dampening, int delay){
     WaveNode node;
     node.type = COMB_FILTER;
     node.inputs = malloc(2*sizeof(WaveNode));
     node.inputs[0] = samples;
     node.inputs[1] = alpha;
     node.value = malloc(sizeof(CombFilter));
-    CombFilter f = comb(delay, 1.0f);
+    CombFilter f = comb(delay, 1.0f, 1.0f);
     *((CombFilter*)node.value) = f;
     return node;
 }

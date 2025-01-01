@@ -7,7 +7,7 @@ const float SCALE_WET = 3.0;
 const float SCALE_DAMPENING = 0.4;
 
 const float SCALE_ROOM = 0.28;
-const float OFFSET_ROOM = 0.7;
+const float OFFSET_ROOM = 0.5;
 
 const unsigned int STEREO_SPREAD = 23;
 
@@ -43,42 +43,42 @@ unsigned int adjust_length(unsigned int length, float sr){
 
 Reverb init_reverb(float dry,float wet,float gain,float width,float room_size,float dampening, float sample_rate){
     Reverb reverb;
-    reverb.combs[0] = comb(adjust_length(COMB_TUNING_L1, sample_rate), 0.6f);
-    reverb.combs[1] = comb(adjust_length(COMB_TUNING_R1, sample_rate), 0.6f);
+    reverb.combs[0] = comb(adjust_length(COMB_TUNING_L1, sample_rate), 1.0f, 1.0f);
+    reverb.combs[1] = comb(adjust_length(COMB_TUNING_R1, sample_rate), 1.0f, 1.0f);
 
-    reverb.combs[2] = comb(adjust_length(COMB_TUNING_L2, sample_rate), 0.6f);
-    reverb.combs[3] = comb(adjust_length(COMB_TUNING_R2, sample_rate), 0.6f);
+    reverb.combs[2] = comb(adjust_length(COMB_TUNING_L2, sample_rate), 1.0f, 1.0f);
+    reverb.combs[3] = comb(adjust_length(COMB_TUNING_R2, sample_rate), 1.0f, 1.0f);
 
-    reverb.combs[4] = comb(adjust_length(COMB_TUNING_L3, sample_rate), 0.6f);
-    reverb.combs[5] = comb(adjust_length(COMB_TUNING_R3, sample_rate), 0.6f);
+    reverb.combs[4] = comb(adjust_length(COMB_TUNING_L3, sample_rate), 1.0f, 1.0f);
+    reverb.combs[5] = comb(adjust_length(COMB_TUNING_R3, sample_rate), 1.0f, 1.0f);
 
-    reverb.combs[6] = comb(adjust_length(COMB_TUNING_L4, sample_rate), 0.6f);
-    reverb.combs[7] = comb(adjust_length(COMB_TUNING_R4, sample_rate), 0.6f);
+    reverb.combs[6] = comb(adjust_length(COMB_TUNING_L4, sample_rate), 1.0f, 1.0f);
+    reverb.combs[7] = comb(adjust_length(COMB_TUNING_R4, sample_rate), 1.0f, 1.0f);
 
-    reverb.combs[8] = comb(adjust_length(COMB_TUNING_L5, sample_rate), 0.6f);
-    reverb.combs[9] = comb(adjust_length(COMB_TUNING_R5, sample_rate), 0.6f);
+    reverb.combs[8] = comb(adjust_length(COMB_TUNING_L5, sample_rate), 1.0f, 1.0f);
+    reverb.combs[9] = comb(adjust_length(COMB_TUNING_R5, sample_rate), 1.0f, 1.0f);
 
-    reverb.combs[10] = comb(adjust_length(COMB_TUNING_L6, sample_rate), 0.6f);
-    reverb.combs[11] = comb(adjust_length(COMB_TUNING_R6, sample_rate), 0.6f);
+    reverb.combs[10] = comb(adjust_length(COMB_TUNING_L6, sample_rate), 1.0f, 1.0f);
+    reverb.combs[11] = comb(adjust_length(COMB_TUNING_R6, sample_rate), 1.0f, 1.0f);
 
-    reverb.combs[12] = comb(adjust_length(COMB_TUNING_L7, sample_rate), 0.6f);
-    reverb.combs[13] = comb(adjust_length(COMB_TUNING_R7, sample_rate), 0.6f);
+    reverb.combs[12] = comb(adjust_length(COMB_TUNING_L7, sample_rate), 1.0f, 1.0f);
+    reverb.combs[13] = comb(adjust_length(COMB_TUNING_R7, sample_rate), 1.0f, 1.0f);
 
-    reverb.combs[14] = comb(adjust_length(COMB_TUNING_L8, sample_rate), 0.6f);
-    reverb.combs[15] = comb(adjust_length(COMB_TUNING_R8, sample_rate), 0.6f);
+    reverb.combs[14] = comb(adjust_length(COMB_TUNING_L8, sample_rate), 1.0f, 1.0f);
+    reverb.combs[15] = comb(adjust_length(COMB_TUNING_R8, sample_rate), 1.0f, 1.0f);
 
 
-    reverb.allpass[0] = init_all_pass(adjust_length(ALLPASS_TUNING_L1, sample_rate), 0.6f);
-    reverb.allpass[1] = init_all_pass(adjust_length(ALLPASS_TUNING_R1, sample_rate), 0.6f);
+    reverb.allpass[0] = init_all_pass(adjust_length(ALLPASS_TUNING_L1, sample_rate), 0.5f);
+    reverb.allpass[1] = init_all_pass(adjust_length(ALLPASS_TUNING_R1, sample_rate), 0.5f);
 
-    reverb.allpass[2] = init_all_pass(adjust_length(ALLPASS_TUNING_L2, sample_rate), 0.6f);
-    reverb.allpass[3] = init_all_pass(adjust_length(ALLPASS_TUNING_R2, sample_rate), 0.6f);
+    reverb.allpass[2] = init_all_pass(adjust_length(ALLPASS_TUNING_L2, sample_rate), 0.5f);
+    reverb.allpass[3] = init_all_pass(adjust_length(ALLPASS_TUNING_R2, sample_rate), 0.5f);
 
-    reverb.allpass[4] = init_all_pass(adjust_length(ALLPASS_TUNING_L3, sample_rate), 0.6f);
-    reverb.allpass[5] = init_all_pass(adjust_length(ALLPASS_TUNING_R3, sample_rate), 0.6f);
+    reverb.allpass[4] = init_all_pass(adjust_length(ALLPASS_TUNING_L3, sample_rate), 0.5f);
+    reverb.allpass[5] = init_all_pass(adjust_length(ALLPASS_TUNING_R3, sample_rate), 0.5f);
 
-    reverb.allpass[6] = init_all_pass(adjust_length(ALLPASS_TUNING_L4, sample_rate), 0.6f);
-    reverb.allpass[7] = init_all_pass(adjust_length(ALLPASS_TUNING_R4, sample_rate), 0.6f);
+    reverb.allpass[6] = init_all_pass(adjust_length(ALLPASS_TUNING_L4, sample_rate), 0.5f);
+    reverb.allpass[7] = init_all_pass(adjust_length(ALLPASS_TUNING_R4, sample_rate), 0.5f);
 
     reverb.dampening = dampening;
     reverb.dry = dry;
@@ -103,7 +103,7 @@ void reverb(Reverb* r, float* input, float* output, int n, int stereo){
                 outl += filter_allpass(r->allpass+2*allpass+0, outl);
                 outr += filter_allpass(r->allpass+2*allpass+1, outr);
             }
-            output[i] = (outl+outr)/2.0f;
+            output[i] = ((outl+outr)/2)*4;
         }
     }
 }

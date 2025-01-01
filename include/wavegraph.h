@@ -29,7 +29,7 @@ WaveNode nodeSub(WaveNode a, WaveNode b);
 WaveNode nodeMul(WaveNode a, WaveNode b);
 WaveNode nodeDiv(WaveNode a, WaveNode b);
 
-WaveNode nodeComb(WaveNode samples, WaveNode alpha, int delay);
+WaveNode nodeAllpass(WaveNode samples, WaveNode feedback, int delay);
 WaveNode nodeAllpass(WaveNode samples, WaveNode alpha, int delay);
 
 WaveNode nodeWhiteNoise();

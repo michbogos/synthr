@@ -76,7 +76,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
             for(int i = 0; i < frame_count; i++){
-                samples[i] = osc_tbl(440.0f, &phase, 1/float_sample_rate, &sawtable);
+                samples[i] = osc_tbl(110.0f, &phase, 1/float_sample_rate, &sawtable);
                 samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
                 samples[i] = filter(samples[i], float_sample_rate, &lpf, 3200, 1, 0);
                 samples[i] = filter_comb(&cmb, samples[i]);
@@ -98,13 +98,13 @@ static void write_callback(struct SoundIoOutStream *outstream,
             //samples[i] = formantize(float_sample_rate, samples[i], form);
         }
 
-        float del[frame_count];
+        // float del[frame_count];
 
-        delay(samples, del, &d, frame_count);
+        // delay(samples, del, &d, frame_count);
 
-        for(int i =0; i < frame_count; i++){
-            samples[i] += del[i];
-        }
+        // for(int i =0; i < frame_count; i++){
+        //     samples[i] += del[i];
+        // }
 
         reverb(&verb, samples, samples, frame_count, 0);
 
@@ -137,16 +137,16 @@ static void write_callback(struct SoundIoOutStream *outstream,
 int main(int argc, char **argv) {
     float val = -1.0f;
     d = init_delay(24000, 0.3);
-    verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 44100);
+    verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 48000);
     // for(int i = 0; i < 24000; i++){
     //     write_circular_buffer(&cbuf, &val, 1);
     // }
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_sqr(48000, 4096, 20);
-    adsr.attack = 0.01f;
+    adsr.attack = 0.1f;
     adsr.delay = 0.2f;
     adsr.sustain = 0.2f;
-    adsr.release = 0.2f;
+    adsr.release = 0.01f;
     adsr.key_pressed = 1;
     p = nodeNumber(0.0f);
     p2 = nodeNumber(0.0f);
@@ -160,8 +160,8 @@ int main(int argc, char **argv) {
     hpf = biquad(LOWPASS);
     form = make_formant(FORMANT_TABLE[0]);
     noise = nodeBrownNoise();
-    cmb = comb(16, 1.0f);
-    cmb2 = comb(8, 1.0f);
+    cmb = comb(16, 1.0f, 1.0f);
+    cmb2 = comb(8, 1.0f, 1.0f);
 
 
     float samples[48000*5] = {};

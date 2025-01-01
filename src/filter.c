@@ -15,7 +15,7 @@ Biquad biquad(enum BiquadType type){
     return b;
 }
 
-CombFilter comb(int n, float alpha){
+CombFilter comb(int n, float alpha, float dampening){
   CombFilter cf;
   cf.buffer = init_circular_buffer(sizeof(float), n);
   float zero = 0;
@@ -24,6 +24,8 @@ CombFilter comb(int n, float alpha){
   }
   cf.alpha = alpha;
   cf.n = n;
+  cf.filter_state = 0.0f;
+  cf.dampening = dampening;
   return cf;
 }
 
@@ -42,9 +44,10 @@ AllpassFilter init_all_pass(int n, float feedback){
 float filter_comb(CombFilter* filter, float sample){
   float filter_val = 0;
   read_circular_buffer(&filter->buffer, &filter_val, 1);
-  float res = sample+filter->alpha*filter_val;
+  filter->filter_state = (filter_val*(1-filter->dampening)+filter->filter_state*filter->dampening);
+  float output = sample+filter->filter_state*filter->alpha;
   write_circular_buffer(&filter->buffer, &sample, 1);
-  return res;
+  return filter_val;
 }
 
 float filter_allpass(AllpassFilter* filter, float sample){
