@@ -10,6 +10,9 @@ enum NodeType{
 struct node{
     enum NodeType type;
     struct node* inputs;
+    unsigned int num_inputs;
+    float* cache;
+    char computed;
     //WaveNode* outputs;
     void* value;
 };
