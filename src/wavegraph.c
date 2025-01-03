@@ -23,31 +23,24 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
     switch (node.type){
     case DELAY:
         //Incorrect
-        delay(buffer, buffer, (Delay*)node.value, n);
-        node.computed = 1;
+        {
+            float samples[n];
+            delay(samples, buffer, (Delay*)node.value, n);
+            node.computed = 1;
+        }
         return;
         break;
     case ALLPASS_FILTER:
         {
-            if(node.cache == NULL){
-                node.cache = (float*)malloc(sizeof(float)*n);
+            float alpha[n];
+            float samples[n];
+            getNodeOutput(node, n, alpha, dt);
+            getNodeOutput(node, n, samples, dt);
+            for(int i = 0; i < n; i++){
+                ((AllpassFilter*)node.value)->feedback = alpha[i];
+                buffer[i] = filter_allpass((AllpassFilter*)node.value, samples[i]);
             }
-            if(node.computed){
-                for(int i = 0; i < n; i++){
-                    node.cache[i] = buffer[i];
-                }
-            }
-            else{
-                float alpha[n];
-                float samples[n];
-                getNodeOutput(node, n, alpha, dt);
-                getNodeOutput(node, n, samples, dt);
-                for(int i = 0; i < n; i++){
-                    ((AllpassFilter*)node.value)->feedback = alpha[i];
-                    buffer[i] = filter_allpass((AllpassFilter*)node.value, samples[i]);
-                }
-                node.computed = 1;
-            }
+            node.computed = 1;
             return;
             break;
         }

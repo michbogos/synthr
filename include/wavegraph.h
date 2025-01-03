@@ -39,5 +39,5 @@ WaveNode nodeWhiteNoise();
 WaveNode nodePinkNoise();
 WaveNode nodeBrownNoise();
 
-WaveNode nodeDelay(int delay_size, float decay);
+WaveNode nodeDelay(WaveNode samples, int delay_size, float decay);
 #endif
