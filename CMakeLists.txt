@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 
 project(synthr)
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c89 -O3 -Wall -Wextra")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wall -Wextra")
 
 include(ExternalProject)
 include(FetchContent)
@@ -17,17 +17,24 @@ FetchContent_Populate(soundio)
 
 add_subdirectory(${soundio_SOURCE_DIR})
 
-file(GLOB C_FILES "${CMAKE_SOURCE_DIR}/src/*.c")
-file(GLOB INCLUDE_FILES "${CMAKE_SOURCE_DIR}/include/*.h")
 
-list(REMOVE_ITEM C_FILES "${CMAKE_SOURCE_DIR}/src/main.c")
+
+file(GLOB C_FILES "src/*.c")
+file(GLOB INCLUDE_FILES "./include/*.h")
+
+
+
+list(FILTER C_FILES EXCLUDE REGEX "main\\.c")
+
+message(FILES="${C_FILES}")
 
 add_library(synthr ${C_FILES})
+target_link_libraries(synthr m)
 target_include_directories(synthr PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_sources(synthr PUBLIC ${C_FILES})
 set_target_properties(synthr PROPERTIES LINKER_LANGUAGE C)
 
-list(APPEND C_FILES "${CMAKE_SOURCE_DIR}/src/main.c")
+list(APPEND C_FILES "./src/main.c")
 
 add_executable(program ${C_FILES})
 target_include_directories(program PUBLIC ${CMAKE_SOURCE_DIR}/include)
