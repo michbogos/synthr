@@ -5,6 +5,10 @@
 #include <stdio.h>
 #define GL_SILENCE_DEPRECATION
 #include <GLFW/glfw3.h>
+extern "C"{
+#include <wavegraph.h>
+}
+#include "render_wavenode.h"
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -15,6 +19,7 @@ static void glfw_error_callback(int error, const char* description)
 // Main code
 int main(int, char**)
 {
+    WaveNode num = nodeNumber(1.0f);
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
@@ -92,27 +97,12 @@ int main(int, char**)
         ImGui::NewFrame();
         // Rendering
 
-        ImGui::SetNextWindowSize(io.DisplaySize);
-        ImGui::SetNextWindowPos({0, 0});
         ImGui::Begin("simple node editor");
 
         ImNodes::BeginNodeEditor();
-        ImNodes::BeginNode(1);
 
-        ImNodes::BeginNodeTitleBar();
-        ImGui::TextUnformatted("simple node :)");
-        ImNodes::EndNodeTitleBar();
+        render_wavenode(num);
 
-        ImNodes::BeginInputAttribute(2);
-        ImGui::Text("input");
-        ImNodes::EndInputAttribute();
-
-        ImNodes::BeginOutputAttribute(3);
-        ImGui::Indent(40);
-        ImGui::Text("output");
-        ImNodes::EndOutputAttribute();
-
-        ImNodes::EndNode();
         ImNodes::EndNodeEditor();
 
         ImGui::End();

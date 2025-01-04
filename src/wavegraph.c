@@ -5,6 +5,7 @@
 #include<delay.h>
 
 #define NULL ((void*)0)
+int COUNTER = -1;
 
 unsigned int countNodes(WaveNode node){
     int count = 1;
@@ -223,6 +224,7 @@ WaveNode nodeComb(WaveNode samples, WaveNode alpha, WaveNode dampening, int dela
     node.computed = 0;
     node.cache = NULL;
     CombFilter f = comb(delay, 1.0f, 1.0f);
+    node.id = COUNTER++;
     *((CombFilter*)node.value) = f;
     return node;
 }
@@ -239,6 +241,7 @@ WaveNode nodeAllpass(WaveNode samples, WaveNode feedback, int delay){
     node.cache = NULL;
     AllpassFilter f = init_all_pass(delay, 1.0f);
     *((AllpassFilter*)node.value) = f;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -253,6 +256,7 @@ WaveNode nodeWhiteNoise(){
     node.num_inputs = 0;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -265,6 +269,7 @@ WaveNode nodePinkNoise(){
     node.num_inputs = 0;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -278,6 +283,7 @@ WaveNode nodeBrownNoise(){
     node.num_inputs = 0;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -291,6 +297,7 @@ WaveNode nodeNumber(float number){
     node.num_inputs = 0;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -304,6 +311,7 @@ WaveNode nodeWavetable(WaveNode frequency, WaveNode phase, Wavetable* table){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -317,6 +325,7 @@ WaveNode nodeSin(WaveNode frequency, WaveNode phase){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -330,6 +339,7 @@ WaveNode nodeTri(WaveNode frequency, WaveNode phase){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -343,6 +353,7 @@ WaveNode nodeSqr(WaveNode frequency, WaveNode phase){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -356,6 +367,7 @@ WaveNode nodeSaw(WaveNode frequency, WaveNode phase){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -369,6 +381,7 @@ WaveNode nodeAdd(WaveNode a, WaveNode b){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -382,6 +395,7 @@ WaveNode nodeSub(WaveNode a, WaveNode b){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -395,6 +409,7 @@ WaveNode nodeMul(WaveNode a, WaveNode b){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -408,6 +423,7 @@ WaveNode nodeDiv(WaveNode a, WaveNode b){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }
 
@@ -422,5 +438,6 @@ WaveNode nodeDelay(WaveNode samples, int delay_size, float decay){
     node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
     return node;
 }

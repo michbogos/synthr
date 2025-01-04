@@ -13,6 +13,7 @@ struct node{
     unsigned int num_inputs;
     float* cache;
     char computed;
+    int id;
     //WaveNode* outputs;
     void* value;
 };
