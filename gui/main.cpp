@@ -3,6 +3,8 @@
 #include "imgui/backends/imgui_impl_opengl3.h"
 #include "imnodes.h"
 #include <stdio.h>
+#include <vector>
+#include <iostream>
 #define GL_SILENCE_DEPRECATION
 #include <GLFW/glfw3.h>
 extern "C"{
@@ -19,7 +21,13 @@ static void glfw_error_callback(int error, const char* description)
 // Main code
 int main(int, char**)
 {
-    WaveNode num = nodeNumber(1.0f);
+    std::vector<WaveNode> nodes;
+    std::vector<std::pair<int, int>> links;
+    for(int i = 0; i < 10; i++){
+        nodes.push_back(nodeNumber(i));
+    }
+
+    nodes.push_back(nodeAdd({}, {}));
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
@@ -80,7 +88,11 @@ int main(int, char**)
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     ImNodes::CreateContext();
-    ImNodes::SetNodeGridSpacePos(1, ImVec2(200.0f, 200.0f)); 
+    ImNodes::SetNodeGridSpacePos(1, ImVec2(200.0f, 200.0f));
+
+    int in;
+    int out;
+    int link_id;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -89,6 +101,17 @@ int main(int, char**)
         {
             ImGui_ImplGlfw_Sleep(10);
             continue;
+        }
+
+        if(ImNodes::IsLinkCreated(&out, &in)){
+            links.push_back({out, in});
+            WaveNode* into = &nodes[in/1024+1];
+            assert(into->type == ADD);
+            into->inputs[in%1024-1] = nodes[out/1024+1];
+        }
+
+        if(ImNodes::IsLinkDestroyed(&link_id)){
+            links.erase(links.begin()+link_id);
         }
 
         // Start the Dear ImGui frame
@@ -101,7 +124,13 @@ int main(int, char**)
 
         ImNodes::BeginNodeEditor();
 
-        render_wavenode(num);
+        for(int i = 0; i < links.size(); i++){
+            ImNodes::Link(i, links[i].first, links[i].second);
+        }
+
+        for(auto node : nodes){
+            render_wavenode(node);
+        }
 
         ImNodes::EndNodeEditor();
 
