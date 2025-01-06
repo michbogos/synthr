@@ -3,7 +3,7 @@ C = gcc
 #CXX = clang++
 
 EXE = program
-IMGUI_DIR = ./imgui
+IMGUI_DIR = .
 SOURCES = $(IMGUI_DIR)/imgui.cpp main.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp 
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 SOURCES += $(wildcard *.cpp)
