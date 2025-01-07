@@ -5,7 +5,7 @@
 #include<delay.h>
 
 #define NULL ((void*)0)
-int COUNTER = -1;
+int COUNTER = 0;
 
 unsigned int countNodes(WaveNode node){
     int count = 1;
@@ -88,11 +88,10 @@ void getNodeOutput(WaveNode node, int n, float* buffer, float dt){
         break;
     case NUMBER:
         for(int i = 0; i < n; i++){
-            buffer[i] = *(float*)(node.value);
+            buffer[i] = ((float*)(node.value))[0];
         }
-        node.computed = 1;
-        return;
         break;
+        return;
     
     case WAVETABLE:
         {

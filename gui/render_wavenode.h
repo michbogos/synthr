@@ -19,7 +19,7 @@ void render_internals(WaveNode node){
         case WHITE_NOISE:
         case BROWN_NOISE:
             ImGui::PushItemWidth(150);
-            ImGui::InputFloat("Number:", (float*)node.value);
+            ImGui::InputFloat("Number:", ((float*)node.value));
             break;
         default:
             break;

@@ -2,6 +2,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imnodes.h"
+#include <implot.h>
 #include <stdio.h>
 #include <vector>
 #include <iostream>
@@ -23,8 +24,8 @@ int main(int, char**)
 {
     std::vector<WaveNode> nodes;
     std::vector<std::pair<int, int>> links;
-    for(int i = 0; i < 10; i++){
-        nodes.push_back(nodeNumber(i));
+    for(int i = 0; i < 2; i++){
+        nodes.push_back(nodeNumber(i+1));
     }
 
     nodes.push_back(nodeAdd({}, {}));
@@ -69,6 +70,7 @@ int main(int, char**)
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImPlot::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -93,6 +95,7 @@ int main(int, char**)
     int in;
     int out;
     int link_id;
+    float buffer[1024];
 
     while (!glfwWindowShouldClose(window))
     {
@@ -105,9 +108,7 @@ int main(int, char**)
 
         if(ImNodes::IsLinkCreated(&out, &in)){
             links.push_back({out, in});
-            WaveNode* into = &nodes[in/1024+1];
-            assert(into->type == ADD);
-            into->inputs[in%1024-1] = nodes[out/1024+1];
+            nodes[in/1024].inputs[in%1024] = nodes[out/1024];
         }
 
         if(ImNodes::IsLinkDestroyed(&link_id)){
@@ -136,6 +137,20 @@ int main(int, char**)
 
         ImGui::End();
 
+        ImGui::Begin("Plot");
+
+        if(ImNodes::NumSelectedNodes() == 1){
+            if (ImPlot::BeginPlot("My Plot")){
+                int selected_nodes[ImNodes::NumSelectedNodes()];
+                ImNodes::GetSelectedNodes(selected_nodes);
+                getNodeOutput(nodes[selected_nodes[0]], 1024, buffer, 1.0/48000.0);
+                ImPlot::PlotLine("Node Output", buffer, 1024);
+            ImPlot::EndPlot();
+            }
+        }
+
+        ImGui::End();
+
         ImGui::Render();
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -153,8 +168,8 @@ int main(int, char**)
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
+    ImPlot::DestroyContext();
     ImGui::DestroyContext();
-
     glfwDestroyWindow(window);
     glfwTerminate();
 
