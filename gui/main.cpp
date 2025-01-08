@@ -28,7 +28,12 @@ int main(int, char**)
         nodes.push_back(nodeNumber(i+1));
     }
 
-    nodes.push_back(nodeAdd({}, {}));
+    Wavetable sawtable = wtbl_saw(48100, 4096, 10);
+
+    nodes.push_back(nodeWavetable({}, {}, &sawtable));
+
+    nodes.push_back(nodeWhiteNoise());
+
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;

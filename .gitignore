@@ -16,3 +16,4 @@ libsoundio
 .vscode
 *.o
 !gui/Makefile
+gui/imgui.ini
