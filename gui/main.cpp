@@ -13,6 +13,9 @@ extern "C"{
 }
 #include "render_wavenode.h"
 
+int ZERO = 0;
+WaveNode DEFALUT_NODE = {.type=NUMBER, .value=&ZERO};
+
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -28,9 +31,11 @@ int main(int, char**)
         nodes.push_back(nodeNumber(i+1));
     }
 
+    nodes.push_back(nodeAdd(DEFALUT_NODE, DEFALUT_NODE));
+
     Wavetable sawtable = wtbl_saw(48100, 4096, 10);
 
-    nodes.push_back(nodeWavetable({}, {}, &sawtable));
+    nodes.push_back(nodeWavetable(DEFALUT_NODE, DEFALUT_NODE, &sawtable));
 
     nodes.push_back(nodeWhiteNoise());
 
