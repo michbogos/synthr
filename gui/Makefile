@@ -3,16 +3,18 @@ C = gcc
 #CXX = clang++
 
 EXE = program
-IMGUI_DIR = 
+IMGUI_DIR = imgui
 # SOURCES = $(IMGUI_DIR)/imgui.cpp main.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp 
 # SOURCES += $(IMGUI_DIR)imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
+IMGUI_FILES := $(wildcard $(IMGUI_DIR)/*.cpp)
 SOURCES += $(wildcard *.cpp)
 SOURCES += main.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
+OBJS += $(patsubst $(IMGUI_DIR)/%.cpp,%.o,$(IMGUI_FILES))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I../include/ -I . -I implot
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I../include/ -I . -I imgui
 CXXFLAGS += -g -Wall -Wformat
 LIBS = 
 
