@@ -4,17 +4,20 @@ C = gcc
 
 EXE = program
 IMGUI_DIR = imgui
+RT_MIDI_DIR = rtmidi
 # SOURCES = $(IMGUI_DIR)/imgui.cpp main.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp 
 # SOURCES += $(IMGUI_DIR)imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 IMGUI_FILES := $(wildcard $(IMGUI_DIR)/*.cpp)
+RT_MIDI_FILES := $(wildcard $(RT_MIDI_DIR)/*.cpp)
 SOURCES += $(wildcard *.cpp)
 SOURCES += main.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 OBJS += $(patsubst $(IMGUI_DIR)/%.cpp,%.o,$(IMGUI_FILES))
+OBJS += $(patsubst $(RT_MIDI_DIR)/%.cpp,%.o,$(RT_MIDI_FILES))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I../include/ -I . -I imgui
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I../include/ -I . -I imgui -I rtmidi
 CXXFLAGS += -g -Wall -Wformat
 LIBS = 
 
@@ -65,6 +68,9 @@ endif
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:$(IMGUI_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+%.o:$(RT_MIDI_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:$(IMGUI_DIR)/backends/%.cpp
