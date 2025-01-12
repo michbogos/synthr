@@ -14,8 +14,8 @@ extern "C"{
 }
 #include "render_wavenode.h"
 
-int ZERO = 0;
-WaveNode DEFALUT_NODE = {.type=NUMBER, .value=&ZERO};
+float ZERO = 0;
+//WaveNode DEFALUT_NODE = {.type=NUMBER, .value=&ZERO, .id=-1};
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -32,11 +32,11 @@ int main(int, char**)
         nodes.push_back(nodeNumber(i+1));
     }
 
-    nodes.push_back(nodeAdd(DEFALUT_NODE, DEFALUT_NODE));
+    nodes.push_back(nodeAdd(-1, -1));
 
     Wavetable sawtable = wtbl_saw(48100, 4096, 10);
 
-    nodes.push_back(nodeWavetable(DEFALUT_NODE, DEFALUT_NODE, &sawtable));
+    nodes.push_back(nodeWavetable(-1, -1, &sawtable));
 
     nodes.push_back(nodeWhiteNoise());
 
@@ -119,7 +119,7 @@ int main(int, char**)
 
         if(ImNodes::IsLinkCreated(&out, &in)){
             links.push_back({out, in});
-            nodes[in/1024].inputs[in%1024] = nodes[out/1024];
+            nodes[in/1024].inputs[in%1024] = out/1024;
         }
 
         if(ImNodes::IsLinkDestroyed(&link_id)){
@@ -154,7 +154,7 @@ int main(int, char**)
             if (ImPlot::BeginPlot("My Plot")){
                 int selected_nodes[ImNodes::NumSelectedNodes()];
                 ImNodes::GetSelectedNodes(selected_nodes);
-                getNodeOutput(nodes[selected_nodes[0]], 1024, buffer, 1.0/48000.0);
+                getNodeOutput(selected_nodes[0], nodes.data(), nodes.size(), 1024, buffer, 1.0/48000.0);
                 ImPlot::PlotLine("Node Output", buffer, 1024);
             ImPlot::EndPlot();
             }

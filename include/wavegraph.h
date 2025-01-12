@@ -9,7 +9,7 @@ enum NodeType{
 
 struct node{
     enum NodeType type;
-    struct node* inputs;
+    int* inputs;
     unsigned int num_inputs;
     float* cache;
     char computed;
@@ -20,25 +20,25 @@ struct node{
 
 typedef struct node WaveNode;
 
-void getNodeOutput(WaveNode node, int n, float* buffer, float dt);
+void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt);
 
 WaveNode nodeNumber(float number);
-WaveNode nodeWavetable(WaveNode frequency, WaveNode phase, Wavetable* table);
-WaveNode nodeSin(WaveNode frequency, WaveNode phase);
-WaveNode nodeTri(WaveNode frequency, WaveNode phase);
-WaveNode nodeSqr(WaveNode frequency, WaveNode phase);
-WaveNode nodeSaw(WaveNode frequency, WaveNode phase);
-WaveNode nodeAdd(WaveNode a, WaveNode b);
-WaveNode nodeSub(WaveNode a, WaveNode b);
-WaveNode nodeMul(WaveNode a, WaveNode b);
-WaveNode nodeDiv(WaveNode a, WaveNode b);
+WaveNode nodeWavetable(int frequency, int phase, Wavetable* table);
+WaveNode nodeSin(int frequency, int phase);
+WaveNode nodeTri(int frequency, int phase);
+WaveNode nodeSqr(int frequency, int phase);
+WaveNode nodeSaw(int frequency, int phase);
+WaveNode nodeAdd(int a, int b);
+WaveNode nodeSub(int a, int b);
+WaveNode nodeMul(int a, int b);
+WaveNode nodeDiv(int a, int b);
 
-WaveNode nodeAllpass(WaveNode samples, WaveNode feedback, int delay);
-WaveNode nodeAllpass(WaveNode samples, WaveNode alpha, int delay);
+WaveNode nodeAllpass(int samples, int feedback, int delay);
+WaveNode nodeAllpass(int samples, int alpha, int delay);
 
 WaveNode nodeWhiteNoise();
 WaveNode nodePinkNoise();
 WaveNode nodeBrownNoise();
 
-WaveNode nodeDelay(WaveNode samples, int delay_size, float decay);
+WaveNode nodeDelay(int samples, int delay_size, float decay);
 #endif

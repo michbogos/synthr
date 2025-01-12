@@ -13,6 +13,8 @@
 #include <delay.h>
 #include <reverb.h>
 
+WaveNode nodes[16];
+
 float frequency = 200.0f;
 float phase = 0.0f;
 Delay d;
@@ -73,7 +75,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         }
         float adsr_vals[frame_count];
         gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
-        getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
+        // getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
             for(int i = 0; i < frame_count; i++){
                 samples[i] = osc_tbl(110.0f, &phase, 1/float_sample_rate, &sawtable);
@@ -138,6 +140,7 @@ int main(int argc, char **argv) {
     float val = -1.0f;
     d = init_delay(24000, 0.3);
     verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 48000);
+
     // for(int i = 0; i < 24000; i++){
     //     write_circular_buffer(&cbuf, &val, 1);
     // }
@@ -148,14 +151,14 @@ int main(int argc, char **argv) {
     adsr.sustain = 0.2f;
     adsr.release = 0.01f;
     adsr.key_pressed = 1;
-    p = nodeNumber(0.0f);
-    p2 = nodeNumber(0.0f);
-    f2 = nodeNumber(0.03f);
-    f = nodeNumber(440.0f);
-    osc1 = nodeWavetable(f, p, &sawtable);
-    s = nodeSin(f2, p2);
-    WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
-    mul = nodeMul(osc1, add);
+    nodes[0] = nodeNumber(0.0f);
+    nodes[1] = nodeNumber(0.0f);
+    nodes[2] = nodeNumber(0.03f);
+    nodes[3] = nodeNumber(440.0f);
+    nodes[4] = nodeWavetable(3, 0, &sawtable);
+    nodes[5] = nodeSin(2, 1);
+    // WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
+    // mul = nodeMul(osc1, add);
     lpf = biquad(LOWPASS);
     hpf = biquad(LOWPASS);
     form = make_formant(FORMANT_TABLE[0]);
@@ -164,8 +167,8 @@ int main(int argc, char **argv) {
     cmb2 = comb(8, 1.0f, 1.0f);
 
 
-    float samples[48000*5] = {};
-    getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);
+    // float samples[48000*5] = {};
+    // getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);
     // write_wav(samples, 48000*5, 48000, 1, "test.wav");
     int err;
     struct SoundIo *soundio = soundio_create();
