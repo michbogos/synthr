@@ -14,7 +14,6 @@ extern "C"{
 }
 #include "render_wavenode.h"
 
-float ZERO = 0;
 //WaveNode DEFALUT_NODE = {.type=NUMBER, .value=&ZERO, .id=-1};
 
 
@@ -36,7 +35,7 @@ int main(int, char**)
 
     Wavetable sawtable = wtbl_saw(48100, 4096, 10);
 
-    nodes.push_back(nodeWavetable(-1, -1, &sawtable));
+    nodes.push_back(nodeWavetable(-1, &sawtable));
 
     nodes.push_back(nodeWhiteNoise());
 

@@ -16,6 +16,7 @@ struct node{
     int id;
     //WaveNode* outputs;
     void* value;
+    void* value2;
 };
 
 typedef struct node WaveNode;
@@ -23,7 +24,7 @@ typedef struct node WaveNode;
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt);
 
 WaveNode nodeNumber(float number);
-WaveNode nodeWavetable(int frequency, int phase, Wavetable* table);
+WaveNode nodeWavetable(int frequency, Wavetable* table);
 WaveNode nodeSin(int frequency, int phase);
 WaveNode nodeTri(int frequency, int phase);
 WaveNode nodeSqr(int frequency, int phase);

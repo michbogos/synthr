@@ -6,6 +6,7 @@
 
 #define NULL ((void*)0)
 int COUNTER = 0;
+float ZERO = 0.0f;
 
 // unsigned int countNodes(WaveNode node, ){
 //     int count = 1;
@@ -21,12 +22,12 @@ int COUNTER = 0;
 
 // Currently won't work correctly if muliple outputs depend on one input. Do a toposort and a list of computed nodes
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt){
-    WaveNode node = nodes[node_idx];
-    if(node.id == -1){
-        for(int i = 0; i < n; i++){
-            buffer[i] = 0.0f;
-        }
-        return;
+    WaveNode node;
+    if(node_idx < 0 || node_idx >= num_nodes){
+        node = (WaveNode){.type=NUMBER, .value=&ZERO, .id=-1};
+    }
+    else{
+        node = nodes[node_idx];
     }
     switch (node.type){
     case DELAY:
@@ -105,7 +106,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             float frequency_buffer[n];
             getNodeOutput(node.inputs[0], nodes, num_nodes, n, frequency_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i] = osc_tbl(frequency_buffer[i], (float*)nodes[node.inputs[1]].value, dt, (Wavetable*)node.value);
+                buffer[i] = osc_tbl(frequency_buffer[i], (float*)node.value2, dt, (Wavetable*)node.value);
             }
             node.computed = 1;
             return;
@@ -307,14 +308,14 @@ WaveNode nodeNumber(float number){
     return node;
 }
 
-WaveNode nodeWavetable(int frequency, int phase, Wavetable* table){
+WaveNode nodeWavetable(int frequency, Wavetable* table){
     WaveNode node;
     node.type = WAVETABLE;
-    node.inputs = (int*)malloc(2*sizeof(int));
+    node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
-    node.inputs[1] = phase;
     node.value = table;
-    node.num_inputs = 2;
+    node.value2 = calloc(1,sizeof(float));
+    node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;

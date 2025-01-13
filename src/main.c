@@ -155,7 +155,7 @@ int main(int argc, char **argv) {
     nodes[1] = nodeNumber(0.0f);
     nodes[2] = nodeNumber(0.03f);
     nodes[3] = nodeNumber(440.0f);
-    nodes[4] = nodeWavetable(3, 0, &sawtable);
+    nodes[4] = nodeWavetable(3, &sawtable);
     nodes[5] = nodeSin(2, 1);
     // WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     // mul = nodeMul(osc1, add);
