@@ -16,7 +16,7 @@ struct node{
     int id;
     //WaveNode* outputs;
     void* value;
-    void* value2;
+    unsigned int value_len; // Need to implement for all nodes
 };
 
 typedef struct node WaveNode;

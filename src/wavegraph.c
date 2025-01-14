@@ -106,7 +106,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             float frequency_buffer[n];
             getNodeOutput(node.inputs[0], nodes, num_nodes, n, frequency_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i] = osc_tbl(frequency_buffer[i], (float*)node.value2, dt, (Wavetable*)node.value);
+                buffer[i] = osc_tbl(frequency_buffer[i], (float*)((char*)node.value+sizeof(Wavetable)), dt, (Wavetable*)node.value);
             }
             node.computed = 1;
             return;
@@ -313,8 +313,9 @@ WaveNode nodeWavetable(int frequency, Wavetable* table){
     node.type = WAVETABLE;
     node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
-    node.value = table;
-    node.value2 = calloc(1,sizeof(float));
+    node.value = malloc(sizeof(Wavetable)+sizeof(float));
+    ((Wavetable*)node.value)[0] = *table;
+    ((float*)(((char*)node.value)+sizeof(Wavetable)))[0] = 0;
     node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
