@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<rng.h>
 #include<delay.h>
+#include<string.h>
 
 #define NULL ((void*)0)
 int COUNTER = 0;
@@ -19,6 +20,13 @@ float ZERO = 0.0f;
 // void toposort(WaveNode node, WaveNode* res){
 //     WaveNode* res
 // }
+
+WaveNode copyNode(WaveNode* node){
+    WaveNode res = *node;
+    res.value = malloc(node->value_len);
+    memcpy(res.value, node->value, node->value_len);
+    return res;
+}
 
 // Currently won't work correctly if muliple outputs depend on one input. Do a toposort and a list of computed nodes
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt){
