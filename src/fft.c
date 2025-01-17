@@ -1,10 +1,6 @@
 #include<fft.h>
 
 void fft(complex* x, int N, int invert){
-    int log_n = 0;
-    while((1<<log_n) < N){
-        log_n ++;
-    }
     for (int i = 1, j = 0; i < N; i++) {
         int bit = N >> 1;
         for (; j & bit; bit >>= 1)
