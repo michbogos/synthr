@@ -107,6 +107,7 @@ int main(int, char**)
     int in;
     int out;
     int link_id;
+    int selected_links[1024];
     float buffer[1024];
 
     while (!glfwWindowShouldClose(window))
@@ -118,15 +119,6 @@ int main(int, char**)
             continue;
         }
 
-        if(ImNodes::IsLinkCreated(&out, &in)){
-            links.push_back({out, in});
-            nodes[in/1024].inputs[in%1024] = out/1024;
-        }
-
-        if(ImNodes::IsLinkDestroyed(&link_id)){
-            links.erase(links.begin()+link_id);
-        }
-
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -134,6 +126,11 @@ int main(int, char**)
         // Rendering
 
         ImGui::Begin("simple node editor");
+
+        if(ImNodes::IsLinkCreated(&out, &in)){
+            links.push_back({out, in});
+            nodes[in/1024].inputs[in%1024] = out/1024;
+        }
 
         ImNodes::BeginNodeEditor();
 
@@ -146,6 +143,20 @@ int main(int, char**)
         }
 
         ImNodes::EndNodeEditor();
+
+        if(ImNodes::IsLinkDestroyed(&link_id)){
+            links.erase(links.begin()+link_id);
+        }
+
+        if(ImGui::IsKeyPressed(ImGuiKey_X)){
+            for(int i = 0; i < links.size(); i++){
+                if(ImNodes::IsLinkSelected(i)){
+                    std::pair<int, int> link = links[i];
+                    links.erase(links.begin()+i);
+                    nodes[link.second/1024].inputs[link.second%1024] = -1;
+                }
+            }
+        }
 
         ImGui::End();
 
