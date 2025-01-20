@@ -1,4 +1,6 @@
 #include <soundio/soundio.h>
+#define __LINUX_ALSA__
+#include <rtmidi_c.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

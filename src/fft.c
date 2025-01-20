@@ -1,4 +1,6 @@
 #include<fft.h>
+#include<complex.h>
+#include<math.h>
 
 void fft(complex* x, int N, int invert){
     for (int i = 1, j = 0; i < N; i++) {

@@ -15,18 +15,21 @@ FetchContent_Declare(
 )
 FetchContent_Populate(soundio)
 
+FetchContent_Declare(
+    rtmidi
+    URL https://github.com/thestk/rtmidi/archive/refs/tags/6.0.0.tar.gz
+)
+FetchContent_Populate(rtmidi)
+
 add_subdirectory(${soundio_SOURCE_DIR})
+add_subdirectory(${rtmidi_SOURCE_DIR})
 
 
 
 file(GLOB C_FILES "src/*.c")
 file(GLOB INCLUDE_FILES "./include/*.h")
 
-
-
 list(FILTER C_FILES EXCLUDE REGEX "main\\.c")
-
-message(FILES="${C_FILES}")
 
 add_library(synthr ${C_FILES})
 target_link_libraries(synthr m)
@@ -38,10 +41,11 @@ list(APPEND C_FILES "./src/main.c")
 
 add_executable(program ${C_FILES})
 target_include_directories(program PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(program PUBLIC ${soundio_SOURCE_DIR})
+target_include_directories(program PUBLIC ${soundio_SOURCE_DIR} ${rtmidi_SOURCE_DIR})
 target_sources(program PUBLIC ${C_FILES})
 target_link_libraries(program m)
 target_link_libraries(program libsoundio_static)
 target_link_libraries(program libsoundio_shared)
+target_link_libraries(program rtmidi)
 set_target_properties(program PROPERTIES LINKER_LANGUAGE C)
 # target_link_libraries(synthr libsynthr)

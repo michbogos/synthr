@@ -17,3 +17,5 @@ libsoundio
 *.o
 !gui/Makefile
 gui/imgui.ini
+*cmake
+*.so
