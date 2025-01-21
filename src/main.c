@@ -42,6 +42,10 @@ ADSREnvelope adsr;
 circular_buffer cbuf;
 Reverb verb;
 
+void midi_callback(double timeStamp, const unsigned char* message, size_t messageSize, void *userData){
+    printf("%s %lf\n", message, timeStamp);
+}
+
 void underflow_callback(){
     printf("Underflowing framesn\n");
 }
@@ -139,6 +143,16 @@ static void write_callback(struct SoundIoOutStream *outstream,
 }
 
 int main(int argc, char **argv) {
+    int numPorts = -1;
+    char buf[255];
+    RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, buf, 1024);
+    printf("Created MIDI device: %s\n", buf);
+    numPorts = rtmidi_get_port_count(midiin);
+    rtmidi_open_port (midiin, numPorts>1?1:0, buf);
+    printf("Opened port: %s\n", buf);
+
+    rtmidi_in_set_callback(midiin, midi_callback, NULL);
+
     float val = -1.0f;
     d = init_delay(24000, 0.3);
     verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 48000);
