@@ -223,6 +223,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Output device: %s\n", device->name);
 
     struct SoundIoOutStream *outstream = soundio_outstream_create(device);
+    outstream->software_latency = 0.01;
     outstream->format = SoundIoFormatFloat32NE;
     outstream->write_callback = write_callback;
     outstream->underflow_callback = underflow_callback;
