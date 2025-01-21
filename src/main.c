@@ -43,7 +43,14 @@ circular_buffer cbuf;
 Reverb verb;
 
 void midi_callback(double timeStamp, const unsigned char* message, size_t messageSize, void *userData){
-    printf("%s %lf\n", message, timeStamp);
+    if((message[0]&0b11110000)>>4 ==9){
+        adsr.key_pressed = 1;
+        frequency = 261*powf(powf(2, 1.0f/12), message[1]-60);
+    }
+    if((message[0]&0b11110000)>>4 ==8){
+        adsr.key_pressed = 0;
+    }
+    return;
 }
 
 void underflow_callback(){
@@ -75,16 +82,16 @@ static void write_callback(struct SoundIoOutStream *outstream,
         float samples[frame_count];
 
         time += frame_count/float_sample_rate;
-        if(((int)(time/1.0f))%2 == adsr.key_pressed){
-            //printf("%f\n", time);
-            adsr.key_pressed = 1-adsr.key_pressed;
-        }
+        // if(((int)(time/1.0f))%2 == adsr.key_pressed){
+        //     //printf("%f\n", time);
+        //     adsr.key_pressed = 1-adsr.key_pressed;
+        // }
         float adsr_vals[frame_count];
         gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
         // getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
             for(int i = 0; i < frame_count; i++){
-                samples[i] = osc_tbl(110.0f, &phase, 1/float_sample_rate, &sawtable);
+                samples[i] = osc_tbl(frequency, &phase, 1/float_sample_rate, &sawtable);
                 samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
                 samples[i] = filter(samples[i], float_sample_rate, &lpf, 3200, 1, 0);
                 samples[i] = filter_comb(&cmb, samples[i]);
@@ -114,7 +121,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         //     samples[i] += del[i];
         // }
 
-        reverb(&verb, samples, samples, frame_count, 0);
+        //reverb(&verb, samples, samples, frame_count, 0);
 
         for (int frame = 0; frame < frame_count; frame += 1) {
             // float sample = 0.5;
@@ -145,7 +152,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
 int main(int argc, char **argv) {
     int numPorts = -1;
     char buf[255];
-    RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, buf, 1024);
+    RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, buf, 16);
     printf("Created MIDI device: %s\n", buf);
     numPorts = rtmidi_get_port_count(midiin);
     rtmidi_open_port (midiin, numPorts>1?1:0, buf);
@@ -162,11 +169,11 @@ int main(int argc, char **argv) {
     // }
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_sqr(48000, 4096, 20);
-    adsr.attack = 0.1f;
-    adsr.delay = 0.2f;
-    adsr.sustain = 0.2f;
+    adsr.attack = 0.01f;
+    adsr.delay = 0.1f;
+    adsr.sustain = 0.1f;
     adsr.release = 0.01f;
-    adsr.key_pressed = 1;
+    adsr.key_pressed = 0;
     nodes[0] = nodeNumber(0.0f);
     nodes[1] = nodeNumber(0.0f);
     nodes[2] = nodeNumber(0.03f);
@@ -239,5 +246,7 @@ int main(int argc, char **argv) {
     soundio_outstream_destroy(outstream);
     soundio_device_unref(device);
     soundio_destroy(soundio);
+    rtmidi_close_port(midiin);
+    rtmidi_in_free(midiin);
     return 0;
 }
