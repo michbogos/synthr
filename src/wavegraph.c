@@ -29,6 +29,7 @@ WaveNode copyNode(WaveNode* node){
 }
 
 // Currently won't work correctly if muliple outputs depend on one input. Do a toposort and a list of computed nodes
+// See if node has multiple inputs cache that node.
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt){
     WaveNode node;
     if(node_idx < 0 || node_idx >= num_nodes){
