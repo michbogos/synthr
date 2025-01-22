@@ -1,3 +1,4 @@
+// TODO: Add three timers: global, group and per-note timer. For modulation purpouses
 #include <soundio/soundio.h>
 #define __LINUX_ALSA__
 #include <rtmidi_c.h>
@@ -14,6 +15,7 @@
 #include <envelope.h>
 #include <delay.h>
 #include <reverb.h>
+#include <midi.h>
 
 WaveNode nodes[16];
 
@@ -41,17 +43,7 @@ CombFilter cmb2;
 ADSREnvelope adsr;
 circular_buffer cbuf;
 Reverb verb;
-
-void midi_callback(double timeStamp, const unsigned char* message, size_t messageSize, void *userData){
-    if((message[0]&0b11110000)>>4 ==9){
-        adsr.key_pressed = 1;
-        frequency = 261*powf(powf(2, 1.0f/12), message[1]-60);
-    }
-    if((message[0]&0b11110000)>>4 ==8){
-        adsr.key_pressed = 0;
-    }
-    return;
-}
+MidiState midi_state;
 
 void underflow_callback(){
     printf("Underflowing framesn\n");
@@ -81,14 +73,29 @@ static void write_callback(struct SoundIoOutStream *outstream,
         
         float samples[frame_count];
 
-        time += frame_count/float_sample_rate;
+        // time += frame_count/float_sample_rate;
         // if(((int)(time/1.0f))%2 == adsr.key_pressed){
         //     //printf("%f\n", time);
         //     adsr.key_pressed = 1-adsr.key_pressed;
         // }
+        // char key_pressed = 0;
+        // for(int i = 0; i < NUM_VOICES; i++){
+        //     if(midi_state.notes[i]>0){
+        //         key_pressed = 1;
+        //         break;
+        //     }
+        // }
+        for(int i = NUM_VOICES; i >= 0; i--){
+            adsr.key_pressed = 0;
+            if(midi_state.notes[i] > 0){
+                frequency = 261.625565*powf(powf(2.0f, 1.0f/12.0f), midi_state.notes[i]-60.0f+12.0f*((float)((int)midi_state.pitch_bend-16384))/16384.0f);
+                adsr.key_pressed = 1;
+                break;
+            }
+        }
         float adsr_vals[frame_count];
         gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
-        // getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
+        //getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
             for(int i = 0; i < frame_count; i++){
                 samples[i] = osc_tbl(frequency, &phase, 1/float_sample_rate, &sawtable);
@@ -152,13 +159,13 @@ static void write_callback(struct SoundIoOutStream *outstream,
 int main(int argc, char **argv) {
     int numPorts = -1;
     char buf[255];
-    RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, buf, 16);
+    RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, buf, 1024);
     printf("Created MIDI device: %s\n", buf);
     numPorts = rtmidi_get_port_count(midiin);
     rtmidi_open_port (midiin, numPorts>1?1:0, buf);
     printf("Opened port: %s\n", buf);
 
-    rtmidi_in_set_callback(midiin, midi_callback, NULL);
+    rtmidi_in_set_callback(midiin, midi_callback, &midi_state);
 
     float val = -1.0f;
     d = init_delay(24000, 0.3);
@@ -223,7 +230,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Output device: %s\n", device->name);
 
     struct SoundIoOutStream *outstream = soundio_outstream_create(device);
-    outstream->software_latency = 0.01;
+    outstream->software_latency = 0.05;
     outstream->format = SoundIoFormatFloat32NE;
     outstream->write_callback = write_callback;
     outstream->underflow_callback = underflow_callback;
