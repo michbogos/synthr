@@ -33,6 +33,7 @@ WaveNode osc2;
 WaveNode add;
 WaveNode mul;
 WaveNode s;
+WaveNode midi_node;
 Biquad lpf;
 Biquad hpf;
 Formant form;
@@ -72,6 +73,8 @@ static void write_callback(struct SoundIoOutStream *outstream,
             break;
         
         float samples[frame_count];
+        getNodeOutput(4, nodes, 16, frame_count, samples, 1.0f/float_sample_rate);
+        
 
         // time += frame_count/float_sample_rate;
         // if(((int)(time/1.0f))%2 == adsr.key_pressed){
@@ -85,27 +88,27 @@ static void write_callback(struct SoundIoOutStream *outstream,
         //         break;
         //     }
         // }
-        for(int i = NUM_VOICES; i >= 0; i--){
-            adsr.key_pressed = 0;
-            if(midi_state.notes[i] > 0){
-                frequency = 261.625565*powf(powf(2.0f, 1.0f/12.0f), midi_state.notes[i]-60.0f+12.0f*((float)((int)midi_state.pitch_bend-16384))/16384.0f);
-                adsr.key_pressed = 1;
-                break;
-            }
-        }
-        float adsr_vals[frame_count];
-        gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
-        //getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
+        // for(int i = NUM_VOICES; i >= 0; i--){
+        //     adsr.key_pressed = 0;
+        //     if(midi_state.notes[i] > 0){
+        //         frequency = 261.625565*powf(powf(2.0f, 1.0f/12.0f), midi_state.notes[i]-60.0f+12.0f*((float)((int)midi_state.pitch_bend-16384))/16384.0f);
+        //         adsr.key_pressed = 1;
+        //         break;
+        //     }
+        // }
+        // float adsr_vals[frame_count];
+        // gen_adsr_envelope(&adsr, adsr_vals, frame_count, float_sample_rate);
+        // //getNodeOutput(noise, frame_count, samples, 1.0f/float_sample_rate);
 
-            for(int i = 0; i < frame_count; i++){
-                samples[i] = osc_tbl(frequency, &phase, 1/float_sample_rate, &sawtable);
-                samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
-                samples[i] = filter(samples[i], float_sample_rate, &lpf, 3200, 1, 0);
-                samples[i] = filter_comb(&cmb, samples[i]);
-                samples[i] = filter_comb(&cmb2, samples[i]);
-                samples[i] = filter(samples[i], float_sample_rate, &hpf, 3200, 1, 0);
-                // samples[i] = formantize(float_sample_rate, samples[i], form);
-            }
+        //     for(int i = 0; i < frame_count; i++){
+        //         samples[i] = osc_tbl(frequency, &phase, 1/float_sample_rate, &sawtable);
+        //         samples[i] = filter(samples[i], float_sample_rate, &lpf, 1800, 20, 5);
+        //         samples[i] = filter(samples[i], float_sample_rate, &lpf, 3200, 1, 0);
+        //         samples[i] = filter_comb(&cmb, samples[i]);
+        //         samples[i] = filter_comb(&cmb2, samples[i]);
+        //         samples[i] = filter(samples[i], float_sample_rate, &hpf, 3200, 1, 0);
+        //         // samples[i] = formantize(float_sample_rate, samples[i], form);
+        //     }
 
         // write_circular_buffer(&cbuf, samples, frame_count);
 
@@ -113,12 +116,12 @@ static void write_callback(struct SoundIoOutStream *outstream,
 
         // read_circularbuffer(&cbuf, output, frame_count);
 
-        float output[frame_count];
+        // float output[frame_count];
 
-        for(int i = 0; i < frame_count; i++){
-            samples[i] = samples[i]*adsr_vals[i];
-            //samples[i] = formantize(float_sample_rate, samples[i], form);
-        }
+        // for(int i = 0; i < frame_count; i++){
+        //     samples[i] = samples[i]*adsr_vals[i];
+        //     //samples[i] = formantize(float_sample_rate, samples[i], form);
+        // }
 
         // float del[frame_count];
 
@@ -184,9 +187,9 @@ int main(int argc, char **argv) {
     nodes[0] = nodeNumber(0.0f);
     nodes[1] = nodeNumber(0.0f);
     nodes[2] = nodeNumber(0.03f);
-    nodes[3] = nodeNumber(440.0f);
+    nodes[3] = nodeMidi(0, &midi_state);
     nodes[4] = nodeWavetable(3, &sawtable);
-    nodes[5] = nodeSin(2, 1);
+    //nodes[5] = nodeSin(2, 1);
     // WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     // mul = nodeMul(osc1, add);
     lpf = biquad(LOWPASS);

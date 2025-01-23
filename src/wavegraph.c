@@ -21,6 +21,7 @@ float ZERO = 0.0f;
 //     WaveNode* res
 // }
 
+//Copies just one layer of pointer indirection
 WaveNode copyNode(WaveNode* node){
     WaveNode res = *node;
     res.value = malloc(node->value_len);
@@ -39,6 +40,16 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         node = nodes[node_idx];
     }
     switch (node.type){
+    case MIDI:
+    {
+        MidiState state = *(*(MidiState**)node.value);
+        int voice_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
+        float frequency = 261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[0]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f);
+        for(int i = 0; i < n; i++){
+            buffer[i] = frequency;
+        }
+        return;
+    }
     case DELAY:
         //Incorrect
         {
@@ -456,5 +467,19 @@ WaveNode nodeDelay(int samples, int delay_size, float decay){
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;
+    return node;
+}
+
+
+WaveNode nodeMidi(int voice_idx, MidiState* state){
+    WaveNode node;
+    node.type = MIDI;
+    node.inputs = NULL;
+    node.value = malloc(sizeof(MidiState*)+sizeof(int));
+    *(MidiState**)node.value = state;
+    *(int*)(((char*)node.value)+sizeof(MidiState*)) = voice_idx;
+    node.id = COUNTER++;
+    node.num_inputs = 0;
+    node.value_len = sizeof(MidiState*)+sizeof(int);
     return node;
 }

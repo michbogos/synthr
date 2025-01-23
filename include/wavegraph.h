@@ -2,8 +2,9 @@
 #define WAVEGRAPH_H
 #include<oscillators.h>
 #include<rng.h>
+#include<midi.h>
 enum NodeType{
-    WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER, COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY
+    MIDI, WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER, COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY
 };
 
 
@@ -42,4 +43,6 @@ WaveNode nodePinkNoise();
 WaveNode nodeBrownNoise();
 
 WaveNode nodeDelay(int samples, int delay_size, float decay);
+
+WaveNode nodeMidi(int voice_idx, MidiState* state);
 #endif
