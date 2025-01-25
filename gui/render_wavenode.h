@@ -6,7 +6,7 @@
 #include "imgui.h"
 
 char* NODE_DESC[] = {
-    "MIDI", "WAVETABLE", "TRIANGLE", "SAW", "SQUARE", "SIN", "OUTPUT", "ADD", "SUBTRACT", "MULTIPLY", "NUMBER", "FILTER", "COMB_FILTER", "ALLPASS_FILTER", "DIVIDE", "WHITE_NOISE", "PINK_NOISE", "BROWN_NOISE", "DELAY"
+    "ADSR", "MIDI", "WAVETABLE", "TRIANGLE", "SAW", "SQUARE", "SIN", "OUTPUT", "ADD", "SUBTRACT", "MULTIPLY", "NUMBER", "FILTER", "COMB_FILTER", "ALLPASS_FILTER", "DIVIDE", "WHITE_NOISE", "PINK_NOISE", "BROWN_NOISE", "DELAY"
 };
 
 std::map<int, int> in_attribute_map; // Input attribute to node

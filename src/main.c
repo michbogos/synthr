@@ -162,9 +162,10 @@ static void write_callback(struct SoundIoOutStream *outstream,
 int main(int argc, char **argv) {
     int numPorts = -1;
     char buf[255];
-    RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, buf, 1024);
+    RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, "Synthr", 1024);
     printf("Created MIDI device: %s\n", buf);
     numPorts = rtmidi_get_port_count(midiin);
+    printf("Num Ports: %d", numPorts);
     rtmidi_open_port (midiin, numPorts>1?1:0, buf);
     printf("Opened port: %s\n", buf);
 
@@ -186,10 +187,10 @@ int main(int argc, char **argv) {
     adsr.key_pressed = 0;
     nodes[0] = nodeNumber(0.0f);
     nodes[1] = nodeNumber(0.0f);
-    nodes[2] = nodeNumber(0.03f);
+    nodes[2] = nodeMul(5, 3);
     nodes[3] = nodeMidi(0, &midi_state);
-    nodes[4] = nodeWavetable(3, &sawtable);
-    //nodes[5] = nodeSin(2, 1);
+    nodes[4] = nodeWavetable(2, &sawtable);
+    nodes[5] = nodeAdsr(3, &adsr);
     // WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     // mul = nodeMul(osc1, add);
     lpf = biquad(LOWPASS);

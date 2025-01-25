@@ -40,11 +40,23 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         node = nodes[node_idx];
     }
     switch (node.type){
+    case ADSR:
+    {
+        float trigger[n];
+
+        getNodeOutput(node.inputs[0], nodes, num_nodes, n, trigger, dt);
+        for(int i = 0; i < n; i++){
+            ((ADSREnvelope*)node.value)->key_pressed = trigger[i] > 0 ? 1 : 0;
+            gen_adsr_envelope(node.value, buffer+i, 1, 1.0/dt);
+        }
+        return;
+        break;
+    }
     case MIDI:
     {
         MidiState state = *(*(MidiState**)node.value);
         int voice_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
-        float frequency = 261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[0]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f);
+        float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[0]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f))* (state.notes[0]>0?1:0);
         for(int i = 0; i < n; i++){
             buffer[i] = frequency;
         }
@@ -483,3 +495,15 @@ WaveNode nodeMidi(int voice_idx, MidiState* state){
     node.value_len = sizeof(MidiState*)+sizeof(int);
     return node;
 }
+
+ WaveNode nodeAdsr(int trigger, ADSREnvelope* state){
+    WaveNode node;
+    node.type = ADSR;
+    node.inputs = malloc(1*sizeof(int));
+    node.id = COUNTER ++;
+    node.num_inputs = 1;
+    node.value = state;
+    node.value_len = sizeof(ADSREnvelope);
+    node.inputs[0] = trigger;
+    return node;
+ }

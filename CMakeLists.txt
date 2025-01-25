@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 
 project(synthr)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wall -Wextra")
+set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Wextra")
 
 include(ExternalProject)
 include(FetchContent)
