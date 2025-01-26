@@ -23,6 +23,8 @@ struct node{
 
 typedef struct node WaveNode;
 
+WaveNode copyNode(WaveNode node);
+
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt);
 
 WaveNode nodeNumber(float number);

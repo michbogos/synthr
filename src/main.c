@@ -18,6 +18,7 @@
 #include <midi.h>
 
 WaveNode nodes[16];
+WaveNode channels[NUM_VOICES][16];
 
 float frequency = 200.0f;
 float phase = 0.0f;
@@ -73,7 +74,16 @@ static void write_callback(struct SoundIoOutStream *outstream,
             break;
         
         float samples[frame_count];
-        getNodeOutput(4, nodes, 16, frame_count, samples, 1.0f/float_sample_rate);
+        for(int i = 0; i < frame_count; i++){
+            samples[i] = 0;
+        }
+        float tmp[frame_count];
+        for(int voice = 0; voice < NUM_VOICES; voice++){
+            getNodeOutput(2, channels[voice], 16, frame_count, tmp, 1.0f/float_sample_rate);
+            for(int i = 0; i < frame_count; i++){
+                samples[i] += tmp[i];
+            }
+        }
         
 
         // time += frame_count/float_sample_rate;
@@ -187,10 +197,18 @@ int main(int argc, char **argv) {
     adsr.key_pressed = 0;
     nodes[0] = nodeNumber(0.0f);
     nodes[1] = nodeNumber(0.0f);
-    nodes[2] = nodeMul(5, 3);
+    nodes[2] = nodeMul(4, 5);
     nodes[3] = nodeMidi(0, &midi_state);
-    nodes[4] = nodeWavetable(2, &sawtable);
+    nodes[4] = nodeWavetable(3, &sawtable);
     nodes[5] = nodeAdsr(3, &adsr);
+    for(int i = 0; i < NUM_VOICES; i++){
+        for(int j = 0; j < 16; j++){
+            channels[i][j] = copyNode(nodes[j]);
+            if(channels[i][j].type==MIDI){
+                *(int*)(((char*)channels[i][j].value)+sizeof(MidiState*)) = i;
+            }
+        }
+    }
     // WaveNode add = nodeAdd(nodeDiv(s, nodeNumber(2.0f)), nodeNumber(0.5f));
     // mul = nodeMul(osc1, add);
     lpf = biquad(LOWPASS);

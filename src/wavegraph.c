@@ -22,10 +22,10 @@ float ZERO = 0.0f;
 // }
 
 //Copies just one layer of pointer indirection
-WaveNode copyNode(WaveNode* node){
-    WaveNode res = *node;
-    res.value = malloc(node->value_len);
-    memcpy(res.value, node->value, node->value_len);
+WaveNode copyNode(WaveNode node){
+    WaveNode res = node;
+    res.value = malloc(node.value_len);
+    memcpy(res.value, node.value, node.value_len);
     return res;
 }
 
@@ -56,11 +56,12 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
     {
         MidiState state = *(*(MidiState**)node.value);
         int voice_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
-        float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[0]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f))* (state.notes[0]>0?1:0);
+        float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[voice_idx]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f))* (state.notes[voice_idx]>0?1:0);
         for(int i = 0; i < n; i++){
             buffer[i] = frequency;
         }
         return;
+        break;
     }
     case DELAY:
         //Incorrect
@@ -337,6 +338,7 @@ WaveNode nodeNumber(float number){
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;
+    node.value_len = sizeof(float);
     return node;
 }
 
@@ -346,6 +348,7 @@ WaveNode nodeWavetable(int frequency, Wavetable* table){
     node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
     node.value = malloc(sizeof(Wavetable)+sizeof(float));
+    node.value_len = sizeof(Wavetable)+sizeof(float);
     ((Wavetable*)node.value)[0] = *table;
     ((float*)(((char*)node.value)+sizeof(Wavetable)))[0] = 0;
     node.num_inputs = 1;
@@ -446,6 +449,7 @@ WaveNode nodeMul(int a, int b){
     node.inputs[0] = a;
     node.inputs[1] = b;
     node.value = NULL;
+    node.value_len = 0;
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
