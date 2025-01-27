@@ -50,11 +50,11 @@ float osc_sin(float frequency, float* phase, float dt){
 }
 
 float osc_saw(float frequency, float* phase, float dt){
-    *phase += dt*frequency;
+    *phase += frequency/(1.0/dt);
     if(*phase > 1.0){
       *phase -= 1.0;
     }
-    return ((*phase*(frequency)*-floorf(*phase*(frequency)))-0.5)*2;
+    return 2*(*phase)-1.0f - poly_blep(*phase, frequency/(1.0/dt));
 }
 
 
