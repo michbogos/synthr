@@ -19,3 +19,4 @@ libsoundio
 gui/imgui.ini
 *cmake
 *.so
+test.wav

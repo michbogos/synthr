@@ -29,10 +29,10 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
 
 WaveNode nodeNumber(float number);
 WaveNode nodeWavetable(int frequency, Wavetable* table);
-WaveNode nodeSin(int frequency, int phase);
-WaveNode nodeTri(int frequency, int phase);
-WaveNode nodeSqr(int frequency, int phase);
-WaveNode nodeSaw(int frequency, int phase);
+WaveNode nodeSin(int frequency);
+WaveNode nodeTri(int frequency);
+WaveNode nodeSqr(int frequency);
+WaveNode nodeSaw(int frequency);
 WaveNode nodeAdd(int a, int b);
 WaveNode nodeSub(int a, int b);
 WaveNode nodeMul(int a, int b);

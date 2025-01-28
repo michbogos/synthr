@@ -150,7 +150,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             float frequency_buffer[n];
             getNodeOutput(node.inputs[0], nodes, num_nodes, n, frequency_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i] = osc_sin(frequency_buffer[i], nodes[node.inputs[1]].value, dt);
+                buffer[i] = osc_sin(frequency_buffer[i], node.value, dt);
             }
             node.computed = 1;
             return;
@@ -171,7 +171,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             float frequency_buffer[n];
             getNodeOutput(node.inputs[0], nodes, num_nodes, n, frequency_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i] = osc_sqr(frequency_buffer[i], nodes[node.inputs[1]].value, dt);
+                buffer[i] = osc_sqr(frequency_buffer[i], node.value, dt);
             }
             node.computed = 1;
             return;
@@ -182,7 +182,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             float frequency_buffer[n];
             getNodeOutput(node.inputs[0], nodes, num_nodes, n, frequency_buffer, dt);
             for(int i = 0; i < n; i++){
-                buffer[i] = osc_saw(frequency_buffer[i], nodes[node.inputs[1]].value, dt);
+                buffer[i] = osc_saw(frequency_buffer[i], node.value, dt);
             }
             node.computed = 1;
             return;
@@ -358,56 +358,60 @@ WaveNode nodeWavetable(int frequency, Wavetable* table){
     return node;
 }
 
-WaveNode nodeSin(int frequency, int phase){
+WaveNode nodeSin(int frequency){
     WaveNode node;
     node.type = SIN;
-    node.inputs = (int*)malloc(2*sizeof(int));
+    node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
-    node.inputs[1] = phase;
-    node.value = NULL;
-    node.num_inputs = 2;
+    node.value = malloc(sizeof(float));
+    *(float*)(node.value) = 0.0f;
+    node.value_len = sizeof(float);
+    node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;
     return node;
 }
 
-WaveNode nodeTri(int frequency, int phase){
+WaveNode nodeTri(int frequency){
     WaveNode node;
     node.type = TRIANGLE;
-    node.inputs = (int*)malloc(2*sizeof(int));
+    node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
-    node.inputs[1] = phase;
-    node.value = NULL;
-    node.num_inputs = 2;
+    node.value = malloc(sizeof(float));
+    *(float*)(node.value) = 0.0f;
+    node.value_len = sizeof(float);
+    node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;
     return node;
 }
 
-WaveNode nodeSqr(int frequency, int phase){
+WaveNode nodeSqr(int frequency){
     WaveNode node;
     node.type = SQUARE;
-    node.inputs = (int*)malloc(2*sizeof(int));
+    node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
-    node.inputs[1] = phase;
-    node.value = NULL;
-    node.num_inputs = 2;
+    node.value = malloc(sizeof(float));
+    *(float*)(node.value) = 0.0f;
+    node.value_len = sizeof(float);
+    node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;
     return node;
 }
 
-WaveNode nodeSaw(int frequency, int phase){
+WaveNode nodeSaw(int frequency){
     WaveNode node;
     node.type = SAW;
-    node.inputs = (int*)malloc(2*sizeof(int));
+    node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
-    node.inputs[1] = phase;
-    node.value = NULL;
-    node.num_inputs = 2;
+    node.value = malloc(sizeof(float));
+    *(float*)(node.value) = 0.0f;
+    node.value_len = sizeof(float);
+    node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;

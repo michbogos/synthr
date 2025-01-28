@@ -34,16 +34,33 @@ float osc_saw(float frequency, float* phase, float dt){
     return 2*(*phase)-1.0f - poly_blep(*phase, frequency/(1.0/dt));
 }
 
+float osc_sqr(float frequency, float* phase, float dt){
+  *phase += frequency/(1.0/dt);
+  if(*phase > 1.0){
+    *phase -= 1.0;
+  }
+  float phase2 = *phase+0.5;
+  if(phase2 > 1.0){
+    phase2 -= 1.0;
+  }
+  if(*phase<0.5){
+    return 1 + poly_blep(*phase, frequency/(1.0/dt))-poly_blep(phase2, frequency/(1.0f/dt));
+  }
+  else{
+    return -1+ poly_blep(*phase, frequency/(1.0/dt))-poly_blep(phase2, frequency/(1.0f/dt));
+  }
+}
+
 int main(){
-    float samples[5*48000];
+    float samples[10*48000];
     float frequency = 80.0f;
     float phase = 0;
-    for(int i = 0; i < 5*48000; i++){
-        samples[i] = osc_saw(frequency, &phase, 1.0/48000.0);
+    for(int i = 0; i < 10*48000; i++){
+        samples[i] = osc_sqr(frequency, &phase, 1.0/48000.0);
         if(i%1000 == 0){
-            frequency *= 1.03;
+            frequency *= 1.01;
         }
     }
-    write_wav(samples, 5*48000, 48000.0f, 1, "test.wav");
+    write_wav(samples, 10*48000, 48000.0f, 1, "test.wav");
     return 0;
 }

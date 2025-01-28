@@ -29,15 +29,19 @@ double poly_blep(float t, float dt)
 }
 
 float osc_sqr(float frequency, float* phase, float dt){
-  *phase += dt*frequency;
+  *phase += frequency/(1.0/dt);
   if(*phase > 1.0){
     *phase -= 1.0;
   }
-  if(*phase-floorf(*phase) > 0.5/(frequency)){
-    return 1;
+  float phase2 = *phase+0.5;
+  if(phase2 > 1.0){
+    phase2 -= 1.0;
+  }
+  if(*phase<0.5){
+    return 1 + poly_blep(*phase, frequency/(1.0/dt))-poly_blep(phase2, frequency/(1.0f/dt));
   }
   else{
-    return -1;
+    return -1+ poly_blep(*phase, frequency/(1.0/dt))-poly_blep(phase2, frequency/(1.0f/dt));
   }
 }
 

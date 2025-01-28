@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
     nodes[1] = nodeNumber(0.0f);
     nodes[2] = nodeMul(4, 5);
     nodes[3] = nodeMidi(0, &midi_state);
-    nodes[4] = nodeWavetable(3, &sawtable);
+    nodes[4] = nodeSqr(3);
     nodes[5] = nodeAdsr(3, &adsr);
     for(int i = 0; i < NUM_VOICES; i++){
         for(int j = 0; j < 16; j++){
