@@ -158,11 +158,11 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         }
     case TRIANGLE:
         {
-            // float frequency_buffer[n];
-            // getNodeOutput(*(node.inputs+0), n, frequency_buffer, dt);
-            // for(int i = 0; i < n; i++){
-            //     buffer[i] = osc_tri(frequency_buffer[i], (float*)((node.inputs+1)->value), dt);
-            // }
+            float frequency_buffer[n];
+            getNodeOutput(node.inputs[0], nodes, num_nodes, n, frequency_buffer, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i] = osc_tri(frequency_buffer[i], node.value, dt);
+            }
             return;
             break;
         }

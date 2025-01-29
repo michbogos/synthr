@@ -51,12 +51,36 @@ float osc_sqr(float frequency, float* phase, float dt){
   }
 }
 
+float osc_tri(float frequency, float* phase, float dt){
+    *phase += frequency/(1.0/dt);
+    if(*phase > 1.0f){
+      *phase -= 1.0f;
+    } 
+    // float t1 = *phase+0.25;
+    // if(t1 > 1.0f){
+    //   t1 -= 1.0f;
+    // } 
+    // float t2 = *phase+0.75;
+    // if(t2 > 1.0f){
+    //   t2 -= 1.0f;
+    // } 
+    float y = *phase * 4;
+
+    if (y >= 3) {
+        y -= 4;
+    } else if (y > 1) {
+        y = 2 - y;
+    }
+    
+    return y+4*frequency/(1.0/dt);//-poly_blep(t1, frequency/(1.0/dt))+poly_blep(t2, frequency/(1.0/dt));
+}
+
 int main(){
     float samples[10*48000];
     float frequency = 80.0f;
     float phase = 0;
     for(int i = 0; i < 10*48000; i++){
-        samples[i] = osc_sqr(frequency, &phase, 1.0/48000.0);
+        samples[i] = osc_tri(frequency, &phase, 1.0/48000.0);
         if(i%1000 == 0){
             frequency *= 1.01;
         }

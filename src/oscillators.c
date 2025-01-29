@@ -62,12 +62,30 @@ float osc_saw(float frequency, float* phase, float dt){
 }
 
 
-//Triangle wave phase shifts due to float to int rounding
-// float osc_tri(float* frequency, float* pahse, float dt){
-//     int val = (n % (int)((float)sample_rate/frequency)) - ((int)((float)sample_rate/frequency))/2.0f;
-//     val = val > 0 ? val : -val;
-//     return val/(float)(sample_rate/frequency)-0.5;
-// }
+float osc_tri(float frequency, float* phase, float dt){
+    *phase += frequency/(1.0/dt);
+    if(*phase > 1.0f){
+      *phase -= 1.0f;
+    } 
+    // float t1 = *phase+0.25;
+    // if(t1 > 1.0f){
+    //   t1 -= 1.0f;
+    // } 
+    // float t2 = *phase+0.75;
+    // if(t2 > 1.0f){
+    //   t2 -= 1.0f;
+    // } 
+    float y = *phase * 4;
+
+    if (y >= 3) {
+        y -= 4;
+    } else if (y > 1) {
+        y = 2 - y;
+    }
+    
+    return y+4*frequency/(1.0/dt);//-poly_blep(t1, frequency/(1.0/dt))+poly_blep(t2, frequency/(1.0/dt));
+}
+
 
 float osc_tbl(float frequency, float* phase, float dt, Wavetable* wavetable){
     *phase += dt*(frequency);
