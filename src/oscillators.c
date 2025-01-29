@@ -86,6 +86,15 @@ float osc_tri(float frequency, float* phase, float dt){
     return y+4*frequency/(1.0/dt);//-poly_blep(t1, frequency/(1.0/dt))+poly_blep(t2, frequency/(1.0/dt));
 }
 
+float osc_ply(float n, float frequency, float* phase, float dt){
+  *phase += dt*(frequency);
+  if(*phase > 1.0f){
+    *phase -= 1.0f;
+  }
+  float phin2pi = *phase*n/(2*PI);
+  return cosf(PI/n)/cosf(2*PI/n*(phin2pi-floorf(phin2pi))-PI/n);
+}
+
 
 float osc_tbl(float frequency, float* phase, float dt, Wavetable* wavetable){
     *phase += dt*(frequency);
