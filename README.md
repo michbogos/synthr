@@ -1,5 +1,15 @@
 # Synthr a minimal dependency digital synthethis library
 
+Synthr uses a graph. It computes the value of the nodes on the fly to give maximum sonic range.
+
+TODO:
+
+- Add more filters.
+- Add more oscillators.
+- Integrate with GUI.
+- Add effects.
+- Make all node graph and polyphony ready.
+
 For testing requires soundio.
 
 ``` bash
