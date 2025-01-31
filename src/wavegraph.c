@@ -40,6 +40,26 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         node = nodes[node_idx];
     }
     switch (node.type){
+    case FILTER_LOWPASS:
+    case FILTER_HIGHPASS:
+    case FILTER_BANDPASS:
+    case FILTER_NOTCH:
+    case FILTER_APF:
+    //case FILTER_PEAKEQ:
+    {
+        float a[n];
+        float fc[n];
+        float resonance[n];
+        getNodeOutput(node.inputs[0], nodes, num_nodes, n, a, dt);
+        getNodeOutput(node.inputs[1], nodes, num_nodes, n, fc, dt);
+        getNodeOutput(node.inputs[2], nodes, num_nodes, n, resonance, dt);
+
+        for(int i = 0; i < n; i++){
+            buffer[i] = filter(a[i], 1.0f/dt, node.value, fc[i], resonance[i], 0.0);
+        }
+        return;
+        break;
+    }
     case ADSR:
     {
         float trigger[n];
@@ -504,7 +524,7 @@ WaveNode nodeMidi(int voice_idx, MidiState* state){
     return node;
 }
 
- WaveNode nodeAdsr(int trigger, ADSREnvelope* state){
+WaveNode nodeAdsr(int trigger, ADSREnvelope* state){
     WaveNode node;
     node.type = ADSR;
     node.inputs = malloc(1*sizeof(int));
@@ -515,3 +535,83 @@ WaveNode nodeMidi(int voice_idx, MidiState* state){
     node.inputs[0] = trigger;
     return node;
  }
+
+WaveNode nodeFilterLowpass(int a, int fc, int resonance){
+    Biquad bq = biquad(LOWPASS);
+    WaveNode node;
+    node.type = FILTER_LOWPASS;
+    node.value = malloc(sizeof(Biquad));
+    node.value_len = sizeof(Biquad);
+    node.id = COUNTER++;
+    *(Biquad*)node.value = bq;
+    node.num_inputs = 3;
+    node.inputs = malloc(sizeof(int)*3);
+    node.inputs[0] = a;
+    node.inputs[1] = fc;
+    node.inputs[2] = resonance;
+    return node;
+ }
+
+WaveNode nodeFilterHighpass(int a, int fc, int resonance){
+    Biquad bq = biquad(HIGHPASS);
+    WaveNode node;
+    node.type = FILTER_HIGHPASS;
+    node.value = malloc(sizeof(Biquad));
+    node.value_len = sizeof(Biquad);
+    node.id = COUNTER++;
+    *(Biquad*)node.value = bq;
+    node.num_inputs = 3;
+    node.inputs = malloc(sizeof(int)*3);
+    node.inputs[0] = a;
+    node.inputs[1] = fc;
+    node.inputs[2] = resonance;
+    return node;
+}
+
+WaveNode nodeFilterBandpass(int a, int fc, int resonance){
+    Biquad bq = biquad(BANDPASSQ);
+    WaveNode node;
+    node.type = FILTER_BANDPASS;
+    node.value = malloc(sizeof(Biquad));
+    node.value_len = sizeof(Biquad);
+    node.id = COUNTER++;
+    *(Biquad*)node.value = bq;
+    node.num_inputs = 3;
+    node.inputs = malloc(sizeof(int)*3);
+    node.inputs[0] = a;
+    node.inputs[1] = fc;
+    node.inputs[2] = resonance;
+    return node;
+ }
+
+WaveNode nodeFilterAPF(int a, int fc, int resonance){
+    Biquad bq = biquad(APF);
+    WaveNode node;
+    node.type = FILTER_APF;
+    node.value = malloc(sizeof(Biquad));
+    node.value_len = sizeof(Biquad);
+    node.id = COUNTER++;
+    *(Biquad*)node.value = bq;
+    node.num_inputs = 3;
+    node.inputs = malloc(sizeof(int)*3);
+    node.inputs[0] = a;
+    node.inputs[1] = fc;
+    node.inputs[2] = resonance;
+    return node;
+ }
+
+// WaveNode nodeFilterPeakEQ(int a, int fc, int resonance){
+//     Biquad bq = biquad(PEAKEQ);
+//     WaveNode node;
+//     node.type = FILTER_PEAKEQ;
+//     node.value = malloc(sizeof(Biquad));
+//     node.value_len = sizeof(Biquad);
+//     node.id = COUNTER++;
+//     *(Biquad*)node.value = bq;
+//     node.num_inputs = 3;
+//     node.inputs = malloc(sizeof(int)*3);
+//     node.inputs[0] = a;
+//     node.inputs[1] = fc;
+//     node.inputs[2] = resonance;
+//     return node;
+//  }
