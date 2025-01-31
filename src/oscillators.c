@@ -87,12 +87,14 @@ float osc_tri(float frequency, float* phase, float dt){
 }
 
 float osc_ply(float n, float frequency, float* phase, float dt){
-  *phase += dt*(frequency);
+  *phase += frequency/(1.0f/dt);
   if(*phase > 1.0f){
     *phase -= 1.0f;
   }
-  float phin2pi = *phase*n/(2*PI);
-  return cosf(PI/n)/cosf(2*PI/n*(phin2pi-floorf(phin2pi))-PI/n);
+
+  float phin2pi = *phase*2*PI*n/(2*PI);
+  float p = cosf(PI/n)/cosf(2*PI/n*(phin2pi-floorf(phin2pi))-PI/n);
+  return sinf(*phase*2*PI)*p-poly_blamp(*phase, frequency/(1.0f/dt));//(-2*tanf(n/PI)*cosf(2*PI*(t)));
 }
 
 

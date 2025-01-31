@@ -93,9 +93,14 @@ float osc_ply(float n, float frequency, float* phase, float dt){
   if(*phase > 1.0f){
     *phase -= 1.0f;
   }
+  float t = *phase;
+
+  if(t > 1.0f){
+    t-= 1.0f;
+  }
   float phin2pi = *phase*2*PI*n/(2*PI);
   float p = cosf(PI/n)/cosf(2*PI/n*(phin2pi-floorf(phin2pi))-PI/n);
-  return sinf(*phase*2*PI)*p;//-poly_blamp(*phase, frequency/(1.0f/dt))*(-2*tanf(n/PI)*cosf(2*PI*(*(phase))));
+  return sinf(*phase*2*PI)*p-poly_blamp(t, frequency/(1.0f/dt));//(-2*tanf(n/PI)*cosf(2*PI*(t)));
 }
 
 float osc_tri(float frequency, float* phase, float dt){
@@ -124,12 +129,12 @@ float osc_tri(float frequency, float* phase, float dt){
 
 int main(){
     float samples[10*48000];
-    float frequency = 1.0f;
+    float frequency = 80.0f;
     float phase = 0;
     for(int i = 0; i < 10*48000; i++){
-        samples[i] = osc_ply(3.0f, frequency, &phase, 1.0/48000.0);
+        samples[i] = osc_ply(3.5f, frequency, &phase, 1.0/48000.0);
         if(i%1000 == 0){
-            //frequency *= 1.01;
+            frequency *= 1.01;
         }
     }
     write_wav(samples, 10*48000, 48000.0f, 1, "test.wav");
