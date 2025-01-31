@@ -28,6 +28,42 @@ double poly_blep(float t, float dt)
   }
 }
 
+double poly_blamp(float t, float dt)
+{
+  // 0 -> T
+  if (t < dt)
+  {
+    //t /= dt;
+    // 2 * (t - t^2/2 - 0.5)
+    return (28.+t*(-60.+t*(40.+t*(0.+t*(-10.+t*(3.))))))/120.;
+  }
+
+  else if (t < 2*dt && t > dt) // T->2T
+  {
+    //t /= dt;
+    // 2 * (t - t^2/2 - 0.5)
+    return (1.+t*(-5.+t*(10.+t*(-10.+t*(5.+t*(-1.))))))/120.;
+  }
+
+  // -T -> 0
+  else if (t > 1. - dt)
+  {
+    //t = (t - 1.) / dt;
+    // 2 * (t^2/2 + t + 0.5)
+    return (1.+t*(5.+t*(10.+t*(10.+t*(5.+t*(-3.))))))/120.;
+  }
+
+  else if (t > 1. - dt*2. && t < 1.0f - dt)
+  {
+    //t = (t - 1.) / dt;
+    return t*t*t*t*t/120.;
+  }
+  else
+  {
+    return 0.;
+  }
+}
+
 float osc_sqr(float frequency, float* phase, float dt){
   *phase += frequency/(1.0/dt);
   if(*phase > 1.0){
