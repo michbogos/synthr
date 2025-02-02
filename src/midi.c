@@ -1,4 +1,5 @@
 #include<midi.h>
+#include<stdio.h>
 
 void midi_callback(double timeStamp, const unsigned char* message, size_t messageSize, void *userData){
     MidiState* state = (MidiState*)userData;
@@ -9,7 +10,7 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
                 for(int i = 0; i < NUM_VOICES; i++){
                     if(state->notes[i]==0){
                         state->notes[i] = message[1];
-                        //state->velocities[i] = message[2];
+                        state->velocities[i] = message[2];
                         return;
                     }
                 }
@@ -21,7 +22,7 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
             for(int i = 0; i < NUM_VOICES; i++){
                 if(state->notes[i]==message[1]){
                     state->notes[i] = 0;
-                    //state->velocities[i] = 0;
+                    state->velocities[i] = 0;
                     return;
                 }
             }

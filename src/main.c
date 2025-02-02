@@ -170,6 +170,9 @@ static void write_callback(struct SoundIoOutStream *outstream,
 }
 
 int main(int argc, char **argv) {
+    for(int i = 0; i < NUM_VOICES; i++){
+        midi_state.velocities[i] = 0;
+    }
     int numPorts = -1;
     char buf[255];
     RtMidiInPtr midiin = rtmidi_in_create (RTMIDI_API_LINUX_ALSA, "Synthr", 1024);
@@ -190,21 +193,26 @@ int main(int argc, char **argv) {
     // }
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_sqr(48000, 4096, 20);
-    adsr.attack = 0.01f;
+    adsr.attack = 0.05f;
     adsr.delay = 0.1f;
     adsr.sustain = 0.1f;
-    adsr.release = 0.01f;
+    adsr.release = 0.1f;
     adsr.key_pressed = 0;
-    nodes[0] = nodeNumber(0.0f);
-    nodes[1] = nodeNumber(0.0f);
-    nodes[2] = nodeMul(4, 5);
+    nodes[0] = nodeNumber(1600.0f);
+    nodes[1] = nodeFilterLowpass(4, 0, 9);
+    nodes[2] = nodeMul(1, 5);
     nodes[3] = nodeMidi(0, &midi_state);
-    nodes[4] = nodeSqr(3);
+    nodes[4] = nodeSaw(3);
     nodes[5] = nodeAdsr(3, &adsr);
+    nodes[6] = nodeNumber(4.0f);
+    nodes[7] = nodeVelocity(0, &midi_state);
+    nodes[8] = nodeMul(7, 6);
+    nodes[9] = nodeAdd(8, 10);
+    nodes[10] = nodeNumber(0.001);
     for(int i = 0; i < NUM_VOICES; i++){
         for(int j = 0; j < 16; j++){
             channels[i][j] = copyNode(nodes[j]);
-            if(channels[i][j].type==MIDI){
+            if(channels[i][j].type==MIDI || channels[i][j].type==VELOCITY){
                 *(int*)(((char*)channels[i][j].value)+sizeof(MidiState*)) = i;
             }
         }

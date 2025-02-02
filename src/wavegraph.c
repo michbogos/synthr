@@ -55,7 +55,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         getNodeOutput(node.inputs[2], nodes, num_nodes, n, resonance, dt);
 
         for(int i = 0; i < n; i++){
-            buffer[i] = filter(a[i], 1.0f/dt, node.value, fc[i], resonance[i], 0.0);
+            buffer[i] = filter(a[i], 1.0f/dt, node.value, fc[i], resonance[i], 1.0);
         }
         return;
         break;
@@ -79,6 +79,17 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[voice_idx]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f))* (state.notes[voice_idx]>0?1:0);
         for(int i = 0; i < n; i++){
             buffer[i] = frequency;
+        }
+        return;
+        break;
+    }
+    case VELOCITY:
+    {
+        MidiState state = *(*(MidiState**)node.value);
+        int voice_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
+        //float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[voice_idx]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f))* (state.notes[voice_idx]>0?1:0);
+        for(int i = 0; i < n; i++){
+            buffer[i] = (float)state.velocities[voice_idx]/127.0f;
         }
         return;
         break;
@@ -514,6 +525,19 @@ WaveNode nodeDelay(int samples, int delay_size, float decay){
 WaveNode nodeMidi(int voice_idx, MidiState* state){
     WaveNode node;
     node.type = MIDI;
+    node.inputs = NULL;
+    node.value = malloc(sizeof(MidiState*)+sizeof(int));
+    *(MidiState**)node.value = state;
+    *(int*)(((char*)node.value)+sizeof(MidiState*)) = voice_idx;
+    node.id = COUNTER++;
+    node.num_inputs = 0;
+    node.value_len = sizeof(MidiState*)+sizeof(int);
+    return node;
+}
+
+WaveNode nodeVelocity(int voice_idx, MidiState* state){
+    WaveNode node;
+    node.type = VELOCITY;
     node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*)+sizeof(int));
     *(MidiState**)node.value = state;
