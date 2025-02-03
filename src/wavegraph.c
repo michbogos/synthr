@@ -89,13 +89,33 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
     {
         MidiState state = *(*(MidiState**)node.value);
         int voice_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
-        //float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[voice_idx]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f))* (state.notes[voice_idx]>0?1:0);
         for(int i = 0; i < n; i++){
             buffer[i] = (float)state.velocities[voice_idx]/127.0f;
         }
         return;
         break;
     }
+
+    case MODWHEEL:
+    {
+        MidiState state = *(*(MidiState**)node.value);
+        for(int i = 0; i < n; i++){
+            buffer[i] = (float)state.mod_wheel/127.0f;
+        }
+        return;
+        break;
+    }
+
+    case PITCHBEND:
+    {
+        MidiState state = *(*(MidiState**)node.value);
+        for(int i = 0; i < n; i++){
+            buffer[i] = (float)state.pitch_bend/32767.0f;
+        }
+        return;
+        break;
+    }
+
     case DELAY:
         //Incorrect
         {
@@ -576,6 +596,30 @@ WaveNode nodeVelocity(int voice_idx, MidiState* state){
     node.id = COUNTER++;
     node.num_inputs = 0;
     node.value_len = sizeof(MidiState*)+sizeof(int);
+    return node;
+}
+
+WaveNode nodeModWheel(MidiState* state){
+    WaveNode node;
+    node.type = MODWHEEL;
+    node.inputs = NULL;
+    node.value = malloc(sizeof(MidiState*));
+    *(MidiState**)node.value = state;
+    node.id = COUNTER++;
+    node.num_inputs = 0;
+    node.value_len = sizeof(MidiState*);
+    return node;
+}
+
+WaveNode nodePitchBend(MidiState* state){
+    WaveNode node;
+    node.type = PITCHBEND;
+    node.inputs = NULL;
+    node.value = malloc(sizeof(MidiState*));
+    *(MidiState**)node.value = state;
+    node.id = COUNTER++;
+    node.num_inputs = 0;
+    node.value_len = sizeof(MidiState*);
     return node;
 }
 

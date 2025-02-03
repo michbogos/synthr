@@ -23,6 +23,7 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
                 if(state->notes[i]==message[1]){
                     state->notes[i] = 0;
                     state->velocities[i] = 0;
+                    printf("Turning off");
                     return;
                 }
             }
@@ -35,8 +36,26 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
             return;
             break;
         }
+        // Other midi controller controls
+        case 11:
+            switch (message[1])
+            {
+                // Modwheel
+                case 1:
+                    state->mod_wheel = message[2];
+                    return;
+                    break;
+                
+                default:
+                    break;
+            }
+            break;
+        
+
         default:
+            printf("Unknown MIDI event. First byte: %d, Second byte: %d, Third byte: %d\n", message[0], message[1], message[2]);
             return;
+            break;
     }
     return;
 }

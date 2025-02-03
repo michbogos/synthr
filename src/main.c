@@ -17,8 +17,8 @@
 #include <reverb.h>
 #include <midi.h>
 
-WaveNode nodes[16];
-WaveNode channels[NUM_VOICES][16];
+WaveNode nodes[32];
+WaveNode channels[NUM_VOICES][32];
 
 float frequency = 200.0f;
 float phase = 0.0f;
@@ -79,7 +79,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
         }
         float tmp[frame_count];
         for(int voice = 0; voice < NUM_VOICES; voice++){
-            getNodeOutput(2, channels[voice], 16, frame_count, tmp, 1.0f/float_sample_rate);
+            getNodeOutput(2, channels[voice], 32, frame_count, tmp, 1.0f/float_sample_rate);
             for(int i = 0; i < frame_count; i++){
                 samples[i] += tmp[i];
             }
@@ -202,19 +202,24 @@ int main(int argc, char **argv) {
     nodes[1] = nodeFilterLowpass(4, 0, 9);
     nodes[2] = nodeMul(1, 5);
     nodes[3] = nodeMidi(0, &midi_state);
-    nodes[4] = nodePolygon(3, 13);
+    nodes[4] = nodePolygon(3, 17);
     nodes[5] = nodeAdsr(3, &adsr);
     nodes[6] = nodeNumber(4.0f);
     nodes[7] = nodeVelocity(0, &midi_state);
     nodes[8] = nodeMul(7, 6);
     nodes[9] = nodeAdd(8, 10);
     nodes[10] = nodeNumber(0.001);
-    nodes[11] = nodeNumber(3.0f);
-    nodes[12] = nodeSin(11);
+    nodes[11] = nodeModWheel(&midi_state);
+    nodes[12] = nodeSin(18);
     nodes[13] = nodeAdd(12, 14);
     nodes[14] = nodeNumber(3.0f);
+    nodes[15] = nodeMul(11, 16);
+    nodes[16] = nodeNumber(3.0f);
+    nodes[17] = nodeAdd(15, 13);
+    nodes[18] = nodeMul(11, 19);
+    nodes[19] = nodeNumber(15);
     for(int i = 0; i < NUM_VOICES; i++){
-        for(int j = 0; j < 16; j++){
+        for(int j = 0; j < 32; j++){
             channels[i][j] = copyNode(nodes[j]);
             if(channels[i][j].type==MIDI || channels[i][j].type==VELOCITY){
                 *(int*)(((char*)channels[i][j].value)+sizeof(MidiState*)) = i;
