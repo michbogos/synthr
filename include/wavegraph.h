@@ -5,7 +5,7 @@
 #include<midi.h>
 #include<envelope.h>
 enum NodeType{
-    ADSR, MIDI, VELOCITY, WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER_LOWPASS, FILTER_HIGHPASS,FILTER_BANDPASS, FILTER_NOTCH, FILTER_APF, FILTER_PEAKEQ , COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY
+    ADSR, MIDI, VELOCITY, WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, POLYGON, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER_LOWPASS, FILTER_HIGHPASS,FILTER_BANDPASS, FILTER_NOTCH, FILTER_APF, FILTER_PEAKEQ , COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY
 };
 
 
@@ -28,11 +28,14 @@ WaveNode copyNode(WaveNode node);
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt);
 
 WaveNode nodeNumber(float number);
+
 WaveNode nodeWavetable(int frequency, Wavetable* table);
 WaveNode nodeSin(int frequency);
 WaveNode nodeTri(int frequency);
 WaveNode nodeSqr(int frequency);
 WaveNode nodeSaw(int frequency);
+WaveNode nodePolygon(int frequency, int n);
+
 WaveNode nodeAdd(int a, int b);
 WaveNode nodeSub(int a, int b);
 WaveNode nodeMul(int a, int b);

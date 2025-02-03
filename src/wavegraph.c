@@ -24,8 +24,10 @@ float ZERO = 0.0f;
 //Copies just one layer of pointer indirection
 WaveNode copyNode(WaveNode node){
     WaveNode res = node;
-    res.value = malloc(node.value_len);
-    memcpy(res.value, node.value, node.value_len);
+    if(node.value != NULL && node.value_len > 0){
+        res.value = malloc(node.value_len);
+        memcpy(res.value, node.value, node.value_len);
+    }
     return res;
 }
 
@@ -216,6 +218,18 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i] = osc_saw(frequency_buffer[i], node.value, dt);
             }
             node.computed = 1;
+            return;
+            break;
+        }
+    case POLYGON:
+        {
+            float frequency_buffer[n];
+            float n_buffer[n];
+            getNodeOutput(node.inputs[0], nodes, num_nodes, n, frequency_buffer, dt);
+            getNodeOutput(node.inputs[1], nodes, num_nodes, n, n_buffer, dt);
+            for(int i = 0; i < n; i ++){
+                buffer[i] = osc_ply(n_buffer[i], frequency_buffer[i], node.value, dt);
+            }
             return;
             break;
         }
@@ -449,6 +463,22 @@ WaveNode nodeSaw(int frequency){
     return node;
 }
 
+WaveNode nodePolygon(int frequency, int n){
+    WaveNode node;
+    node.type = POLYGON;
+    node.inputs = (int*)malloc(2*sizeof(int));
+    node.inputs[0] = frequency;
+    node.inputs[1] = n;
+    node.value = malloc(sizeof(float));
+    *(float*)(node.value) = 0.0f;
+    node.value_len = sizeof(float);
+    node.num_inputs = 2;
+    node.computed = 0;
+    node.cache = NULL;
+    node.id = COUNTER++;
+    return node;
+}
+
 WaveNode nodeAdd(int a, int b){
     WaveNode node;
     node.type = ADD;
@@ -456,6 +486,7 @@ WaveNode nodeAdd(int a, int b){
     node.inputs[0] = a;
     node.inputs[1] = b;
     node.value = NULL;
+    node.value_len = 0;
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
