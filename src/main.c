@@ -193,11 +193,14 @@ int main(int argc, char **argv) {
     // }
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_sqr(48000, 4096, 20);
-    adsr.attack = 0.05f;
-    adsr.delay = 0.1f;
-    adsr.sustain = 0.1f;
-    adsr.release = 0.1f;
-    adsr.key_pressed = 0;
+    adsr.ab = 0.00001f;
+    adsr.ac = 1.000001f;
+    adsr.db = -0.001;
+    adsr.dc = 0.9999;
+    adsr.sustain = 0.5f;
+    adsr.rb = 0.0;
+    adsr.rc = 0.99999;
+    adsr.state = 0;
     nodes[0] = nodeNumber(1600.0f);
     nodes[1] = nodeFilterLowpass(4, 0, 9);
     nodes[2] = nodeMul(1, 5);

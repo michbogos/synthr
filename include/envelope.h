@@ -4,19 +4,19 @@
 #include<math.h>
 
 typedef struct{
-    float attack;
-    float at;
-    float delay;
-    float dt;
+    float ab;
+    float ac;
+    float db;
+    float dc;
     float sustain;
-    float release;
-    float rt;
-    float release_value;
-    int key_pressed;
+    float rb;
+    float rc;
+    float res;
+    int state;
 } ADSREnvelope;
 
-ADSREnvelope env_adsr(float attack, float delay, float sustain, float release);
+ADSREnvelope env_adsr(float ab, float ac, float db, float dc, float sustain, float rb, float rc);
 
-void gen_adsr_envelope(ADSREnvelope* adsr, float* output, int n, float sample_rate);
+float gen_adsr_envelope(ADSREnvelope* adsr);
 
 #endif

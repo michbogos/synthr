@@ -68,8 +68,8 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
 
         getNodeOutput(node.inputs[0], nodes, num_nodes, n, trigger, dt);
         for(int i = 0; i < n; i++){
-            ((ADSREnvelope*)node.value)->key_pressed = trigger[i] > 0 ? 1 : 0;
-            gen_adsr_envelope(node.value, buffer+i, 1, 1.0/dt);
+            ((ADSREnvelope*)node.value)->state = trigger[i] > 0 ? 1 : ((ADSREnvelope*)node.value)->state;
+            buffer[i] = gen_adsr_envelope(node.value);
         }
         return;
         break;

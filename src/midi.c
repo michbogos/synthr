@@ -23,7 +23,6 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
                 if(state->notes[i]==message[1]){
                     state->notes[i] = 0;
                     state->velocities[i] = 0;
-                    printf("Turning off");
                     return;
                 }
             }
