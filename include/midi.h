@@ -7,6 +7,7 @@
 
 
 typedef struct {
+    //Keep MIDI value as well as wether turned on or not
     unsigned char notes[NUM_VOICES];
     unsigned char velocities[NUM_VOICES];
     unsigned char mod_wheel;
