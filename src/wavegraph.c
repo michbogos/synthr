@@ -65,12 +65,17 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
     case ADSR:
     {
         float trigger[n];
-
         getNodeOutput(node.inputs[0], nodes, num_nodes, n, trigger, dt);
+        if(trigger[0] > 1.0f && !(((ADSREnvelope*)node.value)->gate>1.0f)){
+            ((ADSREnvelope*)node.value)->state = 1;
+        }
+        if(!(trigger[0] > 1.0f) && ((ADSREnvelope*)node.value)->gate>1.0f){
+            ((ADSREnvelope*)node.value)->state = 4;
+        }
         for(int i = 0; i < n; i++){
-            ((ADSREnvelope*)node.value)->state = trigger[i] > 0 ? 1 : ((ADSREnvelope*)node.value)->state;
             buffer[i] = gen_adsr_envelope(node.value);
         }
+        ((ADSREnvelope*)node.value)->gate = trigger[n-1];
         return;
         break;
     }

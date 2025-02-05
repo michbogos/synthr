@@ -65,6 +65,8 @@ static void write_callback(struct SoundIoOutStream *outstream,
     while (frames_left > 0) {
         int frame_count = frames_left;
 
+        printf("%f, %d\n", ((ADSREnvelope*)channels[0][5].value)->res,((ADSREnvelope*)channels[0][5].value)->state);
+
         if ((err = soundio_outstream_begin_write(outstream, &areas, &frame_count))) {
             fprintf(stderr, "%s\n", soundio_strerror(err));
             exit(1);
@@ -193,13 +195,13 @@ int main(int argc, char **argv) {
     // }
     tritable = wtbl_sqr(48000, 4096, 20);
     sawtable = wtbl_sqr(48000, 4096, 20);
-    adsr.ab = 0.00001f;
-    adsr.ac = 1.000001f;
-    adsr.db = -0.001;
-    adsr.dc = 0.9999;
+    adsr.ab = 3.0f/48000.0f;
+    adsr.ac = 1.0f;
+    adsr.db = -1.0f/48000.0f;
+    adsr.dc = 1.0f;
     adsr.sustain = 0.5f;
-    adsr.rb = 0.0;
-    adsr.rc = 0.99999;
+    adsr.rb = -1.0f/48000.0f;
+    adsr.rc = 1.00f;
     adsr.state = 0;
     nodes[0] = nodeNumber(1600.0f);
     nodes[1] = nodeFilterLowpass(4, 0, 9);
