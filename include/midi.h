@@ -10,6 +10,7 @@ typedef struct {
     //Keep MIDI value as well as wether turned on or not
     unsigned char notes[NUM_VOICES];
     unsigned char velocities[NUM_VOICES];
+    unsigned char is_on[NUM_VOICES];
     unsigned char mod_wheel;
     unsigned short pitch_bend;
 } MidiState;
