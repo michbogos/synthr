@@ -8,7 +8,8 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
         case 9:
             {
                 for(int i = 0; i < NUM_VOICES; i++){
-                    if(state->notes[i]==0){
+                    if(state->is_on[i]==0){
+                        state->is_on[i] = 1;
                         state->notes[i] = message[1];
                         state->velocities[i] = message[2];
                         return;
@@ -21,8 +22,7 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
         {
             for(int i = 0; i < NUM_VOICES; i++){
                 if(state->notes[i]==message[1]){
-                    state->notes[i] = 0;
-                    state->velocities[i] = 0;
+                    state->is_on[i] = 0;
                     return;
                 }
             }
