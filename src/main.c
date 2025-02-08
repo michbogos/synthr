@@ -65,7 +65,7 @@ static void write_callback(struct SoundIoOutStream *outstream,
     while (frames_left > 0) {
         int frame_count = frames_left;
 
-        printf("%f, %d\n", ((ADSREnvelope*)channels[0][5].value)->res,((ADSREnvelope*)channels[0][5].value)->state);
+        //printf("%f, %d\n", ((ADSREnvelope*)channels[0][5].value)->res,((ADSREnvelope*)channels[0][5].value)->state);
 
         if ((err = soundio_outstream_begin_write(outstream, &areas, &frame_count))) {
             fprintf(stderr, "%s\n", soundio_strerror(err));
@@ -206,8 +206,9 @@ int main(int argc, char **argv) {
     nodes[0] = nodeNumber(1600.0f);
     nodes[1] = nodeFilterLowpass(4, 0, 9);
     nodes[2] = nodeMul(1, 5);
-    nodes[3] = nodeMidi(0, &midi_state);
-    nodes[4] = nodePolygon(3, 17);
+    nodes[3] = nodeMidiGate(0, &midi_state);
+    nodes[20] = nodeMidiPitch(0, &midi_state);
+    nodes[4] = nodePolygon(20, 17);
     nodes[5] = nodeAdsr(3, &adsr);
     nodes[6] = nodeNumber(4.0f);
     nodes[7] = nodeVelocity(0, &midi_state);
@@ -226,7 +227,7 @@ int main(int argc, char **argv) {
     for(int i = 0; i < NUM_VOICES; i++){
         for(int j = 0; j < 32; j++){
             channels[i][j] = copyNode(nodes[j]);
-            if(channels[i][j].type==MIDI || channels[i][j].type==VELOCITY){
+            if(channels[i][j].type==MIDI_GATE || channels[i][j].type==VELOCITY || channels[i][j].type==MIDI_PITCH){
                 *(int*)(((char*)channels[i][j].value)+sizeof(MidiState*)) = i;
             }
         }

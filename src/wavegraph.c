@@ -66,10 +66,10 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
     {
         float trigger[n];
         getNodeOutput(node.inputs[0], nodes, num_nodes, n, trigger, dt);
-        if(trigger[0] > 1.0f && !(((ADSREnvelope*)node.value)->gate>1.0f)){
+        if(trigger[0] > 0 && !(((ADSREnvelope*)node.value)->gate > 0)){
             ((ADSREnvelope*)node.value)->state = 1;
         }
-        if(!(trigger[0] > 1.0f) && ((ADSREnvelope*)node.value)->gate>1.0f){
+        if(!(trigger[0] > 0) && ((ADSREnvelope*)node.value)->gate > 0){
             ((ADSREnvelope*)node.value)->state = 4;
         }
         for(int i = 0; i < n; i++){
@@ -79,11 +79,21 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         return;
         break;
     }
-    case MIDI:
+    case MIDI_GATE:
     {
         MidiState state = *(*(MidiState**)node.value);
         int voice_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
-        float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[voice_idx]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f))* (state.notes[voice_idx]>0?1:0);
+        for(int i = 0; i < n; i++){
+            buffer[i] = state.is_on[voice_idx];
+        }
+        return;
+        break;
+    }
+    case MIDI_PITCH:
+    {
+        MidiState state = *(*(MidiState**)node.value);
+        int voice_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
+        float frequency = (261.625565*powf(powf(2.0f, 1.0f/12.0f), state.notes[voice_idx]-60.0f+12.0f*((float)((int)state.pitch_bend-16384))/16384.0f));
         for(int i = 0; i < n; i++){
             buffer[i] = frequency;
         }
@@ -578,9 +588,22 @@ WaveNode nodeDelay(int samples, int delay_size, float decay){
 }
 
 
-WaveNode nodeMidi(int voice_idx, MidiState* state){
+WaveNode nodeMidiGate(int voice_idx, MidiState* state){
     WaveNode node;
-    node.type = MIDI;
+    node.type = MIDI_GATE;
+    node.inputs = NULL;
+    node.value = malloc(sizeof(MidiState*)+sizeof(int));
+    *(MidiState**)node.value = state;
+    *(int*)(((char*)node.value)+sizeof(MidiState*)) = voice_idx;
+    node.id = COUNTER++;
+    node.num_inputs = 0;
+    node.value_len = sizeof(MidiState*)+sizeof(int);
+    return node;
+}
+
+WaveNode nodeMidiPitch(int voice_idx, MidiState* state){
+    WaveNode node;
+    node.type = MIDI_PITCH;
     node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*)+sizeof(int));
     *(MidiState**)node.value = state;
