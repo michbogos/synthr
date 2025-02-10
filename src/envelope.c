@@ -43,6 +43,12 @@ float gen_adsr_envelope(ADSREnvelope* adsr){
     return adsr->res;
 }
 
+void adsr_set_attack (ADSREnvelope* env, float t, float sample_rate){
+    env->ac = powf(1.0f, sample_rate*t);
+}
+void adsr_set_delay  (ADSREnvelope* env, float t, float sample_rate);
+void adsr_set_release(ADSREnvelope* env, float t, float sample_rate);
+
 // void gen_adsr_envelope(ADSREnvelope* adsr, float* output, int n, float sample_rate){
 //     for(int i = 0; i < n; i++){
 //         if(adsr->key_pressed && adsr->at < adsr->attack && adsr->dt < adsr->delay){
