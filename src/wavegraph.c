@@ -100,6 +100,16 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         return;
         break;
     }
+    case MIDI_CONTROL:
+    {
+        MidiState state = *(*(MidiState**)node.value);
+        int control_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
+        for(int i = 0; i < n; i++){
+            buffer[i] = state.controls[control_idx]/127.0f;
+        }
+        return;
+        break;
+    }
     case VELOCITY:
     {
         MidiState state = *(*(MidiState**)node.value);
@@ -608,6 +618,19 @@ WaveNode nodeMidiPitch(int voice_idx, MidiState* state){
     node.value = malloc(sizeof(MidiState*)+sizeof(int));
     *(MidiState**)node.value = state;
     *(int*)(((char*)node.value)+sizeof(MidiState*)) = voice_idx;
+    node.id = COUNTER++;
+    node.num_inputs = 0;
+    node.value_len = sizeof(MidiState*)+sizeof(int);
+    return node;
+}
+
+WaveNode nodeMidiControl(int control_idx, MidiState* state){
+    WaveNode node;
+    node.type = MIDI_CONTROL;
+    node.inputs = NULL;
+    node.value = malloc(sizeof(MidiState*)+sizeof(int));
+    *(MidiState**)node.value = state;
+    *(int*)(((char*)node.value)+sizeof(MidiState*)) = control_idx;
     node.id = COUNTER++;
     node.num_inputs = 0;
     node.value_len = sizeof(MidiState*)+sizeof(int);

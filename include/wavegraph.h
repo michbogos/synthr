@@ -5,7 +5,7 @@
 #include<midi.h>
 #include<envelope.h>
 enum NodeType{
-    ADSR, MIDI_GATE, MIDI_PITCH,  MODWHEEL, PITCHBEND, VELOCITY, WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, POLYGON, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER_LOWPASS, FILTER_HIGHPASS,FILTER_BANDPASS, FILTER_NOTCH, FILTER_APF, FILTER_PEAKEQ , COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY
+    ADSR, MIDI_GATE, MIDI_CONTROL, MIDI_PITCH,  MODWHEEL, PITCHBEND, VELOCITY, WAVETABLE, TRIANGLE, SAW, SQUARE, SIN, POLYGON, OUTPUT, ADD, SUBTRACT, MULTIPLY, NUMBER, FILTER_LOWPASS, FILTER_HIGHPASS,FILTER_BANDPASS, FILTER_NOTCH, FILTER_APF, FILTER_PEAKEQ , COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY
 };
 
 
@@ -54,6 +54,7 @@ WaveNode nodeDelay(int samples, int delay_size, float decay);
 
 WaveNode nodeMidiGate(int voice_idx, MidiState* state);
 WaveNode nodeMidiPitch(int voice_idx, MidiState* state);
+WaveNode nodeMidiControl(int control_idx, MidiState* state);
 WaveNode nodeVelocity(int voice_idx, MidiState* state);
 WaveNode nodeModWheel(MidiState* state);
 WaveNode nodePitchBend(MidiState* MidiState);

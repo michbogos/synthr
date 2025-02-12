@@ -46,6 +46,7 @@ void midi_callback(double timeStamp, const unsigned char* message, size_t messag
                     break;
                 
                 default:
+                    state->controls[message[1]] = message[2];
                     break;
             }
             break;

@@ -205,9 +205,8 @@ int main(int argc, char **argv) {
     adsr.state = 0;
     nodes[0] = nodeNumber(1600.0f);
     nodes[1] = nodeFilterLowpass(4, 0, 9);
-    nodes[2] = nodeMul(1, 5);
+    nodes[2] = nodeMul(22, 21);
     nodes[3] = nodeMidiGate(0, &midi_state);
-    nodes[20] = nodeMidiPitch(0, &midi_state);
     nodes[4] = nodePolygon(20, 17);
     nodes[5] = nodeAdsr(3, &adsr);
     nodes[6] = nodeNumber(4.0f);
@@ -224,6 +223,9 @@ int main(int argc, char **argv) {
     nodes[17] = nodeAdd(15, 13);
     nodes[18] = nodeMul(11, 19);
     nodes[19] = nodeNumber(15);
+    nodes[20] = nodeMidiPitch(0, &midi_state);
+    nodes[21] = nodeMidiControl(96, &midi_state);
+    nodes[22] = nodeMul(1, 5);
     for(int i = 0; i < NUM_VOICES; i++){
         for(int j = 0; j < 32; j++){
             channels[i][j] = copyNode(nodes[j]);
