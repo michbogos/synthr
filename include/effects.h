@@ -12,4 +12,9 @@ float distortion_foldback(float in, float threshold)
   return in;
 }
 
+float distortion_exp(float x)
+{
+  return x/fabsf(x)*(1.0f-exp(-powf(x,2)/fabsf(x)));
+}
+
 #endif
