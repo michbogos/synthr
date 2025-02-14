@@ -4,6 +4,7 @@
 #include<rng.h>
 #include<delay.h>
 #include<string.h>
+#include<effects.h>
 
 #define NULL ((void*)0)
 int COUNTER = 0;
@@ -136,6 +137,17 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         MidiState state = *(*(MidiState**)node.value);
         for(int i = 0; i < n; i++){
             buffer[i] = (float)state.pitch_bend/32767.0f;
+        }
+        return;
+        break;
+    }
+
+    case DISTORTION:
+    {
+        float input[n];
+        getNodeOutput(node.inputs[0], nodes, num_nodes, n, input, dt);
+        for(int i = 0; i < n; i++){
+            buffer[i] = distortion_foldback(input[i], 0.5);
         }
         return;
         break;
@@ -589,7 +601,22 @@ WaveNode nodeDelay(int samples, int delay_size, float decay){
     node.inputs[0] = samples;
     Delay d = init_delay(delay_size, decay);
     node.value = malloc(sizeof(Delay));
+    node.value_len = sizeof(Delay);
     *(Delay*)node.value = d;
+    node.num_inputs = 1;
+    node.computed = 0;
+    node.cache = NULL;
+    node.id = COUNTER++;
+    return node;
+}
+
+WaveNode nodeDistortion(int input){
+    WaveNode node;
+    node.type = DISTORTION;
+    node.inputs = malloc(1*sizeof(int));
+    node.inputs[0] = input;
+    node.value = NULL;
+    node.value_len = 0;
     node.num_inputs = 1;
     node.computed = 0;
     node.cache = NULL;
