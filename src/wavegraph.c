@@ -153,6 +153,19 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         break;
     }
 
+    case BITCRUSHER:
+    {
+        float input[n];
+        float bits[n];
+        getNodeOutput(node.inputs[0], nodes, num_nodes, n, input, dt);
+        getNodeOutput(node.inputs[1], nodes, num_nodes, n, bits, dt);
+        for(int i = 0; i < n; i++){
+            buffer[i] = bit_crusher(input[i], bits[i]);
+        }
+        return;
+        break;
+    }
+
     case DELAY:
         //Incorrect
         {
@@ -624,6 +637,20 @@ WaveNode nodeDistortion(int input){
     return node;
 }
 
+WaveNode nodeBitcrusher(int input, int bits){
+    WaveNode node;
+    node.type = BITCRUSHER;
+    node.inputs = malloc(2*sizeof(int));
+    node.inputs[0] = input;
+    node.inputs[1] = bits;
+    node.value = NULL;
+    node.value_len = 0;
+    node.num_inputs = 1;
+    node.computed = 0;
+    node.cache = NULL;
+    node.id = COUNTER++;
+    return node;
+}
 
 WaveNode nodeMidiGate(int voice_idx, MidiState* state){
     WaveNode node;
