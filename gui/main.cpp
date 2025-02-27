@@ -15,6 +15,12 @@ extern "C"{
 #include "render_wavenode.h"
 #include <rtmidi.h>
 
+void drawSelectionBox(int* selected_item){
+    ImGui::Begin("Add new node");
+    if(ImGui::ListBox(" ", selected_item, NODE_DESC, LEN_NODE_DESC, -1));
+    ImGui::End();
+}
+
 
 //WaveNode DEFALUT_NODE = {.type=NUMBER, .value=&ZERO, .id=-1};
 
@@ -39,6 +45,9 @@ int main(int, char**)
 
     //Setup RtMidi
     RtMidiIn* midiin;
+    bool selection_active =false;
+    int selected_node_to_add = -1;
+    ImVec2 mouse_pos = {};
 
     try {
         midiin = new RtMidiIn();
@@ -169,6 +178,11 @@ int main(int, char**)
 
         ImGui::Begin("simple node editor");
 
+        if(selection_active){
+            ImGui::SetNextWindowPos(mouse_pos);
+            drawSelectionBox(&selected_node_to_add);
+        }
+
         if(ImNodes::IsLinkCreated(&out, &in)){
             links.push_back({out, in});
             nodes[in/1024].inputs[in%1024] = out/1024;
@@ -198,6 +212,13 @@ int main(int, char**)
                     nodes[link.second/1024].inputs[link.second%1024] = -1;
                 }
             }
+        }
+        if(ImGui::IsKeyPressed(ImGuiKey_A)){
+            selection_active = true;
+            mouse_pos = ImGui::GetMousePos();
+        }
+        if(ImGui::IsKeyPressed(ImGuiKey_Enter)){
+            selection_active = false;
         }
 
         ImGui::End();
