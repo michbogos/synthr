@@ -181,6 +181,11 @@ int main(int, char**)
         if(selection_active){
             ImGui::SetNextWindowPos(mouse_pos);
             drawSelectionBox(&selected_node_to_add);
+            if(selected_node_to_add != -1){
+                nodes.push_back(nodeAdd(-1, -1));
+                selected_node_to_add = -1;
+                selection_active = false;
+            }
         }
 
         if(ImNodes::IsLinkCreated(&out, &in)){
