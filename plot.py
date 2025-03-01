@@ -23,9 +23,9 @@ plt.title("Signal Wave...")
 plt.plot(signal[0])
 plt.show()
 
-win = gaussian(512, std=12, sym=True)
+win = gaussian(64, std=1.0, sym=True)
 
-SFT = ShortTimeFFT(win, hop=128, fs=44800, mfft=1024, scale_to="psd")
+SFT = ShortTimeFFT(win, hop=64, fs=44800, mfft=1024, scale_to="psd")
 
 plt.imshow(SFT.spectrogram(signal[0]))
 plt.show()
