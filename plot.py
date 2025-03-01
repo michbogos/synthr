@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import wave
 import sys
+from scipy.signal import ShortTimeFFT
+from scipy.signal.windows import gaussian
 
 
 spf = wave.open("test.wav", "r")
@@ -11,12 +13,19 @@ signal = spf.readframes(-1)
 signal = np.fromstring(signal, np.int16)
 
 
-# If Stereo
-if spf.getnchannels() == 2:
-    print("Just mono files")
-    sys.exit(0)
+signal = signal.reshape((spf.getnchannels(), -1))
+print("Reshaping stereo file")
+
+print(signal.shape)
 
 plt.figure(1)
 plt.title("Signal Wave...")
-plt.plot(signal)
+plt.plot(signal[0])
+plt.show()
+
+win = gaussian(512, std=12, sym=True)
+
+SFT = ShortTimeFFT(win, hop=128, fs=44800, mfft=1024, scale_to="psd")
+
+plt.imshow(SFT.spectrogram(signal[0]))
 plt.show()
