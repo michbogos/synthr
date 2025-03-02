@@ -42,7 +42,6 @@ static void glfw_error_callback(int error, const char* description)
 // Main code
 int main(int, char**)
 {
-
     //Setup RtMidi
     RtMidiIn* midiin;
     bool selection_active =false;
@@ -79,6 +78,7 @@ int main(int, char**)
     std::vector<WaveNode> nodes;
     std::vector<std::pair<int, int>> links;
     for(int i = 0; i < 2; i++){
+        WaveNode number = nodeNumber(i+1);
         nodes.push_back(nodeNumber(i+1));
     }
 

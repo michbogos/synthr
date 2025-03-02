@@ -64,7 +64,7 @@ void render_wavenode(WaveNode node){
     ImNodes::BeginNode(node.id);
 
     ImNodes::BeginNodeTitleBar();
-    ImGui::Text(NODE_DESC[(int)node.type]);
+    ImGui::Text(NODE_DESC[node.type]);
     ImNodes::EndNodeTitleBar();
 
     for(int i = 0; i < node.num_inputs; i ++){

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 
 project(synthr)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wall -Wextra")
+set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Wextra")
 
 include(ExternalProject)
 include(FetchContent)
@@ -31,7 +31,7 @@ file(GLOB INCLUDE_FILES "./include/*.h")
 
 list(FILTER C_FILES EXCLUDE REGEX "main\\.c")
 
-add_library(synthr ${C_FILES})
+add_library(synthr STATIC ${C_FILES})
 target_link_libraries(synthr m)
 target_include_directories(synthr PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_sources(synthr PUBLIC ${C_FILES})
@@ -48,4 +48,4 @@ target_link_libraries(program libsoundio_static)
 target_link_libraries(program libsoundio_shared)
 target_link_libraries(program rtmidi)
 set_target_properties(program PROPERTIES LINKER_LANGUAGE C)
-# target_link_libraries(synthr libsynthr)
+# target_link_libraries(synthr synthr)
