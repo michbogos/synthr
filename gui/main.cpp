@@ -14,6 +14,14 @@ extern "C"{
 }
 #include "render_wavenode.h"
 #include <rtmidi.h>
+#include <rtmidi_c.h>
+
+MidiState midi_state;
+
+void midi_callback_wrapper(double timeStamp, std::vector<unsigned char> *message, void *userData){
+    midi_callback(timeStamp, message->data(), message->size(), userData);
+    return;
+}
 
 void drawSelectionBox(int* selected_item){
     ImGui::Begin("Add new node");
@@ -21,17 +29,62 @@ void drawSelectionBox(int* selected_item){
     ImGui::End();
 }
 
+void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
+    switch(node_type){
+        case ADD:
+            nodes.push_back(nodeAdd(-1, -1));
+            break;
+        case SUBTRACT:
+            nodes.push_back(nodeSub(-1, -1));
+            break;
+        case MULTIPLY:
+            nodes.push_back(nodeMul(-1, -1));
+            break;
+        case DIVIDE:
+            nodes.push_back(nodeDiv(-1, -1));
+            break;
+        case SQUARE:
+            nodes.push_back(nodeSqr(-1));
+            break;
+        case TRIANGLE:
+            nodes.push_back(nodeTri(-1));
+            break;
+        case SAW:
+            nodes.push_back(nodeSaw(-1));
+            break;
+        case SIN:
+            nodes.push_back(nodeSin(-1));
+            break;
+        case POLYGON:
+            nodes.push_back(nodePolygon(-1, -1));
+            break;
+        // Not correct yet
+        case MIDI_CONTROL:
+            nodes.push_back(nodeMidiControl(2, &midi_state));
+            break;
+        case MIDI_GATE:
+            nodes.push_back(nodeMidiGate(0, &midi_state));
+            break;
+        case MIDI_PITCH:
+            nodes.push_back(nodeMidiPitch(0, &midi_state));
+            break;
+        case NUMBER:
+            nodes.push_back(nodeMidiPitch(0, &midi_state));
+            break;
+    }
+}
+
 
 //WaveNode DEFALUT_NODE = {.type=NUMBER, .value=&ZERO, .id=-1};
 
-void midicallback( double deltatime, std::vector< unsigned char > *message, void *userData )
-{
-  unsigned int nBytes = message->size();
-  for ( unsigned int i=0; i<nBytes; i++ )
-    std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
-  if ( nBytes > 0 )
-    std::cout << "stamp = " << deltatime << std::endl;
-}
+// void midicallback( double deltatime, std::vector< unsigned char > *message, void *userData )
+// {
+//   unsigned int nBytes = message->size();
+//   for ( unsigned int i=0; i<nBytes; i++ )
+//     std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
+//   if ( nBytes > 0 )
+//     std::cout << "stamp = " << deltatime << std::endl;
+// }
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -72,13 +125,13 @@ int main(int, char**)
     }
 
     midiin->openPort(nPorts>1?1:0);
-    midiin->setCallback( &midicallback );
+    // rtmidi_in_set_callback((RtMidiInPtr)midiin, midi_callback, &midi_state);
+    midiin->setCallback(midi_callback_wrapper, &midi_state);
     midiin->ignoreTypes( false, false, false );
 
     std::vector<WaveNode> nodes;
     std::vector<std::pair<int, int>> links;
     for(int i = 0; i < 2; i++){
-        WaveNode number = nodeNumber(i+1);
         nodes.push_back(nodeNumber(i+1));
     }
 
@@ -182,7 +235,8 @@ int main(int, char**)
             ImGui::SetNextWindowPos(mouse_pos);
             drawSelectionBox(&selected_node_to_add);
             if(selected_node_to_add != -1){
-                nodes.push_back(nodeAdd(-1, -1));
+                // nodes.push_back(nodeAdd(-1, -1));
+                addNodeToTree(nodes, (NodeType)selected_node_to_add);
                 selected_node_to_add = -1;
                 selection_active = false;
             }
@@ -234,7 +288,7 @@ int main(int, char**)
             if (ImPlot::BeginPlot("My Plot")){
                 int selected_nodes[ImNodes::NumSelectedNodes()];
                 ImNodes::GetSelectedNodes(selected_nodes);
-                getNodeOutput(selected_nodes[0], nodes.data(), nodes.size(), 1024, buffer, 1.0/48000.0);
+                getNodeOutput(selected_nodes[0], nodes.data(), nodes.size(), 1024, buffer, 1.0/(1024));
                 ImPlot::PlotLine("Node Output", buffer, 1024);
             ImPlot::EndPlot();
             }

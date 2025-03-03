@@ -67,6 +67,7 @@ WaveNode nodeDelay(int samples, int delay_size, float decay);
 WaveNode nodeDistortion(int input);
 WaveNode nodeBitcrusher(int input, int bits);
 
+//Voice idx may be superfluous. Usually it is 0
 WaveNode nodeMidiGate(int voice_idx, MidiState* state);
 WaveNode nodeMidiPitch(int voice_idx, MidiState* state);
 WaveNode nodeMidiControl(int control_idx, MidiState* state);
