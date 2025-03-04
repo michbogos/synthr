@@ -2,7 +2,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <imnodes.h>
-#include <rtmidi.h>
+#include <RtMidi.h>
 #include <implot.h>
 #include <stdio.h>
 #include <vector>
@@ -13,7 +13,6 @@ extern "C"{
 #include <wavegraph.h>
 }
 #include "render_wavenode.h"
-#include <rtmidi.h>
 #include <rtmidi_c.h>
 
 MidiState midi_state;
