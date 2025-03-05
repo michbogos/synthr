@@ -837,6 +837,45 @@ uninstall/fast:
 	$(MAKE) $(MAKESILENT) -f _deps/rtmidi-src/CMakeFiles/uninstall.dir/build.make _deps/rtmidi-src/CMakeFiles/uninstall.dir/build
 .PHONY : uninstall/fast
 
+#=============================================================================
+# Target rules for targets named imgui
+
+# Build rule for target.
+imgui: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 imgui
+.PHONY : imgui
+
+# fast build rule for target.
+imgui/fast:
+	$(MAKE) $(MAKESILENT) -f imgui/CMakeFiles/imgui.dir/build.make imgui/CMakeFiles/imgui.dir/build
+.PHONY : imgui/fast
+
+#=============================================================================
+# Target rules for targets named glfw
+
+# Build rule for target.
+glfw: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 glfw
+.PHONY : glfw
+
+# fast build rule for target.
+glfw/fast:
+	$(MAKE) $(MAKESILENT) -f imgui/glfw/src/CMakeFiles/glfw.dir/build.make imgui/glfw/src/CMakeFiles/glfw.dir/build
+.PHONY : glfw/fast
+
+#=============================================================================
+# Target rules for targets named update_mappings
+
+# Build rule for target.
+update_mappings: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 update_mappings
+.PHONY : update_mappings
+
+# fast build rule for target.
+update_mappings/fast:
+	$(MAKE) $(MAKESILENT) -f imgui/glfw/src/CMakeFiles/update_mappings.dir/build.make imgui/glfw/src/CMakeFiles/update_mappings.dir/build
+.PHONY : update_mappings/fast
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -904,9 +943,12 @@ help:
 	@echo "... coverage"
 	@echo "... doc"
 	@echo "... uninstall"
+	@echo "... update_mappings"
 	@echo "... apinames"
 	@echo "... backend_disconnect_recover"
 	@echo "... cmidiin"
+	@echo "... glfw"
+	@echo "... imgui"
 	@echo "... latency"
 	@echo "... libsoundio_shared"
 	@echo "... libsoundio_static"
