@@ -40,6 +40,7 @@ std::vector<std::vector<WaveNode>> cloneGraph(std::vector<WaveNode> graph, int n
             }
         }
     }
+    return voices;
 }
 
 void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
@@ -152,9 +153,9 @@ int main(int, char**)
 
     Wavetable sawtable = wtbl_saw(48100, 4096, 10);
 
-    // nodes.push_back(nodeWavetable(-1, &sawtable));
+    nodes.push_back(nodeWavetable(-1, &sawtable));
 
-    // nodes.push_back(nodeWhiteNoise());
+    nodes.push_back(nodeWhiteNoise());
 
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -293,9 +294,9 @@ int main(int, char**)
             selection_active = false;
         }
 
-        if(ImGui::Shortcut(ImGuiKey_ModCtrl|ImGuiKey_Enter)){
+        if(ImGui::Shortcut(ImGuiKey_LeftCtrl|ImGuiKey_Enter)){
             printf("Key comb pressed\n");
-            channels = cloneGraph(nodes, NUM_VOICES);
+            cloneGraph(nodes, NUM_VOICES);
         }
 
         ImGui::End();
