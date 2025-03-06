@@ -16,6 +16,7 @@ extern "C"{
 #include <rtmidi_c.h>
 
 MidiState midi_state;
+std::vector<std::vector<WaveNode>> channels;
 
 void midi_callback_wrapper(double timeStamp, std::vector<unsigned char> *message, void *userData){
     midi_callback(timeStamp, message->data(), message->size(), userData);
@@ -26,6 +27,19 @@ void drawSelectionBox(int* selected_item){
     ImGui::Begin("Add new node");
     if(ImGui::ListBox(" ", selected_item, NODE_DESC, LEN_NODE_DESC, -1));
     ImGui::End();
+}
+
+// Zeroeth midi channel might interfere
+std::vector<std::vector<WaveNode>> cloneGraph(std::vector<WaveNode> graph, int num_voices){
+    std::vector<std::vector<WaveNode>> voices(num_voices, std::vector<WaveNode>(graph.size()));
+    for(int i = 0; i < num_voices; i++){
+        for(int j = 0; j < graph.size(); j++){
+            voices[i][j] = copyNode(graph[j]);
+            if(voices[i][j].type==MIDI_GATE || voices[i][j].type==VELOCITY || voices[i][j].type==MIDI_PITCH){
+                *(int*)(((char*)voices[i][j].value)+sizeof(MidiState*)) = i;
+            }
+        }
+    }
 }
 
 void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
@@ -138,9 +152,9 @@ int main(int, char**)
 
     Wavetable sawtable = wtbl_saw(48100, 4096, 10);
 
-    nodes.push_back(nodeWavetable(-1, &sawtable));
+    // nodes.push_back(nodeWavetable(-1, &sawtable));
 
-    nodes.push_back(nodeWhiteNoise());
+    // nodes.push_back(nodeWhiteNoise());
 
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -277,6 +291,11 @@ int main(int, char**)
         }
         if(ImGui::IsKeyPressed(ImGuiKey_Enter)){
             selection_active = false;
+        }
+
+        if(ImGui::Shortcut(ImGuiKey_ModCtrl|ImGuiKey_Enter)){
+            printf("Key comb pressed\n");
+            channels = cloneGraph(nodes, NUM_VOICES);
         }
 
         ImGui::End();
