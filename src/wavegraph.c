@@ -406,8 +406,8 @@ WaveNode nodeWhiteNoise(){
     WaveNode node;
     node.type = WHITE_NOISE;
     node.inputs = NULL;
-    node.value = malloc(1*sizeof(pcg32_random_t));
-    node.value_len = 1*sizeof(pcg32_random_t);
+    node.value = malloc(16);
+    node.value_len = 16;
     *((pcg32_random_t*)node.value) = make_rng(42, 63);
     node.num_inputs = 0;
     node.computed = 0;
