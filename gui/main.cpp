@@ -346,12 +346,16 @@ int main(int, char**)
                 selected_node_to_add = -1;
                 selection_active = false;
                 locked = true;
+                channels = cloneGraph(nodes, NUM_VOICES);
+                locked = false;
             }
         }
 
         if(ImNodes::IsLinkCreated(&out, &in)){
             links.push_back({out, in});
             nodes[in/1024].inputs[in%1024] = out/1024;
+            channels = cloneGraph(nodes, NUM_VOICES);
+            locked = false;
         }
 
         ImNodes::BeginNodeEditor();
