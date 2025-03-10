@@ -55,9 +55,12 @@ WaveNode nodeMul(int a, int b);
 WaveNode nodeDiv(int a, int b);
 
 WaveNode nodeFilterLowpass(int a, int fc, int resonance);
+WaveNode nodeFilterHighpass(int a, int fc, int resonance);
+WaveNode nodeFilterBandpass(int a, int fc, int resonance);
+WaveNode nodeFilterAPF(int a, int fc, int resonance);
 
-WaveNode nodeAllpass(int samples, int feedback, int delay);
-WaveNode nodeAllpass(int samples, int alpha, int delay);
+// WaveNode nodeAllpass(int samples, int feedback, int delay);
+// WaveNode nodeAllpass(int samples, int alpha, int delay);
 
 WaveNode nodeWhiteNoise();
 WaveNode nodePinkNoise();

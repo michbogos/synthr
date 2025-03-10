@@ -91,6 +91,11 @@ std::vector<std::vector<WaveNode>> cloneGraph(std::vector<WaveNode> graph, int n
             if(voices[i][j].type==MIDI_GATE || voices[i][j].type==VELOCITY || voices[i][j].type==MIDI_PITCH){
                 *(int*)(((char*)voices[i][j].value)+sizeof(MidiState*)) = i;
             }
+            if(voices[i][j].type==FILTER_LOWPASS || voices[i][j].type==FILTER_HIGHPASS || voices[i][j].type==FILTER_BANDPASS || voices[i][j].type==FILTER_APF){
+                ((Biquad*)voices[i][j].value)->out1 = 0;
+                ((Biquad*)voices[i][j].value)->out2 = 0;
+                ((Biquad*)voices[i][j].value)->out3 = 0;
+            }
         }
     }
     return voices;
@@ -136,7 +141,19 @@ void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
             nodes.push_back(nodeMidiPitch(0, &midi_state));
             break;
         case NUMBER:
-            nodes.push_back(nodeMidiPitch(0, &midi_state));
+            nodes.push_back(nodeNumber(0));
+            break;
+        case FILTER_LOWPASS:
+            nodes.push_back(nodeFilterLowpass(-1, -1, -1));
+            break;
+        case FILTER_HIGHPASS:
+            nodes.push_back(nodeFilterHighpass(-1, -1, -1));
+            break; 
+        case FILTER_BANDPASS:
+            nodes.push_back(nodeFilterBandpass(-1, -1, -1));
+            break;
+        case FILTER_APF:
+            nodes.push_back(nodeFilterAPF(-1, -1, -1));
             break;
     }
 }

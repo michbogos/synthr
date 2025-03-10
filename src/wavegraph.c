@@ -50,6 +50,9 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
     case FILTER_APF:
     //case FILTER_PEAKEQ:
     {
+        if(node.inputs[0] < 0 || node.inputs[1] < 0 || node.inputs[2] < 0){
+            return;
+        }
         float a[n];
         float fc[n];
         float resonance[n];

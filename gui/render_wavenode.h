@@ -2,6 +2,7 @@
 #define RENDER_IMNODES_H
 #include "imnodes.h"
 #include <wavegraph.h>
+#include <filter.h>
 #include <map>
 #include "imgui.h"
 
@@ -55,6 +56,12 @@ void render_internals(WaveNode node){
             ImGui::PushItemWidth(150);
             ImGui::InputFloat("Number:", ((float*)node.value));
             break;
+        // case FILTER_HIGHPASS:
+        // case FILTER_LOWPASS:
+        // case FILTER_BANDPASS:
+        // case FILTER_APF:
+        //     ImGui::PushItemWidth(150);
+        //     ImGui::InputFloat("Number:", ((Filter*)node.value)->);
         default:
             break;
     }
