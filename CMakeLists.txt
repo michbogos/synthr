@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 
 project(synthr)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Wextra")
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAG "${CMAKE_C_FLAGS} -std=c11 -g -Wall -Wextra")
 
 include(ExternalProject)
 include(FetchContent)
@@ -27,7 +27,8 @@ add_subdirectory(${rtmidi_SOURCE_DIR})
 
 
 file(GLOB C_FILES "src/*.c")
-file(GLOB INCLUDE_FILES "./include/*.h")
+message(${C_FILES})
+file(GLOB INCLUDE_FILES "include/*.h")
 
 list(FILTER C_FILES EXCLUDE REGEX "main\\.c")
 

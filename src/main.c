@@ -16,6 +16,7 @@
 #include <delay.h>
 #include <reverb.h>
 #include <midi.h>
+#include <fft.h>
 
 WaveNode nodes[32];
 WaveNode channels[NUM_VOICES][32];

@@ -10,6 +10,7 @@
 #define GL_SILENCE_DEPRECATION
 #include <GLFW/glfw3.h>
 extern "C"{
+#include <fft.h>
 #include <wavegraph.h>
 }
 #include "render_wavenode.h"
@@ -336,6 +337,7 @@ int main(int, char**)
     int link_id;
     int selected_links[1024];
     float buffer[1024];
+    float buffer2[1024];
 
     while (!glfwWindowShouldClose(window))
     {
@@ -408,8 +410,8 @@ int main(int, char**)
             selection_active = false;
         }
 
-        if(ImGui::Shortcut(ImGuiKey_LeftCtrl|ImGuiKey_Enter)){
-            printf("Key comb pressed\n");
+        if(ImGui::IsKeyPressed(ImGuiKey_LeftCtrl)){
+            // printf("Key comb pressed\n");
             channels = cloneGraph(nodes, NUM_VOICES);
             locked = false;
         }
@@ -419,11 +421,19 @@ int main(int, char**)
         ImGui::Begin("Plot");
 
         if(ImNodes::NumSelectedNodes() == 1){
-            if (ImPlot::BeginPlot("My Plot")){
+            if (ImPlot::BeginPlot("Time Domain")){
                 int selected_nodes[ImNodes::NumSelectedNodes()];
                 ImNodes::GetSelectedNodes(selected_nodes);
                 selected_node = selected_nodes[0];
                 getNodeOutput(selected_nodes[0], nodes.data(), nodes.size(), 1024, buffer, 1.0/(1024));
+                ImPlot::PlotLine("Node Output", buffer, 1024);
+            ImPlot::EndPlot();
+            }
+            if (ImPlot::BeginPlot("Frequency Domain")){
+                fftf(buffer, 1024, -1);
+                for(int i = 0; i < 1024; i++){
+                    buffer[i] *= 1024;
+                }
                 ImPlot::PlotLine("Node Output", buffer, 1024);
             ImPlot::EndPlot();
             }

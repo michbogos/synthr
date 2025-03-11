@@ -3,5 +3,5 @@
 #include<complex.h>
 #include<defs.h>
 
-void fft(complex* x, int N, int invert);
+void fftf(float* x, int N, int invert);
 #endif
