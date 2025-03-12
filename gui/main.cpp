@@ -335,6 +335,8 @@ int main(int, char**)
     int in;
     int out;
     int link_id;
+    int started_at;
+    int ended_at;
     int selected_links[1024];
     float buffer[1024];
     float buffer2[1024];
@@ -393,12 +395,34 @@ int main(int, char**)
             links.erase(links.begin()+link_id);
         }
 
+        if(ImNodes::IsPinHovered(&ended_at));
+
+        // if(ImNodes::IsLinkDropped(&started_at, true)){
+        //     for(int i = 0; i < links.size(); i++){
+        //         if(links[i] == std::pair<int, int>(started_at, ended_at)){
+        //             links.erase(links.begin()+i);
+        //             nodes[links[i].second/1024].inputs[links[i].second%1024] = -1;
+        //         }
+        //     }
+        // }
+
         if(ImGui::IsKeyPressed(ImGuiKey_X)){
             for(int i = 0; i < links.size(); i++){
                 if(ImNodes::IsLinkSelected(i)){
                     std::pair<int, int> link = links[i];
                     links.erase(links.begin()+i);
                     nodes[link.second/1024].inputs[link.second%1024] = -1;
+                }
+            }
+            for(int i = 0; i < nodes.size(); i++){
+                if(ImNodes::IsNodeSelected(i)){
+                    nodes.erase(nodes.begin()+i);
+                    for(int j = 0; j < links.size(); j++){
+                        if((links[j].first+1)/1024 == i){
+                            links.erase(links.begin()+j);
+                            nodes[links[j].second/1024].inputs[links[j].second%1024] = -1;
+                        }
+                    }
                 }
             }
         }
