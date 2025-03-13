@@ -175,6 +175,19 @@ imgui/fast:
 .PHONY : imgui/fast
 
 #=============================================================================
+# Target rules for targets named node_editor
+
+# Build rule for target.
+node_editor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 node_editor
+.PHONY : node_editor
+
+# fast build rule for target.
+node_editor/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/build
+.PHONY : node_editor/fast
+
+#=============================================================================
 # Target rules for targets named implot
 
 # Build rule for target.
@@ -889,6 +902,102 @@ update_mappings/fast:
 	$(MAKE) $(MAKESILENT) -f glfw/src/CMakeFiles/update_mappings.dir/build.make glfw/src/CMakeFiles/update_mappings.dir/build
 .PHONY : update_mappings/fast
 
+imgui-node-editor/crude_json.o: imgui-node-editor/crude_json.cpp.o
+.PHONY : imgui-node-editor/crude_json.o
+
+# target to build an object file
+imgui-node-editor/crude_json.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/crude_json.cpp.o
+.PHONY : imgui-node-editor/crude_json.cpp.o
+
+imgui-node-editor/crude_json.i: imgui-node-editor/crude_json.cpp.i
+.PHONY : imgui-node-editor/crude_json.i
+
+# target to preprocess a source file
+imgui-node-editor/crude_json.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/crude_json.cpp.i
+.PHONY : imgui-node-editor/crude_json.cpp.i
+
+imgui-node-editor/crude_json.s: imgui-node-editor/crude_json.cpp.s
+.PHONY : imgui-node-editor/crude_json.s
+
+# target to generate assembly for a file
+imgui-node-editor/crude_json.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/crude_json.cpp.s
+.PHONY : imgui-node-editor/crude_json.cpp.s
+
+imgui-node-editor/imgui_canvas.o: imgui-node-editor/imgui_canvas.cpp.o
+.PHONY : imgui-node-editor/imgui_canvas.o
+
+# target to build an object file
+imgui-node-editor/imgui_canvas.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_canvas.cpp.o
+.PHONY : imgui-node-editor/imgui_canvas.cpp.o
+
+imgui-node-editor/imgui_canvas.i: imgui-node-editor/imgui_canvas.cpp.i
+.PHONY : imgui-node-editor/imgui_canvas.i
+
+# target to preprocess a source file
+imgui-node-editor/imgui_canvas.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_canvas.cpp.i
+.PHONY : imgui-node-editor/imgui_canvas.cpp.i
+
+imgui-node-editor/imgui_canvas.s: imgui-node-editor/imgui_canvas.cpp.s
+.PHONY : imgui-node-editor/imgui_canvas.s
+
+# target to generate assembly for a file
+imgui-node-editor/imgui_canvas.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_canvas.cpp.s
+.PHONY : imgui-node-editor/imgui_canvas.cpp.s
+
+imgui-node-editor/imgui_node_editor.o: imgui-node-editor/imgui_node_editor.cpp.o
+.PHONY : imgui-node-editor/imgui_node_editor.o
+
+# target to build an object file
+imgui-node-editor/imgui_node_editor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_node_editor.cpp.o
+.PHONY : imgui-node-editor/imgui_node_editor.cpp.o
+
+imgui-node-editor/imgui_node_editor.i: imgui-node-editor/imgui_node_editor.cpp.i
+.PHONY : imgui-node-editor/imgui_node_editor.i
+
+# target to preprocess a source file
+imgui-node-editor/imgui_node_editor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_node_editor.cpp.i
+.PHONY : imgui-node-editor/imgui_node_editor.cpp.i
+
+imgui-node-editor/imgui_node_editor.s: imgui-node-editor/imgui_node_editor.cpp.s
+.PHONY : imgui-node-editor/imgui_node_editor.s
+
+# target to generate assembly for a file
+imgui-node-editor/imgui_node_editor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_node_editor.cpp.s
+.PHONY : imgui-node-editor/imgui_node_editor.cpp.s
+
+imgui-node-editor/imgui_node_editor_api.o: imgui-node-editor/imgui_node_editor_api.cpp.o
+.PHONY : imgui-node-editor/imgui_node_editor_api.o
+
+# target to build an object file
+imgui-node-editor/imgui_node_editor_api.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_node_editor_api.cpp.o
+.PHONY : imgui-node-editor/imgui_node_editor_api.cpp.o
+
+imgui-node-editor/imgui_node_editor_api.i: imgui-node-editor/imgui_node_editor_api.cpp.i
+.PHONY : imgui-node-editor/imgui_node_editor_api.i
+
+# target to preprocess a source file
+imgui-node-editor/imgui_node_editor_api.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_node_editor_api.cpp.i
+.PHONY : imgui-node-editor/imgui_node_editor_api.cpp.i
+
+imgui-node-editor/imgui_node_editor_api.s: imgui-node-editor/imgui_node_editor_api.cpp.s
+.PHONY : imgui-node-editor/imgui_node_editor_api.s
+
+# target to generate assembly for a file
+imgui-node-editor/imgui_node_editor_api.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/node_editor.dir/build.make CMakeFiles/node_editor.dir/imgui-node-editor/imgui_node_editor_api.cpp.s
+.PHONY : imgui-node-editor/imgui_node_editor_api.cpp.s
+
 imgui/backends/imgui_impl_glfw.o: imgui/backends/imgui_impl_glfw.cpp.o
 .PHONY : imgui/backends/imgui_impl_glfw.o
 
@@ -1233,6 +1342,7 @@ help:
 	@echo "... midiclock"
 	@echo "... midiout"
 	@echo "... midiprobe"
+	@echo "... node_editor"
 	@echo "... overflow"
 	@echo "... program"
 	@echo "... qmidiin"
@@ -1245,6 +1355,18 @@ help:
 	@echo "... testcapi"
 	@echo "... underflow"
 	@echo "... unit_tests"
+	@echo "... imgui-node-editor/crude_json.o"
+	@echo "... imgui-node-editor/crude_json.i"
+	@echo "... imgui-node-editor/crude_json.s"
+	@echo "... imgui-node-editor/imgui_canvas.o"
+	@echo "... imgui-node-editor/imgui_canvas.i"
+	@echo "... imgui-node-editor/imgui_canvas.s"
+	@echo "... imgui-node-editor/imgui_node_editor.o"
+	@echo "... imgui-node-editor/imgui_node_editor.i"
+	@echo "... imgui-node-editor/imgui_node_editor.s"
+	@echo "... imgui-node-editor/imgui_node_editor_api.o"
+	@echo "... imgui-node-editor/imgui_node_editor_api.i"
+	@echo "... imgui-node-editor/imgui_node_editor_api.s"
 	@echo "... imgui/backends/imgui_impl_glfw.o"
 	@echo "... imgui/backends/imgui_impl_glfw.i"
 	@echo "... imgui/backends/imgui_impl_glfw.s"
