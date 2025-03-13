@@ -1,3 +1,15 @@
 [submodule "gui/imgui/glfw"]
 	path = gui/imgui/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "gui/imgui"]
+	path = gui/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "gui/glfw"]
+	path = gui/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "gui/imnodes"]
+	path = gui/imnodes
+	url = https://github.com/Nelarius/imnodes.git
+[submodule "gui/implot"]
+	path = gui/implot
+	url = https://github.com/epezent/implot.git
