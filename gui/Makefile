@@ -175,6 +175,32 @@ program/fast:
 .PHONY : program/fast
 
 #=============================================================================
+# Target rules for targets named program_autogen_timestamp_deps
+
+# Build rule for target.
+program_autogen_timestamp_deps: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 program_autogen_timestamp_deps
+.PHONY : program_autogen_timestamp_deps
+
+# fast build rule for target.
+program_autogen_timestamp_deps/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program_autogen_timestamp_deps.dir/build.make CMakeFiles/program_autogen_timestamp_deps.dir/build
+.PHONY : program_autogen_timestamp_deps/fast
+
+#=============================================================================
+# Target rules for targets named program_autogen
+
+# Build rule for target.
+program_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 program_autogen
+.PHONY : program_autogen
+
+# fast build rule for target.
+program_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program_autogen.dir/build.make CMakeFiles/program_autogen.dir/build
+.PHONY : program_autogen/fast
+
+#=============================================================================
 # Target rules for targets named libsoundio_shared
 
 # Build rule for target.
@@ -900,6 +926,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+program_autogen/mocs_compilation.o: program_autogen/mocs_compilation.cpp.o
+.PHONY : program_autogen/mocs_compilation.o
+
+# target to build an object file
+program_autogen/mocs_compilation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/program_autogen/mocs_compilation.cpp.o
+.PHONY : program_autogen/mocs_compilation.cpp.o
+
+program_autogen/mocs_compilation.i: program_autogen/mocs_compilation.cpp.i
+.PHONY : program_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+program_autogen/mocs_compilation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/program_autogen/mocs_compilation.cpp.i
+.PHONY : program_autogen/mocs_compilation.cpp.i
+
+program_autogen/mocs_compilation.s: program_autogen/mocs_compilation.cpp.s
+.PHONY : program_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+program_autogen/mocs_compilation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/program_autogen/mocs_compilation.cpp.s
+.PHONY : program_autogen/mocs_compilation.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -942,6 +992,8 @@ help:
 	@echo "... NightlyUpdate"
 	@echo "... coverage"
 	@echo "... doc"
+	@echo "... program_autogen"
+	@echo "... program_autogen_timestamp_deps"
 	@echo "... uninstall"
 	@echo "... update_mappings"
 	@echo "... apinames"
@@ -970,6 +1022,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... program_autogen/mocs_compilation.o"
+	@echo "... program_autogen/mocs_compilation.i"
+	@echo "... program_autogen/mocs_compilation.s"
 .PHONY : help
 
 
