@@ -201,6 +201,19 @@ implot/fast:
 .PHONY : implot/fast
 
 #=============================================================================
+# Target rules for targets named synthr
+
+# Build rule for target.
+synthr: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 synthr
+.PHONY : synthr
+
+# fast build rule for target.
+synthr/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/build
+.PHONY : synthr/fast
+
+#=============================================================================
 # Target rules for targets named program
 
 # Build rule for target.
@@ -902,6 +915,366 @@ update_mappings/fast:
 	$(MAKE) $(MAKESILENT) -f glfw/src/CMakeFiles/update_mappings.dir/build.make glfw/src/CMakeFiles/update_mappings.dir/build
 .PHONY : update_mappings/fast
 
+home/michael/Documents/synthr/src/circbuf.o: home/michael/Documents/synthr/src/circbuf.c.o
+.PHONY : home/michael/Documents/synthr/src/circbuf.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/circbuf.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/circbuf.c.o
+.PHONY : home/michael/Documents/synthr/src/circbuf.c.o
+
+home/michael/Documents/synthr/src/circbuf.i: home/michael/Documents/synthr/src/circbuf.c.i
+.PHONY : home/michael/Documents/synthr/src/circbuf.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/circbuf.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/circbuf.c.i
+.PHONY : home/michael/Documents/synthr/src/circbuf.c.i
+
+home/michael/Documents/synthr/src/circbuf.s: home/michael/Documents/synthr/src/circbuf.c.s
+.PHONY : home/michael/Documents/synthr/src/circbuf.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/circbuf.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/circbuf.c.s
+.PHONY : home/michael/Documents/synthr/src/circbuf.c.s
+
+home/michael/Documents/synthr/src/delay.o: home/michael/Documents/synthr/src/delay.c.o
+.PHONY : home/michael/Documents/synthr/src/delay.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/delay.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/delay.c.o
+.PHONY : home/michael/Documents/synthr/src/delay.c.o
+
+home/michael/Documents/synthr/src/delay.i: home/michael/Documents/synthr/src/delay.c.i
+.PHONY : home/michael/Documents/synthr/src/delay.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/delay.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/delay.c.i
+.PHONY : home/michael/Documents/synthr/src/delay.c.i
+
+home/michael/Documents/synthr/src/delay.s: home/michael/Documents/synthr/src/delay.c.s
+.PHONY : home/michael/Documents/synthr/src/delay.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/delay.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/delay.c.s
+.PHONY : home/michael/Documents/synthr/src/delay.c.s
+
+home/michael/Documents/synthr/src/effects.o: home/michael/Documents/synthr/src/effects.c.o
+.PHONY : home/michael/Documents/synthr/src/effects.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/effects.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/effects.c.o
+.PHONY : home/michael/Documents/synthr/src/effects.c.o
+
+home/michael/Documents/synthr/src/effects.i: home/michael/Documents/synthr/src/effects.c.i
+.PHONY : home/michael/Documents/synthr/src/effects.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/effects.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/effects.c.i
+.PHONY : home/michael/Documents/synthr/src/effects.c.i
+
+home/michael/Documents/synthr/src/effects.s: home/michael/Documents/synthr/src/effects.c.s
+.PHONY : home/michael/Documents/synthr/src/effects.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/effects.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/effects.c.s
+.PHONY : home/michael/Documents/synthr/src/effects.c.s
+
+home/michael/Documents/synthr/src/envelope.o: home/michael/Documents/synthr/src/envelope.c.o
+.PHONY : home/michael/Documents/synthr/src/envelope.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/envelope.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/envelope.c.o
+.PHONY : home/michael/Documents/synthr/src/envelope.c.o
+
+home/michael/Documents/synthr/src/envelope.i: home/michael/Documents/synthr/src/envelope.c.i
+.PHONY : home/michael/Documents/synthr/src/envelope.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/envelope.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/envelope.c.i
+.PHONY : home/michael/Documents/synthr/src/envelope.c.i
+
+home/michael/Documents/synthr/src/envelope.s: home/michael/Documents/synthr/src/envelope.c.s
+.PHONY : home/michael/Documents/synthr/src/envelope.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/envelope.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/envelope.c.s
+.PHONY : home/michael/Documents/synthr/src/envelope.c.s
+
+home/michael/Documents/synthr/src/fft.o: home/michael/Documents/synthr/src/fft.c.o
+.PHONY : home/michael/Documents/synthr/src/fft.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/fft.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/fft.c.o
+.PHONY : home/michael/Documents/synthr/src/fft.c.o
+
+home/michael/Documents/synthr/src/fft.i: home/michael/Documents/synthr/src/fft.c.i
+.PHONY : home/michael/Documents/synthr/src/fft.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/fft.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/fft.c.i
+.PHONY : home/michael/Documents/synthr/src/fft.c.i
+
+home/michael/Documents/synthr/src/fft.s: home/michael/Documents/synthr/src/fft.c.s
+.PHONY : home/michael/Documents/synthr/src/fft.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/fft.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/fft.c.s
+.PHONY : home/michael/Documents/synthr/src/fft.c.s
+
+home/michael/Documents/synthr/src/filter.o: home/michael/Documents/synthr/src/filter.c.o
+.PHONY : home/michael/Documents/synthr/src/filter.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/filter.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/filter.c.o
+.PHONY : home/michael/Documents/synthr/src/filter.c.o
+
+home/michael/Documents/synthr/src/filter.i: home/michael/Documents/synthr/src/filter.c.i
+.PHONY : home/michael/Documents/synthr/src/filter.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/filter.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/filter.c.i
+.PHONY : home/michael/Documents/synthr/src/filter.c.i
+
+home/michael/Documents/synthr/src/filter.s: home/michael/Documents/synthr/src/filter.c.s
+.PHONY : home/michael/Documents/synthr/src/filter.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/filter.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/filter.c.s
+.PHONY : home/michael/Documents/synthr/src/filter.c.s
+
+home/michael/Documents/synthr/src/formant.o: home/michael/Documents/synthr/src/formant.c.o
+.PHONY : home/michael/Documents/synthr/src/formant.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/formant.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/formant.c.o
+.PHONY : home/michael/Documents/synthr/src/formant.c.o
+
+home/michael/Documents/synthr/src/formant.i: home/michael/Documents/synthr/src/formant.c.i
+.PHONY : home/michael/Documents/synthr/src/formant.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/formant.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/formant.c.i
+.PHONY : home/michael/Documents/synthr/src/formant.c.i
+
+home/michael/Documents/synthr/src/formant.s: home/michael/Documents/synthr/src/formant.c.s
+.PHONY : home/michael/Documents/synthr/src/formant.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/formant.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/formant.c.s
+.PHONY : home/michael/Documents/synthr/src/formant.c.s
+
+home/michael/Documents/synthr/src/midi.o: home/michael/Documents/synthr/src/midi.c.o
+.PHONY : home/michael/Documents/synthr/src/midi.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/midi.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/midi.c.o
+.PHONY : home/michael/Documents/synthr/src/midi.c.o
+
+home/michael/Documents/synthr/src/midi.i: home/michael/Documents/synthr/src/midi.c.i
+.PHONY : home/michael/Documents/synthr/src/midi.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/midi.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/midi.c.i
+.PHONY : home/michael/Documents/synthr/src/midi.c.i
+
+home/michael/Documents/synthr/src/midi.s: home/michael/Documents/synthr/src/midi.c.s
+.PHONY : home/michael/Documents/synthr/src/midi.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/midi.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/midi.c.s
+.PHONY : home/michael/Documents/synthr/src/midi.c.s
+
+home/michael/Documents/synthr/src/oscillators.o: home/michael/Documents/synthr/src/oscillators.c.o
+.PHONY : home/michael/Documents/synthr/src/oscillators.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/oscillators.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/oscillators.c.o
+.PHONY : home/michael/Documents/synthr/src/oscillators.c.o
+
+home/michael/Documents/synthr/src/oscillators.i: home/michael/Documents/synthr/src/oscillators.c.i
+.PHONY : home/michael/Documents/synthr/src/oscillators.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/oscillators.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/oscillators.c.i
+.PHONY : home/michael/Documents/synthr/src/oscillators.c.i
+
+home/michael/Documents/synthr/src/oscillators.s: home/michael/Documents/synthr/src/oscillators.c.s
+.PHONY : home/michael/Documents/synthr/src/oscillators.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/oscillators.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/oscillators.c.s
+.PHONY : home/michael/Documents/synthr/src/oscillators.c.s
+
+home/michael/Documents/synthr/src/queue.o: home/michael/Documents/synthr/src/queue.c.o
+.PHONY : home/michael/Documents/synthr/src/queue.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/queue.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/queue.c.o
+.PHONY : home/michael/Documents/synthr/src/queue.c.o
+
+home/michael/Documents/synthr/src/queue.i: home/michael/Documents/synthr/src/queue.c.i
+.PHONY : home/michael/Documents/synthr/src/queue.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/queue.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/queue.c.i
+.PHONY : home/michael/Documents/synthr/src/queue.c.i
+
+home/michael/Documents/synthr/src/queue.s: home/michael/Documents/synthr/src/queue.c.s
+.PHONY : home/michael/Documents/synthr/src/queue.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/queue.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/queue.c.s
+.PHONY : home/michael/Documents/synthr/src/queue.c.s
+
+home/michael/Documents/synthr/src/reverb.o: home/michael/Documents/synthr/src/reverb.c.o
+.PHONY : home/michael/Documents/synthr/src/reverb.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/reverb.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/reverb.c.o
+.PHONY : home/michael/Documents/synthr/src/reverb.c.o
+
+home/michael/Documents/synthr/src/reverb.i: home/michael/Documents/synthr/src/reverb.c.i
+.PHONY : home/michael/Documents/synthr/src/reverb.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/reverb.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/reverb.c.i
+.PHONY : home/michael/Documents/synthr/src/reverb.c.i
+
+home/michael/Documents/synthr/src/reverb.s: home/michael/Documents/synthr/src/reverb.c.s
+.PHONY : home/michael/Documents/synthr/src/reverb.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/reverb.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/reverb.c.s
+.PHONY : home/michael/Documents/synthr/src/reverb.c.s
+
+home/michael/Documents/synthr/src/rng.o: home/michael/Documents/synthr/src/rng.c.o
+.PHONY : home/michael/Documents/synthr/src/rng.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/rng.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/rng.c.o
+.PHONY : home/michael/Documents/synthr/src/rng.c.o
+
+home/michael/Documents/synthr/src/rng.i: home/michael/Documents/synthr/src/rng.c.i
+.PHONY : home/michael/Documents/synthr/src/rng.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/rng.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/rng.c.i
+.PHONY : home/michael/Documents/synthr/src/rng.c.i
+
+home/michael/Documents/synthr/src/rng.s: home/michael/Documents/synthr/src/rng.c.s
+.PHONY : home/michael/Documents/synthr/src/rng.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/rng.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/rng.c.s
+.PHONY : home/michael/Documents/synthr/src/rng.c.s
+
+home/michael/Documents/synthr/src/threadpool.o: home/michael/Documents/synthr/src/threadpool.c.o
+.PHONY : home/michael/Documents/synthr/src/threadpool.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/threadpool.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/threadpool.c.o
+.PHONY : home/michael/Documents/synthr/src/threadpool.c.o
+
+home/michael/Documents/synthr/src/threadpool.i: home/michael/Documents/synthr/src/threadpool.c.i
+.PHONY : home/michael/Documents/synthr/src/threadpool.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/threadpool.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/threadpool.c.i
+.PHONY : home/michael/Documents/synthr/src/threadpool.c.i
+
+home/michael/Documents/synthr/src/threadpool.s: home/michael/Documents/synthr/src/threadpool.c.s
+.PHONY : home/michael/Documents/synthr/src/threadpool.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/threadpool.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/threadpool.c.s
+.PHONY : home/michael/Documents/synthr/src/threadpool.c.s
+
+home/michael/Documents/synthr/src/wavegraph.o: home/michael/Documents/synthr/src/wavegraph.c.o
+.PHONY : home/michael/Documents/synthr/src/wavegraph.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/wavegraph.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/wavegraph.c.o
+.PHONY : home/michael/Documents/synthr/src/wavegraph.c.o
+
+home/michael/Documents/synthr/src/wavegraph.i: home/michael/Documents/synthr/src/wavegraph.c.i
+.PHONY : home/michael/Documents/synthr/src/wavegraph.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/wavegraph.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/wavegraph.c.i
+.PHONY : home/michael/Documents/synthr/src/wavegraph.c.i
+
+home/michael/Documents/synthr/src/wavegraph.s: home/michael/Documents/synthr/src/wavegraph.c.s
+.PHONY : home/michael/Documents/synthr/src/wavegraph.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/wavegraph.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/wavegraph.c.s
+.PHONY : home/michael/Documents/synthr/src/wavegraph.c.s
+
+home/michael/Documents/synthr/src/wavetable.o: home/michael/Documents/synthr/src/wavetable.c.o
+.PHONY : home/michael/Documents/synthr/src/wavetable.o
+
+# target to build an object file
+home/michael/Documents/synthr/src/wavetable.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/wavetable.c.o
+.PHONY : home/michael/Documents/synthr/src/wavetable.c.o
+
+home/michael/Documents/synthr/src/wavetable.i: home/michael/Documents/synthr/src/wavetable.c.i
+.PHONY : home/michael/Documents/synthr/src/wavetable.i
+
+# target to preprocess a source file
+home/michael/Documents/synthr/src/wavetable.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/wavetable.c.i
+.PHONY : home/michael/Documents/synthr/src/wavetable.c.i
+
+home/michael/Documents/synthr/src/wavetable.s: home/michael/Documents/synthr/src/wavetable.c.s
+.PHONY : home/michael/Documents/synthr/src/wavetable.s
+
+# target to generate assembly for a file
+home/michael/Documents/synthr/src/wavetable.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/synthr.dir/build.make CMakeFiles/synthr.dir/home/michael/Documents/synthr/src/wavetable.c.s
+.PHONY : home/michael/Documents/synthr/src/wavetable.c.s
+
 imgui-node-editor/crude_json.o: imgui-node-editor/crude_json.cpp.o
 .PHONY : imgui-node-editor/crude_json.o
 
@@ -1351,10 +1724,56 @@ help:
 	@echo "... sio_microphone"
 	@echo "... sio_record"
 	@echo "... sio_sine"
+	@echo "... synthr"
 	@echo "... sysextest"
 	@echo "... testcapi"
 	@echo "... underflow"
 	@echo "... unit_tests"
+	@echo "... home/michael/Documents/synthr/src/circbuf.o"
+	@echo "... home/michael/Documents/synthr/src/circbuf.i"
+	@echo "... home/michael/Documents/synthr/src/circbuf.s"
+	@echo "... home/michael/Documents/synthr/src/delay.o"
+	@echo "... home/michael/Documents/synthr/src/delay.i"
+	@echo "... home/michael/Documents/synthr/src/delay.s"
+	@echo "... home/michael/Documents/synthr/src/effects.o"
+	@echo "... home/michael/Documents/synthr/src/effects.i"
+	@echo "... home/michael/Documents/synthr/src/effects.s"
+	@echo "... home/michael/Documents/synthr/src/envelope.o"
+	@echo "... home/michael/Documents/synthr/src/envelope.i"
+	@echo "... home/michael/Documents/synthr/src/envelope.s"
+	@echo "... home/michael/Documents/synthr/src/fft.o"
+	@echo "... home/michael/Documents/synthr/src/fft.i"
+	@echo "... home/michael/Documents/synthr/src/fft.s"
+	@echo "... home/michael/Documents/synthr/src/filter.o"
+	@echo "... home/michael/Documents/synthr/src/filter.i"
+	@echo "... home/michael/Documents/synthr/src/filter.s"
+	@echo "... home/michael/Documents/synthr/src/formant.o"
+	@echo "... home/michael/Documents/synthr/src/formant.i"
+	@echo "... home/michael/Documents/synthr/src/formant.s"
+	@echo "... home/michael/Documents/synthr/src/midi.o"
+	@echo "... home/michael/Documents/synthr/src/midi.i"
+	@echo "... home/michael/Documents/synthr/src/midi.s"
+	@echo "... home/michael/Documents/synthr/src/oscillators.o"
+	@echo "... home/michael/Documents/synthr/src/oscillators.i"
+	@echo "... home/michael/Documents/synthr/src/oscillators.s"
+	@echo "... home/michael/Documents/synthr/src/queue.o"
+	@echo "... home/michael/Documents/synthr/src/queue.i"
+	@echo "... home/michael/Documents/synthr/src/queue.s"
+	@echo "... home/michael/Documents/synthr/src/reverb.o"
+	@echo "... home/michael/Documents/synthr/src/reverb.i"
+	@echo "... home/michael/Documents/synthr/src/reverb.s"
+	@echo "... home/michael/Documents/synthr/src/rng.o"
+	@echo "... home/michael/Documents/synthr/src/rng.i"
+	@echo "... home/michael/Documents/synthr/src/rng.s"
+	@echo "... home/michael/Documents/synthr/src/threadpool.o"
+	@echo "... home/michael/Documents/synthr/src/threadpool.i"
+	@echo "... home/michael/Documents/synthr/src/threadpool.s"
+	@echo "... home/michael/Documents/synthr/src/wavegraph.o"
+	@echo "... home/michael/Documents/synthr/src/wavegraph.i"
+	@echo "... home/michael/Documents/synthr/src/wavegraph.s"
+	@echo "... home/michael/Documents/synthr/src/wavetable.o"
+	@echo "... home/michael/Documents/synthr/src/wavetable.i"
+	@echo "... home/michael/Documents/synthr/src/wavetable.s"
 	@echo "... imgui-node-editor/crude_json.o"
 	@echo "... imgui-node-editor/crude_json.i"
 	@echo "... imgui-node-editor/crude_json.s"
