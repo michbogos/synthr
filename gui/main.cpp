@@ -329,8 +329,11 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImNodes::CreateContext();
+    auto editor_context = ImNodes::CreateContext();
+    auto context = ImNodes::EditorContextCreate();
     ImNodes::SetNodeGridSpacePos(1, ImVec2(200.0f, 200.0f));
+    ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
+    ImNodesIO imnodes_controls = ImNodes::GetIO();
 
     int in;
     int out;
@@ -378,7 +381,7 @@ int main(int, char**)
             channels = cloneGraph(nodes, NUM_VOICES);
             locked = false;
         }
-
+        ImNodes::EditorContextSet(context);
         ImNodes::BeginNodeEditor();
 
         for(int i = 0; i < links.size(); i++){
@@ -392,10 +395,11 @@ int main(int, char**)
         ImNodes::EndNodeEditor();
 
         if(ImNodes::IsLinkDestroyed(&link_id)){
+            auto link = links[link_id];
             links.erase(links.begin()+link_id);
+            nodes[link.second/1024].inputs[link.second%1024] = -1;
+            channels = cloneGraph(nodes, NUM_VOICES);
         }
-
-        if(ImNodes::IsPinHovered(&ended_at));
 
         // if(ImNodes::IsLinkDropped(&started_at, true)){
         //     for(int i = 0; i < links.size(); i++){
