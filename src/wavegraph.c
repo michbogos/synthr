@@ -107,7 +107,8 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
     case MIDI_CONTROL:
     {
         MidiState state = *(*(MidiState**)node.value);
-        int control_idx = *(int*)(((char*)node.value)+sizeof(MidiState*));
+        int control_idx = *(int*)(((char*)node.value)+sizeof(MidiState*)) > 127 ? 127 : *(int*)(((char*)node.value)+sizeof(MidiState*));
+        control_idx = control_idx < -1 ? 0 : control_idx;
         for(int i = 0; i < n; i++){
             buffer[i] = state.controls[control_idx]/127.0f;
         }
@@ -163,7 +164,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         getNodeOutput(node.inputs[0], nodes, num_nodes, n, input, dt);
         getNodeOutput(node.inputs[1], nodes, num_nodes, n, bits, dt);
         for(int i = 0; i < n; i++){
-            buffer[i] = bit_crusher(input[i], bits[i]);
+            buffer[i] = bit_crusher(input[i], abs(bits[i]));
         }
         return;
         break;
@@ -649,7 +650,7 @@ WaveNode nodeBitcrusher(int input, int bits){
     node.inputs[1] = bits;
     node.value = NULL;
     node.value_len = 0;
-    node.num_inputs = 1;
+    node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
     node.id = COUNTER++;

@@ -79,7 +79,8 @@ void midi_callback_wrapper(double timeStamp, std::vector<unsigned char> *message
 
 void drawSelectionBox(int* selected_item){
     ImGui::Begin("Add new node");
-    if(ImGui::ListBox(" ", selected_item, NODE_DESC, LEN_NODE_DESC, -1));
+    ImGui::PushItemWidth(-1);
+    if(ImGui::ListBox(" ", selected_item, NODE_DESC, LEN_NODE_DESC, 15));
     ImGui::End();
 }
 
@@ -156,6 +157,12 @@ void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
         case FILTER_APF:
             nodes.push_back(nodeFilterAPF(-1, -1, -1));
             break;
+        case WHITE_NOISE:
+            nodes.push_back(nodeWhiteNoise());
+        case BITCRUSHER:
+            nodes.push_back(nodeBitcrusher(-1, -1));
+        case DISTORTION:
+            nodes.push_back(nodeDistortion(-1));
     }
 }
 

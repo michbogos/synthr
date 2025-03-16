@@ -56,6 +56,9 @@ void render_internals(WaveNode node){
             ImGui::PushItemWidth(150);
             ImGui::InputFloat("Number:", ((float*)node.value));
             break;
+        case MIDI_CONTROL:
+            ImGui::PushItemWidth(150);
+            ImGui::InputInt("Input channel id", (int*)(((char*)node.value)+sizeof(MidiState*)), 1, 2);
         // case FILTER_HIGHPASS:
         // case FILTER_LOWPASS:
         // case FILTER_BANDPASS:
