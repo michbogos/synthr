@@ -366,7 +366,7 @@ int main(int, char**)
         ImGui::NewFrame();
         // Rendering
 
-        ImGui::Begin("simple node editor");
+        ImGui::Begin("Node Editor");
 
         if(selection_active){
             ImGui::SetNextWindowPos(mouse_pos);
