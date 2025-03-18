@@ -23,6 +23,7 @@ std::vector<std::vector<WaveNode>> channels;
 
 int selected_node = -1;
 bool locked = true;
+int audio_frame_size;
 
 static void soundio_callback(struct SoundIoOutStream *outstream, int frame_count_min, int frame_count_max) {
     const struct SoundIoChannelLayout *layout = &outstream->layout;
@@ -30,6 +31,7 @@ static void soundio_callback(struct SoundIoOutStream *outstream, int frame_count
     float seconds_per_frame = 1.0f / float_sample_rate;
     struct SoundIoChannelArea *areas;
     int frames_left = frame_count_max;
+    audio_frame_size = frame_count_max;
     int err;
 
     while (frames_left > 0) {
@@ -51,6 +53,7 @@ static void soundio_callback(struct SoundIoOutStream *outstream, int frame_count
             float tmp[frame_count];
             for(int voice = 0; voice < NUM_VOICES; voice++){
                 getNodeOutput(selected_node, channels[voice].data(), channels[voice].size(), frame_count, tmp, 1.0f/float_sample_rate);
+                clearNodeComputed(channels[voice].data(), channels[voice].size());
                 for(int i = 0; i < frame_count; i++){
                     samples[i] += tmp[i];
                 }
@@ -97,6 +100,9 @@ std::vector<std::vector<WaveNode>> cloneGraph(std::vector<WaveNode> graph, int n
                 ((Biquad*)voices[i][j].value)->out1 = 0;
                 ((Biquad*)voices[i][j].value)->out2 = 0;
                 ((Biquad*)voices[i][j].value)->out3 = 0;
+            }
+            if(voices[i][j].cache != NULL){
+                voices[i][j].cache = (float*)malloc(sizeof(float)*audio_frame_size);
             }
         }
     }
@@ -377,45 +383,38 @@ int main(int, char**)
                 selected_node_to_add = -1;
                 selection_active = false;
                 locked = true;
+                allocateCache(nodes.data(), nodes.size(), audio_frame_size*sizeof(float));
                 channels = cloneGraph(nodes, NUM_VOICES);
                 locked = false;
             }
         }
 
-        if(ImNodes::IsLinkCreated(&out, &in)){
-            links.push_back({out, in});
-            nodes[in/1024].inputs[in%1024] = out/1024;
-            channels = cloneGraph(nodes, NUM_VOICES);
-            locked = false;
-        }
         ImNodes::EditorContextSet(context);
         ImNodes::BeginNodeEditor();
 
         for(int i = 0; i < links.size(); i++){
             ImNodes::Link(i, links[i].first, links[i].second);
         }
-
         for(auto node : nodes){
             render_wavenode(node);
         }
-
         ImNodes::EndNodeEditor();
+
+        if(ImNodes::IsLinkCreated(&out, &in)){
+            links.push_back({out, in});
+            nodes[in/1024].inputs[in%1024] = out/1024;
+            allocateCache(nodes.data(), nodes.size(), audio_frame_size*sizeof(float));
+            channels = cloneGraph(nodes, NUM_VOICES);
+            locked = false;
+        }
 
         if(ImNodes::IsLinkDestroyed(&link_id)){
             auto link = links[link_id];
             links.erase(links.begin()+link_id);
             nodes[link.second/1024].inputs[link.second%1024] = -1;
+            allocateCache(nodes.data(), nodes.size(), audio_frame_size*sizeof(float));
             channels = cloneGraph(nodes, NUM_VOICES);
         }
-
-        // if(ImNodes::IsLinkDropped(&started_at, true)){
-        //     for(int i = 0; i < links.size(); i++){
-        //         if(links[i] == std::pair<int, int>(started_at, ended_at)){
-        //             links.erase(links.begin()+i);
-        //             nodes[links[i].second/1024].inputs[links[i].second%1024] = -1;
-        //         }
-        //     }
-        // }
 
         if(ImGui::IsKeyPressed(ImGuiKey_X)){
             for(int i = 0; i < links.size(); i++){
@@ -461,6 +460,7 @@ int main(int, char**)
                 ImNodes::GetSelectedNodes(selected_nodes);
                 selected_node = selected_nodes[0];
                 getNodeOutput(selected_nodes[0], nodes.data(), nodes.size(), 1024, buffer, 1.0/(1024));
+                clearNodeComputed(nodes.data(), nodes.size());
                 ImPlot::PlotLine("Node Output", buffer, 1024);
             ImPlot::EndPlot();
             }

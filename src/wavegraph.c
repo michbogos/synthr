@@ -34,7 +34,7 @@ WaveNode copyNode(WaveNode node){
 
 // Currently won't work correctly if muliple outputs depend on one input. Do a toposort and a list of computed nodes
 // See if node has multiple inputs cache that node.
-void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt, float** cache){
+void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt){
     WaveNode node;
     if(node_idx < 0 || node_idx >= num_nodes){
         node = (WaveNode){.type=NUMBER, .value=&ZERO, .id=-1, .computed=-1};
@@ -42,8 +42,8 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
     else{
         node = nodes[node_idx];
     }
-    if(node.computed){
-        memcpy(buffer, cache[node_idx], n*sizeof(float));
+    if(node.computed > 0 && node.cache != NULL){
+        memcpy(buffer, node.cache, sizeof(float)*n);
         return;
     }
     switch (node.type){
@@ -67,7 +67,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = filter(a[i], 1.0f/dt, node.value, fc[i], resonance[i], 1.0);
         }
-        return;
         break;
     }
     case ADSR:
@@ -84,7 +83,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             buffer[i] = gen_adsr_envelope(node.value);
         }
         ((ADSREnvelope*)node.value)->gate = trigger[n-1];
-        return;
         break;
     }
     case MIDI_GATE:
@@ -94,7 +92,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = state.is_on[voice_idx];
         }
-        return;
         break;
     }
     case MIDI_PITCH:
@@ -105,7 +102,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = frequency;
         }
-        return;
         break;
     }
     case MIDI_CONTROL:
@@ -116,7 +112,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = state.controls[control_idx]/127.0f;
         }
-        return;
         break;
     }
     case VELOCITY:
@@ -126,7 +121,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = (float)state.velocities[voice_idx]/127.0f;
         }
-        return;
         break;
     }
 
@@ -136,7 +130,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = (float)state.mod_wheel/127.0f;
         }
-        return;
         break;
     }
 
@@ -146,7 +139,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = (float)state.pitch_bend/32767.0f;
         }
-        return;
         break;
     }
 
@@ -157,7 +149,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = distortion_foldback(input[i], 0.5);
         }
-        return;
         break;
     }
 
@@ -170,7 +161,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         for(int i = 0; i < n; i++){
             buffer[i] = bit_crusher(input[i], abs(bits[i]));
         }
-        return;
         break;
     }
 
@@ -181,7 +171,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             delay(samples, buffer, (Delay*)node.value, n);
             node.computed = 1;
         }
-        return;
         break;
     case ALLPASS_FILTER:
         {
@@ -194,7 +183,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i] = filter_allpass((AllpassFilter*)node.value, samples[i]);
             }
             node.computed = 1;
-            return;
             break;
         }
     case COMB_FILTER:
@@ -208,7 +196,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i] = filter_comb((CombFilter*)node.value, samples[i]);
             }
             node.computed = 1;
-            return;
             break;
         }
     case WHITE_NOISE:
@@ -216,7 +203,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             buffer[i] = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
         }
         node.computed = 1;
-        return;
         break;
     case PINK_NOISE:
         for(int i = 0; i < n; i++){
@@ -227,7 +213,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             buffer[i] = (b0 + b1 + b2 + buffer[i] * 0.1848)*0.2;
             node.computed = 1;
         }
-        return;
         break;
     case BROWN_NOISE:
         for(int i = 0; i < n; i++){
@@ -236,14 +221,12 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             buffer[i] = (a+b)*0.5;
             node.computed = 1;
         }
-        return;
         break;
     case NUMBER:
         for(int i = 0; i < n; i++){
             buffer[i] = ((float*)(node.value))[0];
         }
         break;
-        return;
     
     case WAVETABLE:
         {
@@ -253,7 +236,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i] = osc_tbl(frequency_buffer[i], (float*)((char*)node.value+sizeof(Wavetable)), dt, (Wavetable*)node.value);
             }
             node.computed = 1;
-            return;
             break;
         }
     case SIN:
@@ -264,7 +246,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i] = osc_sin(frequency_buffer[i], node.value, dt);
             }
             node.computed = 1;
-            return;
             break;
         }
     case TRIANGLE:
@@ -274,7 +255,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             for(int i = 0; i < n; i++){
                 buffer[i] = osc_tri(frequency_buffer[i], node.value, dt);
             }
-            return;
             break;
         }
     case SQUARE:
@@ -285,7 +265,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i] = osc_sqr(frequency_buffer[i], node.value, dt);
             }
             node.computed = 1;
-            return;
             break;
         }
     case SAW:
@@ -296,7 +275,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i] = osc_saw(frequency_buffer[i], node.value, dt);
             }
             node.computed = 1;
-            return;
             break;
         }
     case POLYGON:
@@ -308,7 +286,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             for(int i = 0; i < n; i ++){
                 buffer[i] = osc_ply(n_buffer[i], frequency_buffer[i], node.value, dt);
             }
-            return;
             break;
         }
     case ADD:
@@ -321,7 +298,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i]=a_buffer[i]+b_buffer[i];
             }
             node.computed = 1;
-            return;
             break;
         }
     case SUBTRACT:
@@ -334,7 +310,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i]=a_buffer[i]-b_buffer[i];
             }
             node.computed = 1;
-            return;
             break;
         }
     case MULTIPLY:
@@ -347,7 +322,6 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i]=a_buffer[i]*b_buffer[i];
             }
             node.computed = 1;
-            return;
             break;
         }
     case DIVIDE:
@@ -359,21 +333,47 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
                 buffer[i]=buffer[i]/b_buffer[i];
             }
             node.computed = 1;
-            return;
             break;
         }
     default:
         return;
     }
+    node.computed = 1;
+    if(node.cache != NULL){
+        memcpy(node.cache, buffer, sizeof(float)*n);
+    }
 }
 
-// void clearNodeCache(WaveNode* node){
-//     node->computed = 0;
-//     for(int i = 0; i < node->num_inputs; i++){
-//         clearNodeCache(node->inputs+i);
-//     }
-//     return;
-// }
+void clearNodeComputed(WaveNode* nodes, int num_nodes){
+    for(int i = 0; i < num_nodes;i++){
+        nodes[i].computed = -1;
+    }
+    return;
+}
+
+void allocateCache(WaveNode* nodes, int num_nodes, int cache_size){
+    // Which nodes have more that 1 outputs
+    int num_outputs[num_nodes]; //Downstream dependencies
+    for(int i = 0; i < num_nodes; i++){
+        for(int input = 0; input < nodes[i].num_inputs; input++){
+            if(nodes[i].inputs[input] > -1 && nodes[i].inputs[input] < num_nodes){
+                num_outputs[nodes[i].inputs[input]] += 1;
+            }
+        }
+    }
+
+    // Cache those nodes
+    for(int i = 0; i < num_nodes; i++){
+        if(num_outputs[i] > 1){
+            nodes[i].cache = malloc(cache_size*sizeof(float));
+        }
+        if(num_outputs[i] == 1 && nodes[i].cache != NULL){
+            free(nodes[i].cache);
+            nodes[i].cache = NULL;
+        }
+    }
+    return;
+}
 
 WaveNode nodeComb(int samples, int alpha, int dampening, int delay){
     WaveNode node;

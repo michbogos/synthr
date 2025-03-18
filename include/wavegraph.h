@@ -37,6 +37,8 @@ struct node{
 typedef struct node WaveNode;
 
 WaveNode copyNode(WaveNode node);
+void clearNodeComputed(WaveNode* nodes, int num_nodes);
+void allocateCache(WaveNode* nodes, int num_nodes, int cache_size);
 
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt);
 
