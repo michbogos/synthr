@@ -3,6 +3,7 @@
 #include "imnodes.h"
 #include <wavegraph.h>
 #include <filter.h>
+#include <envelope.h>
 #include <map>
 #include "imgui.h"
 
@@ -59,6 +60,19 @@ void render_internals(WaveNode node){
         case MIDI_CONTROL:
             ImGui::PushItemWidth(150);
             ImGui::InputInt("Input channel id", (int*)(((char*)node.value)+sizeof(MidiState*)), 1, 2);
+        case ADSR:
+            ImGui::PushItemWidth(150);
+            ImGui::InputFloat("Ab", &((ADSREnvelope*)node.value)->ab);
+            ImGui::PushItemWidth(150);
+            ImGui::InputFloat("Ac", &((ADSREnvelope*)node.value)->ac);
+            ImGui::PushItemWidth(150);
+            ImGui::InputFloat("Db", &((ADSREnvelope*)node.value)->db);
+            ImGui::PushItemWidth(150);
+            ImGui::InputFloat("Dc", &((ADSREnvelope*)node.value)->dc);
+            ImGui::PushItemWidth(150);
+            ImGui::InputFloat("Rb", &((ADSREnvelope*)node.value)->rb);
+            ImGui::PushItemWidth(150);
+            ImGui::InputFloat("Rc", &((ADSREnvelope*)node.value)->rc);
         // case FILTER_HIGHPASS:
         // case FILTER_LOWPASS:
         // case FILTER_BANDPASS:

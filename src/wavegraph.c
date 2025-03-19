@@ -739,7 +739,8 @@ WaveNode nodeAdsr(int trigger, ADSREnvelope* state){
     node.inputs = malloc(1*sizeof(int));
     node.id = COUNTER ++;
     node.num_inputs = 1;
-    node.value = state;
+    node.value = malloc(sizeof(ADSREnvelope));
+    memcpy(node.value, state, sizeof(ADSREnvelope));
     node.value_len = sizeof(ADSREnvelope);
     node.inputs[0] = trigger;
     return node;

@@ -163,6 +163,11 @@ void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
             nodes.push_back(nodeBitcrusher(-1, -1));
         case DISTORTION:
             nodes.push_back(nodeDistortion(-1));
+        case ADSR:
+        {
+            ADSREnvelope adsr;
+            nodes.push_back(nodeAdsr(-1, &adsr));
+        }
     }
 }
 
