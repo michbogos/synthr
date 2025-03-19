@@ -226,12 +226,15 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         return;
         break;
     case BROWN_NOISE:
+    {
+        float* c = (float*)((char*)node.value+sizeof(pcg32_random_t));
+        float* last = (float*)((char*)node.value+sizeof(pcg32_random_t)+sizeof(float));
         for(int i = 0; i < n; i++){
-            float a = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
-            float b = (rand_float((pcg32_random_t*)node.value)*2.0f)-1.0f;
-            buffer[i] = (a+b)*0.5;
-            node.computed = 1;
+            float val = (2*rand_float(node.value)-1);
+            buffer[i] = *last+0.5*val;
+            *last = buffer[i];
         }
+    }
         return;
         break;
     case NUMBER:
@@ -438,8 +441,11 @@ WaveNode nodeBrownNoise(){
     WaveNode node;
     node.type = BROWN_NOISE;
     node.inputs = NULL;
-    node.value = malloc(1*sizeof(pcg32_random_t));
+    node.value = malloc(1*sizeof(pcg32_random_t)+1*sizeof(float)+sizeof(Biquad));
+    node.value_len = 1*sizeof(pcg32_random_t)+1*sizeof(float)+sizeof(Biquad);
     *((pcg32_random_t*)node.value) = make_rng(42, 63);
+    *(float*)((char*)node.value+sizeof(pcg32_random_t)) = 0.0;
+    *(Biquad*)((char*)node.value+sizeof(pcg32_random_t)+sizeof(float)) = biquad(HIGHPASS);
     node.num_inputs = 0;
     node.computed = 0;
     node.cache = NULL;

@@ -159,10 +159,16 @@ void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
             break;
         case WHITE_NOISE:
             nodes.push_back(nodeWhiteNoise());
+            break;
+        case BROWN_NOISE:
+            nodes.push_back(nodeBrownNoise());
+            break;
         case BITCRUSHER:
             nodes.push_back(nodeBitcrusher(-1, -1));
+            break;
         case DISTORTION:
             nodes.push_back(nodeDistortion(-1));
+            break;
         case ADSR:
         {
             ADSREnvelope adsr;
