@@ -440,13 +440,14 @@ int main(int, char**)
                 if(ImNodes::IsNodeSelected(i)){
                     nodes.erase(nodes.begin()+i);
                     for(int j = 0; j < links.size(); j++){
-                        if((links[j].first+1)/1024 == i){
+                        if(nodes[links[j].second/1024].inputs[links[j].second%1024] == i){
                             links.erase(links.begin()+j);
                             nodes[links[j].second/1024].inputs[links[j].second%1024] = -1;
                         }
                     }
                 }
             }
+            cloneGraph(nodes, NUM_VOICES);
         }
         if(ImGui::IsKeyPressed(ImGuiKey_A)){
             selection_active = true;
