@@ -95,10 +95,10 @@ void reverb(Reverb* r, float* input, float* output, int n, int stereo){
     float outr = 0.0;
     if(!stereo){
         for(int i = 0; i < n; i++){
-            for(int comb = 0; comb < 8; comb++){
-                outl += filter_comb(r->combs+(comb*2+0), input[i]);
-                outr += filter_comb(r->combs+(comb*2+1), input[i]);
-            }
+            // for(int comb = 0; comb < 8; comb++){
+            //     outl += filter_comb(r->combs+(comb*2+0), input[i]);
+            //     outr += filter_comb(r->combs+(comb*2+1), input[i]);
+            // }
             for(int allpass = 0; allpass < 4; allpass++){
                 outl += filter_allpass(r->allpass+2*allpass+0, outl);
                 outr += filter_allpass(r->allpass+2*allpass+1, outr);

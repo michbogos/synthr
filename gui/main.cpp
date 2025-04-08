@@ -174,6 +174,8 @@ void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
             ADSREnvelope adsr;
             nodes.push_back(nodeAdsr(-1, &adsr));
         }
+        case REVERB:
+            nodes.push_back(nodeReverb(-1));
     }
 }
 
@@ -466,6 +468,12 @@ int main(int, char**)
         ImGui::End();
 
         ImGui::Begin("Plot");
+
+        // if(ImNodes::NumSelectedNodes() == 1){
+        //     int selected_nodes[ImNodes::NumSelectedNodes()];
+        //     ImNodes::GetSelectedNodes(selected_nodes);
+        //     selected_node = selected_nodes[0];
+        // }
 
         if(ImNodes::NumSelectedNodes() == 1){
             if (ImPlot::BeginPlot("Time Domain")){

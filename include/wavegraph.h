@@ -18,7 +18,7 @@ enum NodeType{
     SIN=10,
     POLYGON=11,
     OUTPUT=12,
-    ADD=13, SUBTRACT, MULTIPLY, NUMBER, FILTER_LOWPASS, FILTER_HIGHPASS,FILTER_BANDPASS, FILTER_NOTCH, FILTER_APF, FILTER_PEAKEQ , COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY, DISTORTION, BITCRUSHER, MIDI_CONTROL
+    ADD=13, SUBTRACT, MULTIPLY, NUMBER, FILTER_LOWPASS, FILTER_HIGHPASS,FILTER_BANDPASS, FILTER_NOTCH, FILTER_APF, FILTER_PEAKEQ , COMB_FILTER, ALLPASS_FILTER, DIVIDE, WHITE_NOISE, PINK_NOISE, BROWN_NOISE, DELAY, DISTORTION, BITCRUSHER, MIDI_CONTROL, REVERB,
 };
 
 
@@ -69,6 +69,7 @@ WaveNode nodeBrownNoise();
 WaveNode nodeDelay(int samples, int delay_size, float decay);
 WaveNode nodeDistortion(int input);
 WaveNode nodeBitcrusher(int input, int bits);
+WaveNode nodeReverb(int input);
 
 //Voice idx may be superfluous. Usually it is 0
 WaveNode nodeMidiGate(int voice_idx, MidiState* state);

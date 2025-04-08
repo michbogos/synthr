@@ -5,6 +5,7 @@
 #include<delay.h>
 #include<string.h>
 #include<effects.h>
+#include<reverb.h>
 
 #define NULL ((void*)0)
 int COUNTER = 0;
@@ -202,6 +203,17 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             for(int i = 0; i < n; i++){
                 ((CombFilter*)node.value)->alpha = alpha[i];
                 buffer[i] = filter_comb((CombFilter*)node.value, samples[i]);
+            }
+            node.computed = 1;
+            return;
+            break;
+        }
+    case REVERB:
+        {
+            float samples[n];
+            getNodeOutput(node.inputs[0], nodes, num_nodes, n, samples, dt);
+            for(int i = 0; i < n; i++){
+                reverb(node.value, samples+i, buffer+i, n, -1);
             }
             node.computed = 1;
             return;
@@ -813,6 +825,20 @@ WaveNode nodeFilterAPF(int a, int fc, int resonance){
     node.inputs[0] = a;
     node.inputs[1] = fc;
     node.inputs[2] = resonance;
+    return node;
+ }
+
+ WaveNode nodeReverb(int input){
+    WaveNode node;
+    node.id = COUNTER++;
+    node.num_inputs = 1;
+    node.inputs = malloc(1*sizeof(int));
+    node.inputs[0] = input;
+    node.value = malloc(1*sizeof(Reverb));
+    Reverb verb = init_reverb(0, 0, 0, 0, 0, 0, 48000.0f);
+    *(Reverb*)node.value = verb;
+    node.type = REVERB;
+    node.value_len = sizeof(Reverb);
     return node;
  }
 

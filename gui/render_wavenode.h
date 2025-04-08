@@ -40,10 +40,11 @@ char* NODE_DESC[] = {
     "DELAY", 
     "DISTORTION", 
     "BITCRUSHER", 
-    "MIDI_CONTROL"
+    "MIDI_CONTROL",
+    "REVERB"
 };
 
-int LEN_NODE_DESC = 33;
+int LEN_NODE_DESC = 34;
 
 std::map<int, int> in_attribute_map; // Input attribute to node
 std::map<int, int> out_attribute_map; // Output attribute to node
