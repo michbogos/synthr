@@ -17,6 +17,7 @@
 #include <reverb.h>
 #include <midi.h>
 #include <fft.h>
+#include <cJSON.h>
 
 WaveNode nodes[32];
 WaveNode channels[NUM_VOICES][32];
