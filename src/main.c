@@ -45,7 +45,7 @@ CombFilter cmb;
 CombFilter cmb2;
 ADSREnvelope adsr;
 circular_buffer cbuf;
-Reverb verb;
+// Reverb verb;
 MidiState midi_state;
 
 void underflow_callback(){
@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
 
     float val = -1.0f;
     d = init_delay(24000, 0.3);
-    verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 48000);
+    //verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 48000);
 
     // for(int i = 0; i < 24000; i++){
     //     write_circular_buffer(&cbuf, &val, 1);

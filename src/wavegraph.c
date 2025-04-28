@@ -212,8 +212,9 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         {
             float samples[n];
             getNodeOutput(node.inputs[0], nodes, num_nodes, n, samples, dt);
+            fv_process(node.value, samples, n);
             for(int i = 0; i < n; i++){
-                reverb(node.value, samples+i, buffer+i, n, -1);
+                buffer[i] = samples[i];
             }
             node.computed = 1;
             return;
@@ -834,11 +835,13 @@ WaveNode nodeFilterAPF(int a, int fc, int resonance){
     node.num_inputs = 1;
     node.inputs = malloc(1*sizeof(int));
     node.inputs[0] = input;
-    node.value = malloc(1*sizeof(Reverb));
-    Reverb verb = init_reverb(0, 0, 0, 0, 0, 0, 48000.0f);
-    *(Reverb*)node.value = verb;
+    node.value = malloc(1*sizeof(fv_Context));
+    fv_init(node.value);
+    fv_set_samplerate(node.value, 48000);
+    // fv_Context verb = init_reverb(0, 0, 0, 0, 0, 0, 48000.0f);
+    // *(Reverb*)node.value = verb;
     node.type = REVERB;
-    node.value_len = sizeof(Reverb);
+    node.value_len = sizeof(fv_Context);
     return node;
  }
 
