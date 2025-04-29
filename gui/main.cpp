@@ -93,6 +93,9 @@ std::vector<std::vector<WaveNode>> cloneGraph(std::vector<WaveNode> graph, int n
             if(voices[i][j].type==MIDI_GATE || voices[i][j].type==VELOCITY || voices[i][j].type==MIDI_PITCH){
                 *(int*)(((char*)voices[i][j].value)+sizeof(MidiState*)) = i;
             }
+            if(voices[i][j].type==TRIANGLE || voices[i][j].type==SIN || voices[i][j].type==WAVETABLE || voices[i][j].type==SAW || voices[i][j].type==SQUARE || voices[i][j].type==POLYGON){
+                *((float*)voices[i][j].value) = 0.0f;
+            }
             if(voices[i][j].type==FILTER_LOWPASS || voices[i][j].type==FILTER_HIGHPASS || voices[i][j].type==FILTER_BANDPASS || voices[i][j].type==FILTER_APF){
                 ((Biquad*)voices[i][j].value)->out1 = 0;
                 ((Biquad*)voices[i][j].value)->out2 = 0;
