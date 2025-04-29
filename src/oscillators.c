@@ -135,6 +135,7 @@ float osc_ply(float n, float frequency, float* phase, float dt){
 
 
 float osc_tbl(float frequency, float* phase, float dt, Wavetable* wavetable){
+    frequency = absf(frequency);
     *phase += dt*(frequency);
     if(*phase > 1.0f){
       *phase -= 1.0f;
