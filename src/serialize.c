@@ -1,7 +1,7 @@
 #include<serialize.h>
 #include<wavegraph.h>
 #include<cJSON.h>
-#include<stdlib.h>
+#include<stdio.h>
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -17,6 +17,14 @@ static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 '4', '5', '6', '7', '8', '9', '+', '/'};
 static char *decoding_table = NULL;
 static int mod_table[] = {0, 2, 1};
+
+void build_decoding_table() {
+
+    decoding_table = malloc(256);
+
+    for (int i = 0; i < 64; i++)
+        decoding_table[(unsigned char) encoding_table[i]] = i;
+}
 
 
 char *base64_encode(const unsigned char *data,
@@ -85,15 +93,6 @@ unsigned char *base64_decode(const char *data,
 }
 
 
-void build_decoding_table() {
-
-    decoding_table = malloc(256);
-
-    for (int i = 0; i < 64; i++)
-        decoding_table[(unsigned char) encoding_table[i]] = i;
-}
-
-
 void base64_cleanup() {
     free(decoding_table);
 }
@@ -104,22 +103,28 @@ char* export_nodegraph(WaveNode* wavenodes, int n){
     cJSON* nodes = cJSON_AddArrayToObject(object, "nodes");
     for(int i = 0; i < n; i++){
         cJSON* wavenode = cJSON_CreateObject();
+        if(!cJSON_AddItemToArray(nodes, wavenode)){
+            printf("Failed to add item to array\n");
+        }
         cJSON* node_type = cJSON_CreateNumber((int)wavenodes[i].type);
         cJSON* node_num_inputs = cJSON_CreateNumber((int)wavenodes[i].num_inputs);
         cJSON* node_inputs = cJSON_CreateIntArray(wavenodes[i].inputs, wavenodes[i].num_inputs);
-        int base64_length = 0;
+        long unsigned int base64_length = 0;
         char* base64_encoded = base64_encode((unsigned char*)wavenodes[i].value, wavenodes[i].value_len, &base64_length);
-        realloc(base64_encoded, base64_length+1);
+        base64_encoded = realloc(base64_encoded, base64_length+1);
         base64_encoded[base64_length] = '\0';
         cJSON* node_value = cJSON_CreateString(base64_encoded);
         cJSON* node_value_len = cJSON_CreateNumber((int)wavenodes[i].value_len);
-        cJSON_AddItemToObject(wavenode, "node_type", node_type);
-        cJSON_AddItemToObject(wavenode, "node_num_inputs", node_num_inputs);
-        cJSON_AddItemToObject(wavenode, "node_inputs", node_type);
-        cJSON_AddItemToObject(wavenode, "node_type", node_type);
-        cJSON_AddItemToObject(wavenode, "node_type", node_type);
-        cJSON_AddItemToArray(nodes, wavenode);
+        cJSON_bool err = 0;
+        err |= cJSON_AddItemToObject(wavenode, "node_type", node_type);
+        err |= cJSON_AddItemToObject(wavenode, "node_num_inputs", node_num_inputs);
+        err |= cJSON_AddItemToObject(wavenode, "node_inputs", node_inputs);
+        err |= cJSON_AddItemToObject(wavenode, "node_value", node_value);
+        err |= cJSON_AddItemToObject(wavenode, "node_value_len", node_value_len);
     }
+    char* res = cJSON_Print(object);
+    cJSON_Delete(object);
+    return res;
 }
 
 WaveNode* import_nodegraph(char* data_string);
