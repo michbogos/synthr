@@ -322,5 +322,10 @@ int main(){
     char* res = export_nodegraph(wavenodes, 4);
 
     printf("%s\n", res);
+
+    WaveNode* imported = import_nodegraph(res);
+    char* reexport = export_nodegraph(imported, 4);
+
+    printf("%s\n", reexport);
     return 0;
 }
