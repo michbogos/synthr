@@ -345,14 +345,19 @@ int main(){
         buffer[i] = filter(buffer[i], 48000, &peak2, 1610, 3.0, 8.0f);
     }
 
-    for(int i = 0; i < 48000; i++){
-        buffer2[i] = filter(buffer2[i], 48000, &peak1, 250, 3, 24.0f);
-        buffer2[i] = filter(buffer2[i], 48000, &peak2, 595, 3, 6.0f);
-    }
+    peak1 = biquad(PEAKEQ);
+    peak2 = biquad(PEAKEQ);
 
     for(int i = 0; i < 48000; i++){
-        buffer3[i] = formantize(buffer3[i], 48000, uf);
+        buffer2[i] = filter(buffer2[i], 48000, &peak1, 250, 3, 24.0f);
+        buffer2[i] = filter(buffer2[i], 48000, &peak2, 595, 3, 12.0f);
     }
+
+    peak1 = biquad(PEAKEQ);
+    peak2 = biquad(PEAKEQ);
+
+
+    formantize(buffer3, 48000, 48000, uf);
 
     write_wav(buffer, 48000, 48000, 1, "a.wav");
     write_wav(buffer2, 48000, 48000, 1, "u.wav");

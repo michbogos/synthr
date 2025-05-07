@@ -160,12 +160,13 @@ Formant make_formant(float data[3][5]){
     return f;
 }
 
-float formantize(float input, float sample_rate, Formant f){
-    float res = input;
-    for(int i = 0; i < 2; i++){
-        double Q = f.freq[i]/(f.bw[i]);
-        res = filter(res, sample_rate, f.filters+i, f.freq[i], 3, f.amp[i]);
+void formantize(float* input, int n, float sample_rate, Formant f){
+    for(int i = 0; i < n; i++){
+        input[i] = filter(input[i], sample_rate, f.filters, 250, 3, 24);
     }
-    return res;
+    for(int i = 0; i < n; i++){
+        input[i] = filter(input[i], sample_rate, f.filters+1, 595, 3, 12);
+    }
+    return;
 }
 #endif
