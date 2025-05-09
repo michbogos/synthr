@@ -349,7 +349,7 @@ int main(){
     peak2 = biquad(PEAKEQ);
 
     for(int i = 0; i < 48000; i++){
-        buffer2[i] = filter(buffer2[i], 48000, &peak1, 250, 3, 24.0f);
+        buffer2[i] = filter(buffer2[i], 48000, &peak1, 350, 3, 24.0f);
         buffer2[i] = filter(buffer2[i], 48000, &peak2, 595, 3, 12.0f);
     }
 

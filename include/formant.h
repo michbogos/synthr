@@ -162,10 +162,9 @@ Formant make_formant(float data[3][5]){
 
 void formantize(float* input, int n, float sample_rate, Formant f){
     for(int i = 0; i < n; i++){
-        input[i] = filter(input[i], sample_rate, f.filters, 250, 3, 24);
-    }
-    for(int i = 0; i < n; i++){
-        input[i] = filter(input[i], sample_rate, f.filters+1, 595, 3, 12);
+        for(int j = 0; j < 2; j++){
+            input[i] = filter(input[i], sample_rate, f.filters+j, , 3, 24);
+        }
     }
     return;
 }
