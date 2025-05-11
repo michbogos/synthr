@@ -374,6 +374,18 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
             return;
             break;
         }
+    case DIFFERENTIATE:
+        {
+            float input[n];
+            getNodeOutput(node.inputs[0], nodes, num_nodes, n, input, dt);
+            for(int i = 0; i < n; i++){
+                buffer[i] = (input[i]-*(float*)node.value)/dt;
+                *(float*)node.value = input[i];
+            }
+            node.computed = 1;
+            return;
+            break;
+        }
     default:
         return;
     }
@@ -627,6 +639,17 @@ WaveNode nodeDiv(int a, int b){
     node.num_inputs = 2;
     node.computed = 0;
     node.cache = NULL;
+    node.id = COUNTER++;
+    return node;
+}
+
+WaveNode nodeDifferentiate(int a){
+    WaveNode node;
+    node.type = DIFFERENTIATE;
+    node.inputs = (int*) malloc(1*sizeof(int));
+    node.inputs[0] = a;
+    node.value = malloc(1*sizeof(float));
+    node.value_len = sizeof(float);
     node.id = COUNTER++;
     return node;
 }
