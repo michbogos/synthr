@@ -19,4 +19,6 @@ float bit_crusher(float x, float bits){
   return ((int)(x*powf(2, bits)))/powf(2, bits);
 }
 
+
+
 #endif

@@ -36,7 +36,7 @@ WaveNode copyNode(WaveNode node){
 // Currently won't work correctly if muliple outputs depend on one input. Do a toposort and a list of computed nodes
 // See if node has multiple inputs cache that node.
 void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* buffer, float dt){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     if(node_idx < 0 || node_idx >= num_nodes){
         node = (WaveNode){.type=NUMBER, .value=&ZERO, .id=-1, .computed=-1};
     }
@@ -399,8 +399,20 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
 //     return;
 // }
 
+WaveNode nodeDefault(){
+    WaveNode node = nodeDefault();
+    node.value = NULL;
+    node.cache = NULL;
+    node.value_len = 0;
+    node.id = COUNTER++;
+    node.num_inputs = 0;
+    node.computed = 0;
+    node.inputs = NULL;
+    return node;
+}
+
 WaveNode nodeComb(int samples, int alpha, int dampening, int delay){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = COMB_FILTER;
     node.inputs = malloc(3*sizeof(int));
     node.inputs[0] = samples;
@@ -408,93 +420,67 @@ WaveNode nodeComb(int samples, int alpha, int dampening, int delay){
     node.inputs[2] = dampening;
     node.num_inputs = 3;
     node.value = malloc(sizeof(CombFilter));
-    node.computed = 0;
-    node.cache = NULL;
     CombFilter f = comb(delay, 1.0f, 1.0f);
-    node.id = COUNTER++;
     *((CombFilter*)node.value) = f;
     return node;
 }
 
 WaveNode nodeAllpass(int samples, int feedback, int delay){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = ALLPASS_FILTER;
     node.inputs = malloc(2*sizeof(int));
     node.inputs[0] = samples;
     node.inputs[1] = feedback;
     node.value = malloc(sizeof(AllpassFilter));
     node.num_inputs = 2;
-    node.computed = 0;
-    node.cache = NULL;
     AllpassFilter f = init_all_pass(delay, 1.0f);
     *((AllpassFilter*)node.value) = f;
-    node.id = COUNTER++;
     return node;
 }
 
 //Nodes don't copy values just the pointers
 //Find a good way to seed random value
 WaveNode nodeWhiteNoise(){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = WHITE_NOISE;
-    node.inputs = NULL;
     node.value = malloc(16);
     node.value_len = 16;
     *((pcg32_random_t*)node.value) = make_rng(42, 63);
-    node.num_inputs = 0;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodePinkNoise(){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = PINK_NOISE;
-    node.inputs = NULL;
     node.value = malloc(1*sizeof(pcg32_random_t));
     *((pcg32_random_t*)node.value) = make_rng(42, 63);
-    node.num_inputs = 0;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 // Brown noise improper filter
 WaveNode nodeBrownNoise(){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = BROWN_NOISE;
-    node.inputs = NULL;
     node.value = malloc(1*sizeof(pcg32_random_t)+1*sizeof(float)+sizeof(Biquad));
     node.value_len = 1*sizeof(pcg32_random_t)+1*sizeof(float)+sizeof(Biquad);
     *((pcg32_random_t*)node.value) = make_rng(42, 63);
     *(float*)((char*)node.value+sizeof(pcg32_random_t)) = 0.0;
     *(Biquad*)((char*)node.value+sizeof(pcg32_random_t)+sizeof(float)) = biquad(HIGHPASS);
-    node.num_inputs = 0;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeNumber(float number){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = NUMBER;
-    node.inputs = NULL;
     node.value = malloc(sizeof(float));
     float* ptr = (float*)node.value;
     *ptr = number;
-    node.num_inputs = 0;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     node.value_len = sizeof(float);
     return node;
 }
 
 WaveNode nodeWavetable(int frequency, Wavetable* table){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = WAVETABLE;
     node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
@@ -503,14 +489,11 @@ WaveNode nodeWavetable(int frequency, Wavetable* table){
     ((Wavetable*)node.value)[0] = *table;
     ((float*)(((char*)node.value)+sizeof(Wavetable)))[0] = 0;
     node.num_inputs = 1;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeSin(int frequency){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = SIN;
     node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
@@ -518,14 +501,11 @@ WaveNode nodeSin(int frequency){
     *(float*)(node.value) = 0.0f;
     node.value_len = sizeof(float);
     node.num_inputs = 1;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeTri(int frequency){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = TRIANGLE;
     node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
@@ -533,14 +513,11 @@ WaveNode nodeTri(int frequency){
     *(float*)(node.value) = 0.0f;
     node.value_len = sizeof(float);
     node.num_inputs = 1;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeSqr(int frequency){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = SQUARE;
     node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
@@ -548,14 +525,11 @@ WaveNode nodeSqr(int frequency){
     *(float*)(node.value) = 0.0f;
     node.value_len = sizeof(float);
     node.num_inputs = 1;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeSaw(int frequency){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = SAW;
     node.inputs = (int*)malloc(1*sizeof(int));
     node.inputs[0] = frequency;
@@ -563,14 +537,11 @@ WaveNode nodeSaw(int frequency){
     *(float*)(node.value) = 0.0f;
     node.value_len = sizeof(float);
     node.num_inputs = 1;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodePolygon(int frequency, int n){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = POLYGON;
     node.inputs = (int*)malloc(2*sizeof(int));
     node.inputs[0] = frequency;
@@ -579,83 +550,61 @@ WaveNode nodePolygon(int frequency, int n){
     *(float*)(node.value) = 0.0f;
     node.value_len = sizeof(float);
     node.num_inputs = 2;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeAdd(int a, int b){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = ADD;
     node.inputs = (int*)malloc(2*sizeof(int));
     node.inputs[0] = a;
     node.inputs[1] = b;
-    node.value = NULL;
-    node.value_len = 0;
     node.num_inputs = 2;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeSub(int a, int b){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = SUBTRACT;
     node.inputs = (int*)malloc(2*sizeof(int));
     node.inputs[0] = a;
     node.inputs[1] = b;
-    node.value = NULL;
     node.num_inputs = 2;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeMul(int a, int b){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = MULTIPLY;
     node.inputs = (int*)malloc(2*sizeof(int));
     node.inputs[0] = a;
     node.inputs[1] = b;
-    node.value = NULL;
-    node.value_len = 0;
     node.num_inputs = 2;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeDiv(int a, int b){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = DIVIDE;
     node.inputs = (int*)malloc(2*sizeof(int));
     node.inputs[0] = a;
     node.inputs[1] = b;
-    node.value = NULL;
     node.num_inputs = 2;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeDifferentiate(int a){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = DIFFERENTIATE;
     node.inputs = (int*) malloc(1*sizeof(int));
     node.inputs[0] = a;
     node.value = malloc(1*sizeof(float));
     node.value_len = sizeof(float);
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeDelay(int samples, int delay_size, float decay){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = DELAY;
     node.inputs = malloc(1*sizeof(int));
     node.inputs[0] = samples;
@@ -664,122 +613,90 @@ WaveNode nodeDelay(int samples, int delay_size, float decay){
     node.value_len = sizeof(Delay);
     *(Delay*)node.value = d;
     node.num_inputs = 1;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeDistortion(int input){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = DISTORTION;
     node.inputs = malloc(1*sizeof(int));
     node.inputs[0] = input;
-    node.value = NULL;
-    node.value_len = 0;
     node.num_inputs = 1;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeBitcrusher(int input, int bits){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = BITCRUSHER;
     node.inputs = malloc(2*sizeof(int));
     node.inputs[0] = input;
     node.inputs[1] = bits;
-    node.value = NULL;
-    node.value_len = 0;
     node.num_inputs = 2;
-    node.computed = 0;
-    node.cache = NULL;
-    node.id = COUNTER++;
     return node;
 }
 
 WaveNode nodeMidiGate(int voice_idx, MidiState* state){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = MIDI_GATE;
-    node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*)+sizeof(int));
     *(MidiState**)node.value = state;
     *(int*)(((char*)node.value)+sizeof(MidiState*)) = voice_idx;
-    node.id = COUNTER++;
-    node.num_inputs = 0;
     node.value_len = sizeof(MidiState*)+sizeof(int);
     return node;
 }
 
 WaveNode nodeMidiPitch(int voice_idx, MidiState* state){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = MIDI_PITCH;
-    node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*)+sizeof(int));
     *(MidiState**)node.value = state;
     *(int*)(((char*)node.value)+sizeof(MidiState*)) = voice_idx;
-    node.id = COUNTER++;
-    node.num_inputs = 0;
     node.value_len = sizeof(MidiState*)+sizeof(int);
     return node;
 }
 
 WaveNode nodeMidiControl(int control_idx, MidiState* state){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = MIDI_CONTROL;
-    node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*)+sizeof(int));
     *(MidiState**)node.value = state;
     *(int*)(((char*)node.value)+sizeof(MidiState*)) = control_idx;
-    node.id = COUNTER++;
-    node.num_inputs = 0;
     node.value_len = sizeof(MidiState*)+sizeof(int);
     return node;
 }
 
 WaveNode nodeVelocity(int voice_idx, MidiState* state){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = VELOCITY;
-    node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*)+sizeof(int));
     *(MidiState**)node.value = state;
     *(int*)(((char*)node.value)+sizeof(MidiState*)) = voice_idx;
-    node.id = COUNTER++;
-    node.num_inputs = 0;
     node.value_len = sizeof(MidiState*)+sizeof(int);
     return node;
 }
 
 WaveNode nodeModWheel(MidiState* state){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = MODWHEEL;
-    node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*));
     *(MidiState**)node.value = state;
-    node.id = COUNTER++;
-    node.num_inputs = 0;
     node.value_len = sizeof(MidiState*);
     return node;
 }
 
 WaveNode nodePitchBend(MidiState* state){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = PITCHBEND;
-    node.inputs = NULL;
     node.value = malloc(sizeof(MidiState*));
     *(MidiState**)node.value = state;
-    node.id = COUNTER++;
-    node.num_inputs = 0;
     node.value_len = sizeof(MidiState*);
     return node;
 }
 
 WaveNode nodeAdsr(int trigger, ADSREnvelope* state){
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = ADSR;
     node.inputs = malloc(1*sizeof(int));
-    node.id = COUNTER ++;
     node.num_inputs = 1;
     node.value = malloc(sizeof(ADSREnvelope));
     memcpy(node.value, state, sizeof(ADSREnvelope));
@@ -790,11 +707,10 @@ WaveNode nodeAdsr(int trigger, ADSREnvelope* state){
 
 WaveNode nodeFilterLowpass(int a, int fc, int resonance){
     Biquad bq = biquad(LOWPASS);
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = FILTER_LOWPASS;
     node.value = malloc(sizeof(Biquad));
     node.value_len = sizeof(Biquad);
-    node.id = COUNTER++;
     *(Biquad*)node.value = bq;
     node.num_inputs = 3;
     node.inputs = malloc(sizeof(int)*3);
@@ -806,11 +722,10 @@ WaveNode nodeFilterLowpass(int a, int fc, int resonance){
 
 WaveNode nodeFilterHighpass(int a, int fc, int resonance){
     Biquad bq = biquad(HIGHPASS);
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = FILTER_HIGHPASS;
     node.value = malloc(sizeof(Biquad));
     node.value_len = sizeof(Biquad);
-    node.id = COUNTER++;
     *(Biquad*)node.value = bq;
     node.num_inputs = 3;
     node.inputs = malloc(sizeof(int)*3);
@@ -822,11 +737,10 @@ WaveNode nodeFilterHighpass(int a, int fc, int resonance){
 
 WaveNode nodeFilterBandpass(int a, int fc, int resonance){
     Biquad bq = biquad(BANDPASSQ);
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = FILTER_BANDPASS;
     node.value = malloc(sizeof(Biquad));
     node.value_len = sizeof(Biquad);
-    node.id = COUNTER++;
     *(Biquad*)node.value = bq;
     node.num_inputs = 3;
     node.inputs = malloc(sizeof(int)*3);
@@ -838,11 +752,10 @@ WaveNode nodeFilterBandpass(int a, int fc, int resonance){
 
 WaveNode nodeFilterAPF(int a, int fc, int resonance){
     Biquad bq = biquad(APF);
-    WaveNode node;
+    WaveNode node = nodeDefault();
     node.type = FILTER_APF;
     node.value = malloc(sizeof(Biquad));
     node.value_len = sizeof(Biquad);
-    node.id = COUNTER++;
     *(Biquad*)node.value = bq;
     node.num_inputs = 3;
     node.inputs = malloc(sizeof(int)*3);
@@ -853,33 +766,14 @@ WaveNode nodeFilterAPF(int a, int fc, int resonance){
  }
 
  WaveNode nodeReverb(int input){
-    WaveNode node;
-    node.id = COUNTER++;
+    WaveNode node = nodeDefault();
     node.num_inputs = 1;
     node.inputs = malloc(1*sizeof(int));
     node.inputs[0] = input;
     node.value = malloc(1*sizeof(fv_Context));
     fv_init(node.value);
     fv_set_samplerate(node.value, 48000);
-    // fv_Context verb = init_reverb(0, 0, 0, 0, 0, 0, 48000.0f);
-    // *(Reverb*)node.value = verb;
     node.type = REVERB;
     node.value_len = sizeof(fv_Context);
     return node;
  }
-
-// WaveNode nodeFilterPeakEQ(int a, int fc, int resonance){
-//     Biquad bq = biquad(PEAKEQ);
-//     WaveNode node;
-//     node.type = FILTER_PEAKEQ;
-//     node.value = malloc(sizeof(Biquad));
-//     node.value_len = sizeof(Biquad);
-//     node.id = COUNTER++;
-//     *(Biquad*)node.value = bq;
-//     node.num_inputs = 3;
-//     node.inputs = malloc(sizeof(int)*3);
-//     node.inputs[0] = a;
-//     node.inputs[1] = fc;
-//     node.inputs[2] = resonance;
-//     return node;
-//  }
