@@ -8,6 +8,13 @@ include(ExternalProject)
 include(FetchContent)
 
 FetchContent_Declare(
+    juce
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+)
+
+FetchContent_Populate(juce)
+
+FetchContent_Declare(
     soundio
     URL https://github.com/andrewrk/libsoundio/archive/refs/tags/2.0.1-7.tar.gz
 )
@@ -21,6 +28,7 @@ FetchContent_Populate(rtmidi)
 
 add_subdirectory(${soundio_SOURCE_DIR})
 add_subdirectory(${rtmidi_SOURCE_DIR})
+add_subdirectory(${juce_SOURCE_DIR})
 add_subdirectory(${CMAKE_SOURCE_DIR}/glfw)
 
 
