@@ -83,4 +83,6 @@ WaveNode nodePitchBend(MidiState* MidiState);
 
 
 WaveNode nodeAdsr(int trigger, ADSREnvelope* state);
+
+WaveNode nodeDefault();
 #endif

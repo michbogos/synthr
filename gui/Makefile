@@ -215,17 +215,17 @@ synthr/fast:
 .PHONY : synthr/fast
 
 #=============================================================================
-# Target rules for targets named program
+# Target rules for targets named standalone
 
 # Build rule for target.
-program: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 program
-.PHONY : program
+standalone: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 standalone
+.PHONY : standalone
 
 # fast build rule for target.
-program/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/build
-.PHONY : program/fast
+standalone/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/build
+.PHONY : standalone/fast
 
 #=============================================================================
 # Target rules for targets named libsoundio_shared
@@ -916,6 +916,414 @@ update_mappings/fast:
 	$(MAKE) $(MAKESILENT) -f glfw/src/CMakeFiles/update_mappings.dir/build.make glfw/src/CMakeFiles/update_mappings.dir/build
 .PHONY : update_mappings/fast
 
+_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.o: _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.o
+
+_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.i: _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.i
+
+_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.s: _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.cpp.s
+
+_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.o: _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.o
+
+_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.i: _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.i
+
+_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.s: _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.cpp.s
+
+_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.o: _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.o
+
+_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.i: _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.i
+
+_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.s: _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.cpp.s
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.o: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.o
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.i: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.i
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.s: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.cpp.s
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.o: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.i: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.i
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.s: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.cpp.s
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.o: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.i: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.i
+
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.s: _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.s
+
+_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.o: _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.o
+.PHONY : _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.o
+
+_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.i: _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.i
+.PHONY : _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.i
+
+_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.s: _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.s
+.PHONY : _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.cpp.s
+
+_deps/juce-src/modules/juce_core/juce_core.o: _deps/juce-src/modules/juce_core/juce_core.cpp.o
+.PHONY : _deps/juce-src/modules/juce_core/juce_core.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_core/juce_core.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_core/juce_core.cpp.o
+.PHONY : _deps/juce-src/modules/juce_core/juce_core.cpp.o
+
+_deps/juce-src/modules/juce_core/juce_core.i: _deps/juce-src/modules/juce_core/juce_core.cpp.i
+.PHONY : _deps/juce-src/modules/juce_core/juce_core.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_core/juce_core.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_core/juce_core.cpp.i
+.PHONY : _deps/juce-src/modules/juce_core/juce_core.cpp.i
+
+_deps/juce-src/modules/juce_core/juce_core.s: _deps/juce-src/modules/juce_core/juce_core.cpp.s
+.PHONY : _deps/juce-src/modules/juce_core/juce_core.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_core/juce_core.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_core/juce_core.cpp.s
+.PHONY : _deps/juce-src/modules/juce_core/juce_core.cpp.s
+
+_deps/juce-src/modules/juce_core/juce_core_CompilationTime.o: _deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.o
+.PHONY : _deps/juce-src/modules/juce_core/juce_core_CompilationTime.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.o
+.PHONY : _deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.o
+
+_deps/juce-src/modules/juce_core/juce_core_CompilationTime.i: _deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.i
+.PHONY : _deps/juce-src/modules/juce_core/juce_core_CompilationTime.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.i
+.PHONY : _deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.i
+
+_deps/juce-src/modules/juce_core/juce_core_CompilationTime.s: _deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.s
+.PHONY : _deps/juce-src/modules/juce_core/juce_core_CompilationTime.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.s
+.PHONY : _deps/juce-src/modules/juce_core/juce_core_CompilationTime.cpp.s
+
+_deps/juce-src/modules/juce_data_structures/juce_data_structures.o: _deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.o
+.PHONY : _deps/juce-src/modules/juce_data_structures/juce_data_structures.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.o
+.PHONY : _deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.o
+
+_deps/juce-src/modules/juce_data_structures/juce_data_structures.i: _deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.i
+.PHONY : _deps/juce-src/modules/juce_data_structures/juce_data_structures.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.i
+.PHONY : _deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.i
+
+_deps/juce-src/modules/juce_data_structures/juce_data_structures.s: _deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.s
+.PHONY : _deps/juce-src/modules/juce_data_structures/juce_data_structures.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.s
+.PHONY : _deps/juce-src/modules/juce_data_structures/juce_data_structures.cpp.s
+
+_deps/juce-src/modules/juce_dsp/juce_dsp.o: _deps/juce-src/modules/juce_dsp/juce_dsp.cpp.o
+.PHONY : _deps/juce-src/modules/juce_dsp/juce_dsp.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_dsp/juce_dsp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_dsp/juce_dsp.cpp.o
+.PHONY : _deps/juce-src/modules/juce_dsp/juce_dsp.cpp.o
+
+_deps/juce-src/modules/juce_dsp/juce_dsp.i: _deps/juce-src/modules/juce_dsp/juce_dsp.cpp.i
+.PHONY : _deps/juce-src/modules/juce_dsp/juce_dsp.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_dsp/juce_dsp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_dsp/juce_dsp.cpp.i
+.PHONY : _deps/juce-src/modules/juce_dsp/juce_dsp.cpp.i
+
+_deps/juce-src/modules/juce_dsp/juce_dsp.s: _deps/juce-src/modules/juce_dsp/juce_dsp.cpp.s
+.PHONY : _deps/juce-src/modules/juce_dsp/juce_dsp.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_dsp/juce_dsp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_dsp/juce_dsp.cpp.s
+.PHONY : _deps/juce-src/modules/juce_dsp/juce_dsp.cpp.s
+
+_deps/juce-src/modules/juce_events/juce_events.o: _deps/juce-src/modules/juce_events/juce_events.cpp.o
+.PHONY : _deps/juce-src/modules/juce_events/juce_events.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_events/juce_events.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_events/juce_events.cpp.o
+.PHONY : _deps/juce-src/modules/juce_events/juce_events.cpp.o
+
+_deps/juce-src/modules/juce_events/juce_events.i: _deps/juce-src/modules/juce_events/juce_events.cpp.i
+.PHONY : _deps/juce-src/modules/juce_events/juce_events.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_events/juce_events.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_events/juce_events.cpp.i
+.PHONY : _deps/juce-src/modules/juce_events/juce_events.cpp.i
+
+_deps/juce-src/modules/juce_events/juce_events.s: _deps/juce-src/modules/juce_events/juce_events.cpp.s
+.PHONY : _deps/juce-src/modules/juce_events/juce_events.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_events/juce_events.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_events/juce_events.cpp.s
+.PHONY : _deps/juce-src/modules/juce_events/juce_events.cpp.s
+
+_deps/juce-src/modules/juce_graphics/juce_graphics.o: _deps/juce-src/modules/juce_graphics/juce_graphics.cpp.o
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_graphics/juce_graphics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics.cpp.o
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics.cpp.o
+
+_deps/juce-src/modules/juce_graphics/juce_graphics.i: _deps/juce-src/modules/juce_graphics/juce_graphics.cpp.i
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_graphics/juce_graphics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics.cpp.i
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics.cpp.i
+
+_deps/juce-src/modules/juce_graphics/juce_graphics.s: _deps/juce-src/modules/juce_graphics/juce_graphics.cpp.s
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_graphics/juce_graphics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics.cpp.s
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics.cpp.s
+
+_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.o: _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o
+
+_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.i: _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.i
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.i
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.i
+
+_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.s: _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.s
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.s
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.s
+
+_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.o: _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.o
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.o
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.o
+
+_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.i: _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.i
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.i
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.i
+
+_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.s: _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.s
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.s
+.PHONY : _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.s
+
+_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.o: _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.o
+.PHONY : _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.o
+.PHONY : _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.o
+
+_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.i: _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.i
+.PHONY : _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.i
+.PHONY : _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.i
+
+_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.s: _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.s
+.PHONY : _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.s
+.PHONY : _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.cpp.s
+
+_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.o: _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.o
+.PHONY : _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.o
+.PHONY : _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.o
+
+_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.i: _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.i
+.PHONY : _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.i
+.PHONY : _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.i
+
+_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.s: _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.s
+.PHONY : _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.s
+.PHONY : _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.s
+
 home/michael/Documents/synthr/src/cJSON.o: home/michael/Documents/synthr/src/cJSON.c.o
 .PHONY : home/michael/Documents/synthr/src/cJSON.o
 
@@ -1593,7 +2001,7 @@ imnodes.o: imnodes.cpp.o
 
 # target to build an object file
 imnodes.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/imnodes.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/imnodes.cpp.o
 .PHONY : imnodes.cpp.o
 
 imnodes.i: imnodes.cpp.i
@@ -1601,7 +2009,7 @@ imnodes.i: imnodes.cpp.i
 
 # target to preprocess a source file
 imnodes.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/imnodes.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/imnodes.cpp.i
 .PHONY : imnodes.cpp.i
 
 imnodes.s: imnodes.cpp.s
@@ -1609,7 +2017,7 @@ imnodes.s: imnodes.cpp.s
 
 # target to generate assembly for a file
 imnodes.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/imnodes.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/imnodes.cpp.s
 .PHONY : imnodes.cpp.s
 
 implot/implot.o: implot/implot.cpp.o
@@ -1689,7 +2097,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -1697,7 +2105,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -1705,8 +2113,32 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/program.dir/build.make CMakeFiles/program.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+render.o: render.cpp.o
+.PHONY : render.o
+
+# target to build an object file
+render.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/render.cpp.o
+.PHONY : render.cpp.o
+
+render.i: render.cpp.i
+.PHONY : render.i
+
+# target to preprocess a source file
+render.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/render.cpp.i
+.PHONY : render.cpp.i
+
+render.s: render.cpp.s
+.PHONY : render.s
+
+# target to generate assembly for a file
+render.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/render.cpp.s
+.PHONY : render.cpp.s
 
 # Help Target
 help:
@@ -1766,18 +2198,69 @@ help:
 	@echo "... midiprobe"
 	@echo "... node_editor"
 	@echo "... overflow"
-	@echo "... program"
 	@echo "... qmidiin"
 	@echo "... rtmidi"
 	@echo "... sio_list_devices"
 	@echo "... sio_microphone"
 	@echo "... sio_record"
 	@echo "... sio_sine"
+	@echo "... standalone"
 	@echo "... synthr"
 	@echo "... sysextest"
 	@echo "... testcapi"
 	@echo "... underflow"
 	@echo "... unit_tests"
+	@echo "... _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.o"
+	@echo "... _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.i"
+	@echo "... _deps/juce-src/modules/juce_audio_basics/juce_audio_basics.s"
+	@echo "... _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.o"
+	@echo "... _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.i"
+	@echo "... _deps/juce-src/modules/juce_audio_devices/juce_audio_devices.s"
+	@echo "... _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.o"
+	@echo "... _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.i"
+	@echo "... _deps/juce-src/modules/juce_audio_formats/juce_audio_formats.s"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.o"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.i"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors.s"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.o"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.i"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_ara.s"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.o"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.i"
+	@echo "... _deps/juce-src/modules/juce_audio_processors/juce_audio_processors_lv2_libs.s"
+	@echo "... _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.o"
+	@echo "... _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.i"
+	@echo "... _deps/juce-src/modules/juce_audio_utils/juce_audio_utils.s"
+	@echo "... _deps/juce-src/modules/juce_core/juce_core.o"
+	@echo "... _deps/juce-src/modules/juce_core/juce_core.i"
+	@echo "... _deps/juce-src/modules/juce_core/juce_core.s"
+	@echo "... _deps/juce-src/modules/juce_core/juce_core_CompilationTime.o"
+	@echo "... _deps/juce-src/modules/juce_core/juce_core_CompilationTime.i"
+	@echo "... _deps/juce-src/modules/juce_core/juce_core_CompilationTime.s"
+	@echo "... _deps/juce-src/modules/juce_data_structures/juce_data_structures.o"
+	@echo "... _deps/juce-src/modules/juce_data_structures/juce_data_structures.i"
+	@echo "... _deps/juce-src/modules/juce_data_structures/juce_data_structures.s"
+	@echo "... _deps/juce-src/modules/juce_dsp/juce_dsp.o"
+	@echo "... _deps/juce-src/modules/juce_dsp/juce_dsp.i"
+	@echo "... _deps/juce-src/modules/juce_dsp/juce_dsp.s"
+	@echo "... _deps/juce-src/modules/juce_events/juce_events.o"
+	@echo "... _deps/juce-src/modules/juce_events/juce_events.i"
+	@echo "... _deps/juce-src/modules/juce_events/juce_events.s"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics.o"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics.i"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics.s"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.o"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.i"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics_Harfbuzz.s"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.o"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.i"
+	@echo "... _deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.s"
+	@echo "... _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.o"
+	@echo "... _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.i"
+	@echo "... _deps/juce-src/modules/juce_gui_basics/juce_gui_basics.s"
+	@echo "... _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.o"
+	@echo "... _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.i"
+	@echo "... _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.s"
 	@echo "... home/michael/Documents/synthr/src/cJSON.o"
 	@echo "... home/michael/Documents/synthr/src/cJSON.i"
 	@echo "... home/michael/Documents/synthr/src/cJSON.s"
@@ -1877,6 +2360,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... render.o"
+	@echo "... render.i"
+	@echo "... render.s"
 .PHONY : help
 
 
