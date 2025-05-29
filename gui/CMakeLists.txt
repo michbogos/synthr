@@ -84,6 +84,8 @@ target_link_libraries(synthr PUBLIC rtmidi)
 set(FORMATS "Standalone")
 set(JUCE_WEB_BROWSER 0)
 
+# juce_add_module(${juce_SOURCE_DIR}/modules/juce_opengl)
+
 juce_add_gui_app(standalone
         VERSION 1.0.0
         # COMPANY_NAME stratosky
@@ -142,6 +144,7 @@ target_link_libraries(standalone
         juce::juce_audio_processors
         juce::juce_audio_plugin_client
         juce::juce_audio_utils
+        juce::juce_opengl
         PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

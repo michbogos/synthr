@@ -21,3 +21,6 @@ gui/imgui.ini
 *.so
 test.wav
 *.a
+gui/standalone_artefacts
+gui/plugin_artefacts
+juce_vst3_helper

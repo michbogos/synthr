@@ -1324,6 +1324,30 @@ _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.s
 .PHONY : _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.cpp.s
 
+_deps/juce-src/modules/juce_opengl/juce_opengl.o: _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.o
+.PHONY : _deps/juce-src/modules/juce_opengl/juce_opengl.o
+
+# target to build an object file
+_deps/juce-src/modules/juce_opengl/juce_opengl.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_opengl/juce_opengl.cpp.o
+.PHONY : _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.o
+
+_deps/juce-src/modules/juce_opengl/juce_opengl.i: _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.i
+.PHONY : _deps/juce-src/modules/juce_opengl/juce_opengl.i
+
+# target to preprocess a source file
+_deps/juce-src/modules/juce_opengl/juce_opengl.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_opengl/juce_opengl.cpp.i
+.PHONY : _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.i
+
+_deps/juce-src/modules/juce_opengl/juce_opengl.s: _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.s
+.PHONY : _deps/juce-src/modules/juce_opengl/juce_opengl.s
+
+# target to generate assembly for a file
+_deps/juce-src/modules/juce_opengl/juce_opengl.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_opengl/juce_opengl.cpp.s
+.PHONY : _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.s
+
 home/michael/Documents/synthr/src/cJSON.o: home/michael/Documents/synthr/src/cJSON.c.o
 .PHONY : home/michael/Documents/synthr/src/cJSON.o
 
@@ -2261,6 +2285,9 @@ help:
 	@echo "... _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.o"
 	@echo "... _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.i"
 	@echo "... _deps/juce-src/modules/juce_gui_extra/juce_gui_extra.s"
+	@echo "... _deps/juce-src/modules/juce_opengl/juce_opengl.o"
+	@echo "... _deps/juce-src/modules/juce_opengl/juce_opengl.i"
+	@echo "... _deps/juce-src/modules/juce_opengl/juce_opengl.s"
 	@echo "... home/michael/Documents/synthr/src/cJSON.o"
 	@echo "... home/michael/Documents/synthr/src/cJSON.i"
 	@echo "... home/michael/Documents/synthr/src/cJSON.s"

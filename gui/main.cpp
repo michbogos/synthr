@@ -1,5 +1,28 @@
 #include <JuceHeader.h>
+#include <juce_opengl/juce_opengl.h>
 // #include "MainContentComponent.hpp"
+
+class SynthrGui : public OpenGLAppComponent{
+    public:
+        SynthrGui(){
+            return;
+        }
+        ~SynthrGui(){
+            return;
+        }
+
+        void initialise() override{
+            return;
+        }
+
+        void render() override{
+            return;
+        }
+
+        void shutdown() override{
+            return;
+        }
+};
 
 class Application    : public JUCEApplication
 {
@@ -10,7 +33,7 @@ public:
     const String getApplicationName() override       { return "OpenGL3DAppTemplate"; }
     const String getApplicationVersion() override    { return "1.0.0"; }
 
-    void initialise (const String&) override         { mainWindow.reset (new MainWindow ("OpenGL3DAppTemplate", new Component, *this)); }
+    void initialise (const String&) override         { mainWindow.reset (new MainWindow ("OpenGL3DAppTemplate", new SynthrGui, *this)); }
     void shutdown() override                         { mainWindow = nullptr; }
 
 private:
