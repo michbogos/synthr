@@ -8,21 +8,35 @@ include(ExternalProject)
 include(FetchContent)
 
 FetchContent_Declare(
+    juce_imgui
+    GIT_REPOSITORY https://github.com/Krasjet/imgui_juce.git
+    GIT_PROGRESS   TRUE
+    GIT_SHALLOW    TRUE
+)
+FetchContent_Populate(juce_imgui)
+
+
+FetchContent_Declare(
     juce
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+    GIT_PROGRESS   TRUE
+    GIT_SHALLOW    TRUE
 )
-
 FetchContent_Populate(juce)
 
 FetchContent_Declare(
     soundio
     URL https://github.com/andrewrk/libsoundio/archive/refs/tags/2.0.1-7.tar.gz
+    GIT_PROGRESS   TRUE
+    GIT_SHALLOW    TRUE
 )
 FetchContent_Populate(soundio)
 
 FetchContent_Declare(
     rtmidi
     URL https://github.com/thestk/rtmidi/archive/refs/tags/6.0.0.tar.gz
+    GIT_PROGRESS   TRUE
+    GIT_SHALLOW    TRUE
 )
 FetchContent_Populate(rtmidi)
 
@@ -30,6 +44,7 @@ add_subdirectory(${soundio_SOURCE_DIR})
 add_subdirectory(${rtmidi_SOURCE_DIR})
 add_subdirectory(${juce_SOURCE_DIR})
 add_subdirectory(${CMAKE_SOURCE_DIR}/glfw)
+add_subdirectory(${juce_imgui_SOURCE_DIR})
 
 
 file(GLOB CPP_FILES "*.cpp")
@@ -145,6 +160,7 @@ target_link_libraries(standalone
         juce::juce_audio_plugin_client
         juce::juce_audio_utils
         juce::juce_opengl
+        imgui_impl_juce
         PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

@@ -1348,6 +1348,30 @@ _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce-src/modules/juce_opengl/juce_opengl.cpp.s
 .PHONY : _deps/juce-src/modules/juce_opengl/juce_opengl.cpp.s
 
+_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.o: _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.o
+.PHONY : _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.o
+
+# target to build an object file
+_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.o
+.PHONY : _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.o
+
+_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.i: _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.i
+.PHONY : _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.i
+
+# target to preprocess a source file
+_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.i
+.PHONY : _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.i
+
+_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.s: _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.s
+.PHONY : _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.s
+
+# target to generate assembly for a file
+_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/standalone.dir/build.make CMakeFiles/standalone.dir/_deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.s
+.PHONY : _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.cpp.s
+
 home/michael/Documents/synthr/src/cJSON.o: home/michael/Documents/synthr/src/cJSON.c.o
 .PHONY : home/michael/Documents/synthr/src/cJSON.o
 
@@ -2288,6 +2312,9 @@ help:
 	@echo "... _deps/juce-src/modules/juce_opengl/juce_opengl.o"
 	@echo "... _deps/juce-src/modules/juce_opengl/juce_opengl.i"
 	@echo "... _deps/juce-src/modules/juce_opengl/juce_opengl.s"
+	@echo "... _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.o"
+	@echo "... _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.i"
+	@echo "... _deps/juce_imgui-src/modules/imgui_impl_juce/imgui_impl_juce.s"
 	@echo "... home/michael/Documents/synthr/src/cJSON.o"
 	@echo "... home/michael/Documents/synthr/src/cJSON.i"
 	@echo "... home/michael/Documents/synthr/src/cJSON.s"
