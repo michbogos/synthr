@@ -19,3 +19,10 @@ void delay(float* input, float* output, Delay * delay, int num_items){
     }
     read_circular_buffer(&delay->buffer, output, num_items);
 }
+
+void set_delay(Delay * delay, int num_smaples){
+    int diff = delay->delay_length-num_smaples;
+    if(diff > 0){
+        delay->buffer.read_ptr = delay->buffer.start+(((int)delay->buffer.read_ptr-(int)delay->buffer.start+(diff*delay->buffer.item_size))%(int)delay->buffer.end-(int)delay->buffer.end);
+    }
+}
