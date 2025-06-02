@@ -133,6 +133,10 @@ pkg_check_modules(WEBKIT2GTK REQUIRED webkit2gtk-4.1)
 
 include_directories(${GTK3_INCLUDE_DIRS} ${WEBKIT2GTK_INCLUDE_DIRS})
 
+find_package(OpenGL REQUIRED)
+include_directories(${OPENGL_INCLUDE_DIRS})
+target_link_libraries(standalone PUBLIC ${OPENGL_LIBRARIES})
+
 target_include_directories(standalone PUBLIC ${CMAKE_SOURCE_DIR}/)
 target_include_directories(standalone PUBLIC ${CMAKE_SOURCE_DIR}/imgui/)
 target_include_directories(standalone PUBLIC ${CMAKE_SOURCE_DIR}/imgui/backends)

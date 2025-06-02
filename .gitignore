@@ -22,5 +22,6 @@ gui/imgui.ini
 test.wav
 *.a
 gui/standalone_artefacts
+standalone_artefacts
 gui/plugin_artefacts
 juce_vst3_helper

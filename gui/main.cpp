@@ -1,25 +1,77 @@
 #include <JuceHeader.h>
 #include <juce_opengl/juce_opengl.h>
-// #include "MainContentComponent.hpp"
+#include <imgui.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_juce/imgui_impl_juce.h>
 
-class SynthrGui : public OpenGLAppComponent{
+class SynthrGui : public juce::Component, public juce::OpenGLRenderer{
+    private:
+        juce::OpenGLContext glctx;
+        ImGuiContext *imguictx;
     public:
         SynthrGui(){
+            glctx.setOpenGLVersionRequired(juce::OpenGLContext::openGL3_2);
+            glctx.setRenderer(this);
+            glctx.attachTo(*this);
+            glctx.setContinuousRepainting(true);
             return;
         }
         ~SynthrGui(){
             return;
         }
 
-        void initialise() override{
+        // void initialise() override{
+        //     // imguictx = ImGui::CreateContext();
+        //     // ImGui_ImplJuce_Init(*this, glctx);
+        //     // ImGui_ImplOpenGL3_Init();
+        //     return;
+        // }
+
+        void newOpenGLContextCreated() override{
+            imguictx = ImGui::CreateContext();
+            ImGui_ImplJuce_Init(*this, glctx);
+            ImGui_ImplOpenGL3_Init();
             return;
         }
 
-        void render() override{
+        // void render() override{
+        //     // ImGui::SetCurrentContext(imguictx);
+        //     // ImGui_ImplOpenGL3_NewFrame();
+        //     // ImGui_ImplJuce_NewFrame();
+        //     // ImGui::NewFrame();
+
+        //     // glClearColor(0, 0, 0, 1);
+        //     // glClear(GL_COLOR_BUFFER_BIT);
+
+        //     // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        //     return;
+        // }
+
+        void renderOpenGL() override{
+            using namespace juce::gl;
+            ImGui::SetCurrentContext(imguictx);
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplJuce_NewFrame();
+            ImGui::NewFrame();
+
+            ImGui::Begin("Window A");
+            ImGui::Text("This is window A");
+            ImGui::End();
+
+            ImGui::Render();
+
+            glClearColor(1, 1, 1, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             return;
         }
 
-        void shutdown() override{
+        // void shutdown() override{
+        //     return;
+        // }
+
+        void openGLContextClosing() override{
             return;
         }
 };
