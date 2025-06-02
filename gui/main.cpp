@@ -7,6 +7,66 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
+class AudioPluginAudioProcessor final : public juce::AudioProcessor
+{
+public:
+    //==============================================================================
+    AudioPluginAudioProcessor(){
+        return;
+    }
+    ~AudioPluginAudioProcessor() override{
+        return;
+    };
+
+    //==============================================================================
+    void prepareToPlay (double sampleRate, int samplesPerBlock) override{
+        return;
+    };
+    void releaseResources() override{
+        return;
+    };
+
+    bool isBusesLayoutSupported (const BusesLayout& layouts) const override{
+        return false;
+    };
+
+    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override{
+        return;
+    };
+    using AudioProcessor::processBlock;
+
+    //==============================================================================
+    juce::AudioProcessorEditor* createEditor() override;
+    bool hasEditor() const override{
+        return true;
+    };
+
+    //==============================================================================
+    const juce::String getName() const override{
+        return "Synthr";
+    };
+
+    bool acceptsMidi() const override {return true;};
+    bool producesMidi() const override {return true;};
+    bool isMidiEffect() const override {return true;};
+    double getTailLengthSeconds() const override {return 0;};
+
+    //==============================================================================
+    int getNumPrograms() override {return 1;};
+    int getCurrentProgram() override {return 0;};
+    void setCurrentProgram (int index) override {return;};
+    const juce::String getProgramName (int index) override {return "Synthr";};
+    void changeProgramName (int index, const juce::String& newName) override {};
+
+    //==============================================================================
+    void getStateInformation (juce::MemoryBlock& destData) override {};
+    void setStateInformation (const void* data, int sizeInBytes) override {};
+
+private:
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
+};
+
 
 class SynthrGui :  public juce::AudioProcessorEditor, public juce::OpenGLRenderer{
     private:
@@ -84,65 +144,10 @@ class SynthrGui :  public juce::AudioProcessorEditor, public juce::OpenGLRendere
         }
 };
 
-class AudioPluginAudioProcessor final : public juce::AudioProcessor
-{
-public:
-    //==============================================================================
-    AudioPluginAudioProcessor(){
-        return;
-    }
-    ~AudioPluginAudioProcessor() override{
-        return;
-    };
-
-    //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override{
-        return;
-    };
-    void releaseResources() override{
-        return;
-    };
-
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override{
-        return false;
-    };
-
-    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override{
-        return;
-    };
-    using AudioProcessor::processBlock;
-
-    //==============================================================================
-    juce::AudioProcessorEditor* createEditor() override{
+juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor(){
         return new SynthrGui(*this);
-    };
-    bool hasEditor() const override;
-
-    //==============================================================================
-    const juce::String getName() const override{
-        return "Synthr";
-    };
-
-    bool acceptsMidi() const override {return true;};
-    bool producesMidi() const override {return true;};
-    bool isMidiEffect() const override {return true;};
-    double getTailLengthSeconds() const override {return 0;};
-
-    //==============================================================================
-    int getNumPrograms() override {return 1;};
-    int getCurrentProgram() override {return 0;};
-    void setCurrentProgram (int index) override {return;};
-    const juce::String getProgramName (int index) override {return "Synthr";};
-    void changeProgramName (int index, const juce::String& newName) override {};
-
-    //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override {};
-    void setStateInformation (const void* data, int sizeInBytes) override {};
-
-private:
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };
+
 
 //==============================================================================
 class Application    : public JUCEApplication
