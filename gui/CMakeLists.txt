@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 
 project(synthr_gui)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++17 -g -Wall -Wextra")
+set(CMAKE_C_FLAG "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -fPIC")
 
 include(ExternalProject)
 include(FetchContent)
@@ -70,9 +70,9 @@ target_link_libraries(implot PUBLIC imgui)
 
 add_library(synthr ${SYNTHR_FILES})
 target_include_directories(synthr PUBLIC ${PARENT_DIR}/include)
-target_link_libraries(synthr PUBLIC libsoundio_static)
-target_link_libraries(synthr PUBLIC libsoundio_shared)
-target_link_libraries(synthr PUBLIC rtmidi)
+# target_link_libraries(synthr PUBLIC libsoundio_static)
+# target_link_libraries(synthr PUBLIC libsoundio_shared)
+# target_link_libraries(synthr PUBLIC rtmidi)
 
 # add_executable(program ${CPP_FILES})
 # target_include_directories(program PUBLIC ${CMAKE_SOURCE_DIR}/)
@@ -99,33 +99,15 @@ target_link_libraries(synthr PUBLIC rtmidi)
 set(FORMATS "Standalone")
 set(JUCE_WEB_BROWSER 0)
 
-# juce_add_module(${juce_SOURCE_DIR}/modules/juce_opengl)
-
 juce_add_gui_app(standalone
         VERSION 1.0.0
-        # COMPANY_NAME stratosky
         IS_SYNTH TRUE
         NEEDS_BROWSER FALSE
-        # NEEDS_MIDI_INPUT FALSE
-        # NEEDS_MIDI_OUTPUT FALSE
-        # IS_MIDI_EFFECT FALSE
-        # COPY_PLUGIN_AFTER_BUILD FALSE
-        # PLUGIN_MANUFACTURER_CODE stky
-        # PLUGIN_CODE GuSP
         FORMATS ${FORMATS}
-        # VST3_CATEGORIES "Fx"
-        BUNDLE_ID "com.stratosky.gsp"
-        PLUGIN_NAME "GuitarStreamPlugin"
-        PRODUCT_NAME "GuitarStream")
-
-# target_compile_features(standalone PRIVATE cxx_std_14)
+        PLUGIN_NAME "Synthr"
+        PRODUCT_NAME "Synthr")
 
 juce_generate_juce_header(standalone)
-
-# target_compile_definitions(standalone PUBLIC
-#         JUCE_VST3_CAN_REPLACE_VST2=0
-#         JUCE_WEB_BROWSER=0
-#         JUCE_USE_CURL=0)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
@@ -133,8 +115,6 @@ pkg_check_modules(WEBKIT2GTK REQUIRED webkit2gtk-4.1)
 
 include_directories(${GTK3_INCLUDE_DIRS} ${WEBKIT2GTK_INCLUDE_DIRS})
 
-find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIRS})
 target_link_libraries(standalone PUBLIC ${OPENGL_LIBRARIES})
 
 target_include_directories(standalone PUBLIC ${CMAKE_SOURCE_DIR}/)
@@ -162,6 +142,62 @@ target_link_libraries(standalone
         juce::juce_dsp
         juce::juce_audio_processors
         juce::juce_audio_plugin_client
+        juce::juce_audio_utils
+        juce::juce_opengl
+        imgui_impl_juce
+        PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags
+        curl)
+
+set(FORMATS "VST3")
+juce_add_plugin(plugin
+        VERSION 1.0.0
+        IS_SYNTH TRUE
+        NEEDS_BROWSER FALSE
+        FORMATS ${FORMATS}
+        PLUGIN_NAME "Synthr"
+        PRODUCT_NAME "Synthr")
+
+target_compile_definitions(plugin PUBLIC JUCE_VST3_CAN_REPLACE_VST2=0)
+
+
+juce_generate_juce_header(plugin)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+pkg_check_modules(WEBKIT2GTK REQUIRED webkit2gtk-4.1)
+
+include_directories(${GTK3_INCLUDE_DIRS} ${WEBKIT2GTK_INCLUDE_DIRS})
+
+target_link_libraries(plugin PUBLIC ${OPENGL_LIBRARIES})
+
+target_include_directories(plugin PUBLIC ${CMAKE_SOURCE_DIR}/)
+target_include_directories(plugin PUBLIC ${CMAKE_SOURCE_DIR}/imgui/)
+target_include_directories(plugin PUBLIC ${CMAKE_SOURCE_DIR}/imgui/backends)
+target_include_directories(plugin PUBLIC ${CMAKE_SOURCE_DIR}/glfw/include/)
+target_include_directories(plugin PUBLIC ${CMAKE_SOURCE_DIR}/imnodes/)
+target_include_directories(plugin PUBLIC ${CMAKE_SOURCE_DIR}/imgui-node-editor/)
+target_include_directories(plugin PUBLIC ${PARENT_DIR}/include/)
+target_include_directories(plugin PUBLIC ${soundio_SOURCE_DIR} ${rtmidi_SOURCE_DIR})
+target_sources(plugin PUBLIC ${CPP_FILES})
+target_link_libraries(plugin PUBLIC m)
+# target_link_libraries(plugin PUBLIC libsoundio_static)
+# target_link_libraries(plugin PUBLIC libsoundio_shared)
+# target_link_libraries(plugin PUBLIC rtmidi)
+target_link_libraries(plugin PUBLIC imgui)
+target_link_libraries(plugin PUBLIC GL)
+target_link_libraries(plugin PUBLIC imgui)
+target_link_libraries(plugin PUBLIC implot)
+target_link_libraries(plugin PUBLIC node_editor)
+target_link_libraries(plugin PUBLIC glfw)
+target_link_libraries(plugin PUBLIC synthr)
+target_link_libraries(plugin
+        PRIVATE
+        juce::juce_dsp
+        juce::juce_audio_processors
+        #juce::juce_audio_plugin_client
         juce::juce_audio_utils
         juce::juce_opengl
         imgui_impl_juce

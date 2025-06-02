@@ -3,13 +3,18 @@
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_juce/imgui_impl_juce.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 
-class SynthrGui : public juce::Component, public juce::OpenGLRenderer{
+#include <juce_audio_processors/juce_audio_processors.h>
+
+
+class SynthrGui :  public juce::AudioProcessorEditor, public juce::OpenGLRenderer{
     private:
         juce::OpenGLContext glctx;
         ImGuiContext *imguictx;
     public:
-        SynthrGui(){
+        AudioPluginAudioProcessor &ap;
+        SynthrGui(AudioPluginAudioProcessor &p): AudioProcessorEditor(&p), ap(p){
             glctx.setOpenGLVersionRequired(juce::OpenGLContext::openGL3_2);
             glctx.setRenderer(this);
             glctx.attachTo(*this);
@@ -19,6 +24,9 @@ class SynthrGui : public juce::Component, public juce::OpenGLRenderer{
         ~SynthrGui(){
             return;
         }
+
+        void paint(juce::Graphics &) override {}
+        void resized() override {}
 
         // void initialise() override{
         //     // imguictx = ImGui::CreateContext();
@@ -76,16 +84,78 @@ class SynthrGui : public juce::Component, public juce::OpenGLRenderer{
         }
 };
 
+class AudioPluginAudioProcessor final : public juce::AudioProcessor
+{
+public:
+    //==============================================================================
+    AudioPluginAudioProcessor(){
+        return;
+    }
+    ~AudioPluginAudioProcessor() override{
+        return;
+    };
+
+    //==============================================================================
+    void prepareToPlay (double sampleRate, int samplesPerBlock) override{
+        return;
+    };
+    void releaseResources() override{
+        return;
+    };
+
+    bool isBusesLayoutSupported (const BusesLayout& layouts) const override{
+        return false;
+    };
+
+    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override{
+        return;
+    };
+    using AudioProcessor::processBlock;
+
+    //==============================================================================
+    juce::AudioProcessorEditor* createEditor() override{
+        return new SynthrGui(*this);
+    };
+    bool hasEditor() const override;
+
+    //==============================================================================
+    const juce::String getName() const override{
+        return "Synthr";
+    };
+
+    bool acceptsMidi() const override {return true;};
+    bool producesMidi() const override {return true;};
+    bool isMidiEffect() const override {return true;};
+    double getTailLengthSeconds() const override {return 0;};
+
+    //==============================================================================
+    int getNumPrograms() override {return 1;};
+    int getCurrentProgram() override {return 0;};
+    void setCurrentProgram (int index) override {return;};
+    const juce::String getProgramName (int index) override {return "Synthr";};
+    void changeProgramName (int index, const juce::String& newName) override {};
+
+    //==============================================================================
+    void getStateInformation (juce::MemoryBlock& destData) override {};
+    void setStateInformation (const void* data, int sizeInBytes) override {};
+
+private:
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
+};
+
+//==============================================================================
 class Application    : public JUCEApplication
 {
 public:
     //==============================================================================
     Application() {}
+    AudioPluginAudioProcessor apap;
 
     const String getApplicationName() override       { return "OpenGL3DAppTemplate"; }
     const String getApplicationVersion() override    { return "1.0.0"; }
 
-    void initialise (const String&) override         { mainWindow.reset (new MainWindow ("OpenGL3DAppTemplate", new SynthrGui, *this)); }
+    void initialise (const String&) override         { mainWindow.reset (new MainWindow ("OpenGL3DAppTemplate", new SynthrGui(apap), *this)); }
     void shutdown() override                         { mainWindow = nullptr; }
 
 private:
@@ -129,3 +199,33 @@ private:
 
 //==============================================================================
 START_JUCE_APPLICATION (Application)
+
+juce::AudioProcessor * JUCE_CALLTYPE createPluginFilter()
+{
+  return new AudioPluginAudioProcessor;
+}
+
+// class SynthrProcessor final : public juce::AudioProcessor{
+//     public:
+//         SynthrProcessor(){
+//             return;
+//         }
+//         ~SynthrProcessor(){
+//             return;
+//         }
+//     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthrProcessor)
+// };
+
+// class SynthrEditor final : public juce::AudioProcessorEditor{
+//     public:
+//         explicit SynthrEditor(SynthrEditor&);
+//         ~SynthrEditor(){
+//             return;
+//         }
+//     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthrEditor)
+// };
+
+// juce::AudioProcessor JUCE_CALLTYPE createPluginFilter()
+// {
+//   return new Plugin();
+// }
