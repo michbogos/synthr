@@ -175,7 +175,12 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
         //Incorrect
         {
             float samples[n];
+            float delay_size[n];
             getNodeOutput(node.inputs[0], nodes, num_nodes, n, samples, dt);
+            getNodeOutput(node.inputs[1], nodes, num_nodes, n, delay_size, dt);
+            if(delay_size[0] != 0){
+                set_delay((Delay*)node.value, abs(delay_size[0]));
+            }
             delay(samples, buffer, (Delay*)node.value, n);
         }
         return;
@@ -606,13 +611,14 @@ WaveNode nodeDifferentiate(int a){
 WaveNode nodeDelay(int input, int delay_size, float decay){
     WaveNode node = nodeDefault();
     node.type = DELAY;
-    node.inputs = malloc(1*sizeof(int));
+    node.inputs = malloc(2*sizeof(int));
     node.inputs[0] = input;
-    Delay d = init_delay(delay_size, decay);
+    node.inputs[1] = delay_size;
+    Delay d = init_delay(48000, decay);
     node.value = malloc(sizeof(Delay));
     node.value_len = sizeof(Delay);
     *(Delay*)node.value = d;
-    node.num_inputs = 1;
+    node.num_inputs = 2;
     return node;
 }
 
