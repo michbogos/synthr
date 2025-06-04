@@ -400,7 +400,7 @@ void getNodeOutput(int node_idx, WaveNode* nodes, int num_nodes, int n, float* b
 // }
 
 WaveNode nodeDefault(){
-    WaveNode node = nodeDefault();
+    WaveNode node;
     node.value = NULL;
     node.cache = NULL;
     node.value_len = 0;
