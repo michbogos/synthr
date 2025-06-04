@@ -3,8 +3,4 @@
 
 #include<delay.h>
 
-struct KarplusState{
-    Delay
-}
-
 #endif
