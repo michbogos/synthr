@@ -156,14 +156,17 @@ juce_add_plugin(plugin
         VERSION 1.0.0
         IS_SYNTH TRUE
         NEEDS_BROWSER FALSE
+        NEEDS_MIDI_INPUT TRUE
         FORMATS ${FORMATS}
         PLUGIN_NAME "Synthr"
         PRODUCT_NAME "Synthr")
 
-target_compile_definitions(plugin PUBLIC JUCE_VST3_CAN_REPLACE_VST2=0)
+target_compile_definitions(plugin PUBLIC JUCE_COPY_PLUGIN_AFTER_BUILD=1 JUCE_VST3_CAN_REPLACE_VST2=0 JucePlugin_Build_VST3=1 JUCE_PLUGIN_BUILD_VST3=1 JUCEPLUGIN_BUILD_VST3=1)
 
 
 juce_generate_juce_header(plugin)
+
+set(JUCE_COPY_PLUGIN_AFTER_BUILD ON)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
@@ -197,7 +200,7 @@ target_link_libraries(plugin
         PRIVATE
         juce::juce_dsp
         juce::juce_audio_processors
-        #juce::juce_audio_plugin_client
+        juce::juce_audio_plugin_client
         juce::juce_audio_utils
         juce::juce_opengl
         imgui_impl_juce
@@ -206,3 +209,38 @@ target_link_libraries(plugin
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
         curl)
+
+# juce_add_plugin(sine
+#   FORMATS VST3 Standalone
+#   COMPANY_NAME kst
+#   PLUGIN_MANUFACTURER_CODE Krjt
+#   PLUGIN_CODE Ksin
+#   PRODUCT_NAME "Sine"
+#   VERSION 1.0.0
+#   IS_SYNTH TRUE
+#   # we don't use midi but ableton won't load vst3 synth
+#   # without midi input
+#   NEEDS_MIDI_INPUT TRUE)
+
+#   target_sources(sine PUBLIC ${CMAKE_SOURCE_DIR}/Main.cpp ${CMAKE_SOURCE_DIR}/PluginProcessor.cpp ${CMAKE_SOURCE_DIR}/PluginEditor.cpp)
+#   target_include_directories(sine PUBLIC ${CMAKE_SOURCE_DIR}/)
+
+# juce_generate_juce_header(sine)
+
+# target_compile_definitions(sine
+#   PUBLIC
+#     JUCE_WEB_BROWSER=0
+#     JUCE_USE_CURL=0
+#     JUCE_REPORT_APP_USAGE=0
+#     JUCE_VST3_CAN_REPLACE_VST2=0)
+
+# target_link_libraries(sine
+#   PRIVATE
+#     juce::juce_audio_utils
+#     juce::juce_opengl
+#     imgui
+#     imgui_impl_juce
+#   PUBLIC
+#     juce::juce_recommended_config_flags
+#     juce::juce_recommended_lto_flags
+#     juce::juce_recommended_warning_flags)
