@@ -101,6 +101,9 @@ std::vector<std::vector<WaveNode>> cloneGraph(std::vector<WaveNode> graph, int n
                 ((Biquad*)voices[i][j].value)->out2 = 0;
                 ((Biquad*)voices[i][j].value)->out3 = 0;
             }
+            // if(voices[i][j].type==DELAY){
+            //     memcpy(voices[i][j].value);
+            // }
         }
     }
     return voices;
@@ -179,6 +182,10 @@ void addNodeToTree(std::vector<WaveNode> &nodes, NodeType node_type){
         }
         case REVERB:
             nodes.push_back(nodeReverb(-1));
+            break;
+        case DELAY:
+            nodes.push_back(nodeDelay(-1, 10000, 1.0));
+            break;
     }
 }
 
@@ -483,18 +490,18 @@ int main(int, char**)
                 int selected_nodes[ImNodes::NumSelectedNodes()];
                 ImNodes::GetSelectedNodes(selected_nodes);
                 selected_node = selected_nodes[0];
-                getNodeOutput(selected_nodes[0], nodes.data(), nodes.size(), 1024, buffer, 1.0/(1024));
-                ImPlot::PlotLine("Node Output", buffer, 1024);
+                //getNodeOutput(selected_nodes[0], nodes.data(), nodes.size(), 1024, buffer, 1.0/(1024));
+                //ImPlot::PlotLine("Node Output", buffer, 1024);
             ImPlot::EndPlot();
             }
-            if (ImPlot::BeginPlot("Frequency Domain")){
-                fftf(buffer, 1024, -1);
-                for(int i = 0; i < 1024; i++){
-                    buffer[i] *= 1024;
-                }
-                ImPlot::PlotLine("Node Output", buffer, 1024);
-            ImPlot::EndPlot();
-            }
+            // if (ImPlot::BeginPlot("Frequency Domain")){
+            //     fftf(buffer, 1024, -1);
+            //     for(int i = 0; i < 1024; i++){
+            //         buffer[i] *= 1024;
+            //     }
+            //     ImPlot::PlotLine("Node Output", buffer, 1024);
+            // ImPlot::EndPlot();
+            // }
         }
 
         ImGui::End();
