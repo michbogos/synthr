@@ -6,7 +6,7 @@ from scipy.signal import ShortTimeFFT
 from scipy.signal.windows import gaussian
 
 
-spf = wave.open("test.wav", "r")
+spf = wave.open("string.wav", "r")
 
 # Extract Raw Audio from Wav File
 signal = spf.readframes(-1)

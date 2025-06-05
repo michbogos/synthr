@@ -315,67 +315,15 @@
 #include<stdio.h>
 #include<wavefile.h>
 #include<formant.h>
+#include<karplus.h>
 
 int main(){
-    Formant uf = make_formant(FORMANT_TABLE[ALTO_U]);
-    WaveNode wavenodes[4];
-    float buffer[48000];
-    float buffer2[48000];
-    float buffer3[48000];
-    float phase = 0;
-    for(int i = 0; i < 48000; i++){
-        buffer[i] = osc_saw(440, &phase, 1.0f/48000.0f);
+    float outbuffer[48000];
+    KarplusState karplus =  karplus_init(48000);
+    karplus_trigger(&karplus, 440);
+    for(int i =0; i < 48000; i++){
+        outbuffer[i] = karplus_compute(&karplus);
     }
-
-    for(int i = 0; i < 48000; i++){
-        buffer2[i] = osc_saw(110, &phase, 1.0f/48000.0f);
-    }
-
-    for(int i = 0; i < 48000; i++){
-        buffer3[i] = osc_saw(110, &phase, 1.0f/48000.0f);
-    }
-
-    write_wav(buffer3, 48000, 48000, 1, "normal.wav");
-
-    Biquad peak1 = biquad(PEAKEQ);
-    Biquad peak2 = biquad(PEAKEQ);
-
-    for(int i = 0; i < 48000; i++){
-        buffer[i] = filter(buffer[i], 48000, &peak1, 850, 3.0, 24.0f);
-        buffer[i] = filter(buffer[i], 48000, &peak2, 1610, 3.0, 8.0f);
-    }
-
-    peak1 = biquad(PEAKEQ);
-    peak2 = biquad(PEAKEQ);
-
-    for(int i = 0; i < 48000; i++){
-        buffer2[i] = filter(buffer2[i], 48000, &peak1, 350, 3, 24.0f);
-        buffer2[i] = filter(buffer2[i], 48000, &peak2, 595, 3, 12.0f);
-    }
-
-    peak1 = biquad(PEAKEQ);
-    peak2 = biquad(PEAKEQ);
-
-
-    formantize(buffer3, 48000, 48000, uf);
-
-    write_wav(buffer, 48000, 48000, 1, "a.wav");
-    write_wav(buffer2, 48000, 48000, 1, "u.wav");
-    write_wav(buffer3, 48000, 48000, 1, "uf.wav");
-
-    //write_wav(buffer, 48000, 48000, 1, "formant.wav");
-    wavenodes[0] = nodeNumber(1);
-    wavenodes[1] = nodeNumber(1);
-    wavenodes[2] = nodeAdd(0,1);
-    wavenodes[3] = nodeTri(2);
-
-    char* res = export_nodegraph(wavenodes, 4);
-
-    printf("%s\n", res);
-
-    WaveNode* imported = import_nodegraph(res);
-    char* reexport = export_nodegraph(imported, 4);
-
-    printf("%s\n", reexport);
+    write_wav(outbuffer, 48000, 48000, 1, "string.wav");
     return 0;
 }
