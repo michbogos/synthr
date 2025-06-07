@@ -34,12 +34,12 @@ void karplus_trigger(KarplusState* state, float frequency){
 float karplus_compute(KarplusState* state){
     float output = 0;
     if(state->noise_counter > 0){
-        output += (rand_float(&state->rng)-0.5)*0.5;
+        output += (rand_float(&state->rng)-0.5)*2;
         state->noise_counter--;
     }
     float delayed;
     delay(&output, &delayed, &state->delay, 1);
-    output += filter(delayed, state->sample_rate, &state->filter, state->freq*1.0, 1.6f, 0);
+    output += filter(delayed, state->sample_rate, &state->filter, state->freq*1.0, 1.62f, 0);
     delay(&output, &delayed, &state->delay, 1);
     //state->prev_output = output;
     return output;
