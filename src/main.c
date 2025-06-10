@@ -190,19 +190,19 @@
 
 //     float val = -1.0f;
 //     d = init_delay(24000, 0.3);
-//     //verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 48000);
+//     //verb = init_reverb(0.5, 0.5, 1.0, 0.5, 0.5, 0.9, 44100);
 
 //     // for(int i = 0; i < 24000; i++){
 //     //     write_circular_buffer(&cbuf, &val, 1);
 //     // }
-//     tritable = wtbl_sqr(48000, 4096, 20);
-//     sawtable = wtbl_sqr(48000, 4096, 20);
-//     adsr.ab = 3.0f/48000.0f;
+//     tritable = wtbl_sqr(44100, 4096, 20);
+//     sawtable = wtbl_sqr(44100, 4096, 20);
+//     adsr.ab = 3.0f/44100.0f;
 //     adsr.ac = 1.0f;
-//     adsr.db = -1.0f/48000.0f;
+//     adsr.db = -1.0f/44100.0f;
 //     adsr.dc = 1.0f;
 //     adsr.sustain = 0.5f;
-//     adsr.rb = -1.0f/48000.0f;
+//     adsr.rb = -1.0f/44100.0f;
 //     adsr.rc = 1.00f;
 //     adsr.state = 0;
 //     nodes[0] = nodeNumber(1600.0f);
@@ -246,9 +246,9 @@
 //     cmb2 = comb(8, 1.0f, 1.0f);
 
 
-//     // float samples[48000*5] = {};
-//     // getNodeOutput(mul, 5*48000, samples, 1.0/48000.0);
-//     // write_wav(samples, 48000*5, 48000, 1, "test.wav");
+//     // float samples[44100*5] = {};
+//     // getNodeOutput(mul, 5*44100, samples, 1.0/44100.0);
+//     // write_wav(samples, 44100*5, 44100, 1, "test.wav");
 //     int err;
 //     struct SoundIo *soundio = soundio_create();
 //     if (!soundio) {
@@ -318,12 +318,12 @@
 #include<karplus.h>
 
 int main(){
-    float outbuffer[48000];
-    KarplusState karplus =  karplus_init(48000);
-    karplus_trigger(&karplus, 440);
-    for(int i =0; i < 48000; i++){
+    float outbuffer[44100];
+    KarplusState karplus =  karplus_init(44100);
+    karplus_trigger(&karplus, 1200);
+    for(int i =0; i < 44100; i++){
         outbuffer[i] = karplus_compute(&karplus);
     }
-    write_wav(outbuffer, 48000, 48000, 1, "string.wav");
+    write_wav(outbuffer, 44100, 44100, 1, "string.wav");
     return 0;
 }
