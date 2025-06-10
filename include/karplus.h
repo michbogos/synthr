@@ -31,6 +31,7 @@ void karplus_trigger(KarplusState* state, float frequency){
     state->freq = frequency;
 }
 
+//Out of tune because delay is 0.5 longer than d
 float karplus_compute(KarplusState* state){
     if(state->noise_counter > 0){
         state->prev_output += (rand_float(&state->rng)-0.5)*2;

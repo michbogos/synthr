@@ -25,7 +25,7 @@ plt.show()
 
 win = gaussian(64, std=1.0, sym=True)
 
-SFT = ShortTimeFFT(win, hop=64, fs=44800, mfft=1024, scale_to="psd")
+SFT = ShortTimeFFT(win, hop=64, fs=44100, mfft=1024, scale_to="magnitude")
 
 plt.imshow(SFT.spectrogram(signal[0]))
 plt.show()
