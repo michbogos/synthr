@@ -318,12 +318,12 @@
 #include<karplus.h>
 
 int main(){
-    float outbuffer[44000];
-    KarplusState karplus =  karplus_init(44000);
-    karplus_trigger(&karplus, 200);
-    for(int i =0; i < 44000; i++){
+    float outbuffer[42353];
+    KarplusState karplus =  karplus_init(42353);
+    karplus_trigger(&karplus, 880);
+    for(int i =0; i < 42353; i++){
         outbuffer[i] = karplus_compute(&karplus);
     }
-    write_wav(outbuffer, 44000, 44000, 1, "string.wav");
+    write_wav(outbuffer, 42353, 42353, 1, "string.wav");
     return 0;
 }

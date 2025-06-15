@@ -1,3 +1,6 @@
+//http://musicweb.ucsd.edu/~trsmyth/papers/KSExtensions.pdf
+
+
 #ifndef KARPLUS
 #define KARPLUS
 
@@ -13,6 +16,9 @@ typedef struct KarplusState{
     float sample_rate;
     float freq;
     float prev_output;
+    float prev_x;
+    float prev_y;
+    float tune;
 } KarplusState;
 
 KarplusState karplus_init(float sample_rate){
@@ -26,7 +32,10 @@ KarplusState karplus_init(float sample_rate){
 
 void karplus_trigger(KarplusState* state, float frequency){
     int d = state->sample_rate/frequency;
-    set_delay(&state->delay, d);
+    set_delay(&state->delay, d-1);
+    float finetune = ((((float)state->sample_rate/(float)frequency)))-d;
+    state->tune = (1-finetune)/(1+finetune);
+    // state->tune = 1;
     state->noise_counter += 100;
     state->freq = frequency;
 }
@@ -39,7 +48,10 @@ float karplus_compute(KarplusState* state){
     }
     float delayed;
     delay(&state->prev_output, &delayed, &state->delay, 1);
-    state->prev_output = filter(delayed, state->sample_rate, &state->filter, state->freq*6, 0.7f, 0);
+    state->prev_output = (state->prev_output+delayed)/2.0f;//filter(delayed, state->sample_rate, &state->filter, state->freq*6, 0.7f, 0);
+    state->prev_y = state->prev_output*state->tune+state->prev_x-state->prev_y*state->tune;
+    state->prev_x = state->prev_output;
+    state->prev_output = state->prev_y;
     //delay(&output, &delayed, &state->delay, 1);
     //state->prev_output = output;
     return state->prev_output;
