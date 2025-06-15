@@ -32,8 +32,8 @@ KarplusState karplus_init(float sample_rate){
 
 void karplus_trigger(KarplusState* state, float frequency){
     int d = state->sample_rate/frequency;
-    set_delay(&state->delay, d-1);
-    float finetune = ((((float)state->sample_rate/(float)frequency)))-d;
+    set_delay(&state->delay, d);
+    float finetune = (((((float)state->sample_rate/(float)frequency)))-d)-0.5;
     state->tune = (1-finetune)/(1+finetune);
     // state->tune = 1;
     state->noise_counter += 100;

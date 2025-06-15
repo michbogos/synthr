@@ -320,7 +320,7 @@
 int main(){
     float outbuffer[42353];
     KarplusState karplus =  karplus_init(42353);
-    karplus_trigger(&karplus, 880);
+    karplus_trigger(&karplus, 220);
     for(int i =0; i < 42353; i++){
         outbuffer[i] = karplus_compute(&karplus);
     }
